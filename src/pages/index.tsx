@@ -1,5 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useHistory } from 'umi'
 
 export default () => {
-  return <div>123</div>
+  const history = useHistory()
+  useEffect(() => {
+    history.replace('/keys')
+  }, [history])
+  return <div />
 }

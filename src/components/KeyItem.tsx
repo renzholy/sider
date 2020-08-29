@@ -1,21 +1,43 @@
-import React from 'react'
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+
+import React, { useCallback } from 'react'
 import type { ListChildComponentProps } from 'react-window'
 
 import { KeyType } from '@/types'
+import { Colors } from '@blueprintjs/core'
 import { KeyTag } from './KeyTag'
 
 export function KeyItem(props: ListChildComponentProps) {
-  const items = props.data as { key: string; type: KeyType }[]
-  return items[props.index] ? (
+  const data = props.data as {
+    keys: { key: string; type: KeyType }[]
+    selected?: string
+    onSelect(selected?: string): void
+  }
+  const items = data.keys
+  const item = items[props.index]
+  const handleClick = useCallback(() => {
+    data.onSelect(data.selected === item.key ? undefined : item.key)
+  }, [data, item.key])
+
+  if (!item) {
+    return null
+  }
+  return (
     <div
-      key={items[props.index].key}
+      key={item.key}
       style={{
         ...props.style,
-        padding: '8px 16px',
+        padding: 8,
         display: 'flex',
         alignItems: 'center',
-      }}>
-      <KeyTag type={items[props.index].type} />
+        cursor: 'pointer',
+        backgroundColor:
+          data.selected === item.key ? Colors.LIGHT_GRAY3 : 'transparent',
+        borderRadius: 4,
+      }}
+      onClick={handleClick}>
+      <KeyTag type={item.type} />
       &nbsp;
       <span
         style={{
@@ -24,8 +46,8 @@ export function KeyItem(props: ListChildComponentProps) {
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
         }}>
-        {items[props.index].key}
+        {item.key}
       </span>
     </div>
-  ) : null
+  )
 }

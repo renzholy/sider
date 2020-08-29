@@ -75,7 +75,7 @@ export default () => {
   }, [setSize])
 
   return (
-    <div style={{ width: 360, height: '100%' }}>
+    <div style={{ width: 320, height: '100%' }}>
       <div style={{ padding: 16 }}>
         <InputGroup value={match} onChange={handleMatchChange} />
       </div>

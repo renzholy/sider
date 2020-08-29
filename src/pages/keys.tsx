@@ -10,13 +10,20 @@ export default () => {
   const [match, setMatch] = useState('')
   const { data, size, setSize } = useSWRInfinite<{
     next: string
-    keys: { key: string; type: string }[]
+    keys: { key: string; type: KeyType }[]
   }>(
     (_index, previousPageData) => {
       if (previousPageData?.next === '0') {
         return null
       }
-      return ['scan', previousPageData?.next || '0', 'match', `${match}*`]
+      return [
+        'scan',
+        previousPageData?.next || '0',
+        'count',
+        '50',
+        'match',
+        `${match}*`,
+      ]
     },
     async (...command) => {
       const [cursor, keys] = await runCommand<[string, string[]]>(
@@ -24,7 +31,7 @@ export default () => {
         command,
       )
       const types = await Promise.all(
-        keys.map((key) => runCommand<string>(connection, ['type', key])),
+        keys.map((key) => runCommand<KeyType>(connection, ['type', key])),
       )
       return {
         next: cursor,

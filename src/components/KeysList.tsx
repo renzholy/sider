@@ -19,7 +19,7 @@ export function KeysList(props: {
     : props.items.length
 
   return (
-    <AutoSizer>
+    <AutoSizer style={{ fontFamily: 'monospace' }}>
       {({ height, width }: Size) => (
         <InfiniteLoader
           isItemLoaded={handleIsItemLoaded}
@@ -27,13 +27,13 @@ export function KeysList(props: {
           loadMoreItems={props.onLoadMoreItems}>
           {({ onItemsRendered, ref }) => (
             <FixedSizeList
-              itemSize={48}
-              itemCount={itemCount}
-              itemData={props.items}
-              onItemsRendered={onItemsRendered}
               ref={ref}
               width={width}
-              height={height}>
+              height={height}
+              itemSize={36}
+              itemCount={itemCount}
+              itemData={props.items}
+              onItemsRendered={onItemsRendered}>
               {KeyItem}
             </FixedSizeList>
           )}

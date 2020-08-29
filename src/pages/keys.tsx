@@ -75,25 +75,30 @@ export default () => {
         onChange={handleMatchChange}
         leftIcon="search"
         large={true}
-        style={{ marginBottom: 4, backgroundColor: Colors.LIGHT_GRAY4 }}
+        style={{
+          marginBottom: 4,
+          backgroundColor: Colors.LIGHT_GRAY4,
+          boxShadow: 'none',
+          outline: 'none',
+        }}
       />
-      {items ? (
-        <div
-          style={{
-            fontFamily: 'monospace',
-            userSelect: 'none',
-            height: 0,
-            flex: 1,
-            borderRadius: 4,
-            overflow: 'hidden',
-          }}>
+      <div
+        style={{
+          fontFamily: 'monospace',
+          userSelect: 'none',
+          height: 0,
+          flex: 1,
+          borderRadius: 4,
+          overflow: 'hidden',
+        }}>
+        {items ? (
           <KeysList
             items={items}
             hasNextPage={hasNextPage}
             onLoadMoreItems={handleLoadMoreItems}
           />
-        </div>
-      ) : null}
+        ) : null}
+      </div>
       <div
         style={{
           height: 40,

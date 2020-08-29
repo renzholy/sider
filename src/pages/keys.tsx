@@ -85,9 +85,7 @@ export default () => {
           hasNextPage={hasNextPage}
           onLoadMoreItems={handleLoadMoreItems}
         />
-      ) : (
-        <div>no data</div>
-      )}
+      ) : null}
     </div>
   )
 }

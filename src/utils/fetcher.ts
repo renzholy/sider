@@ -29,3 +29,32 @@ export async function listConnections(): Promise<string[]> {
   }
   throw new Error(await response.text())
 }
+
+export async function scanFetcher(
+  connection: Connection,
+  match: string,
+  cursor: string,
+): Promise<{
+  next: string
+  keys: { key: string; type: KeyType }[]
+}> {
+  const [next, keys] = await runCommand<[string, string[]]>(connection, [
+    'scan',
+    cursor,
+    'match',
+    match,
+  ])
+  if (keys.length === 0 && next !== '0') {
+    return scanFetcher(connection, match, next)
+  }
+  const types = await Promise.all(
+    keys.map((key) => runCommand<KeyType>(connection, ['type', key])),
+  )
+  return {
+    next,
+    keys: keys.map((key, index) => ({
+      key,
+      type: types[index],
+    })),
+  }
+}

@@ -3,60 +3,35 @@ import { InputGroup } from '@blueprintjs/core'
 import { useSWRInfinite } from 'swr'
 import { flatMap } from 'lodash'
 
-import { runCommand } from '@/utils/fetcher'
+import { scanFetcher } from '@/utils/fetcher'
 import { Connection } from '@/types'
 import { KeysList } from '@/components/KeysList'
+import { Unpacked } from '@/utils'
 
 const connection: Connection = {
   addrs: [':6379'],
   db: 1,
 }
 
-type ScanResult = {
-  next: string
-  keys: { key: string; type: KeyType }[]
-}
-
-async function scanFetcher(match: string, cursor: string): Promise<ScanResult> {
-  const [next, keys] = await runCommand<[string, string[]]>(connection, [
-    'scan',
-    cursor,
-    'match',
-    match,
-  ])
-  if (keys.length === 0 && next !== '0') {
-    return scanFetcher(match, next)
-  }
-  const types = await Promise.all(
-    keys.map((key) => runCommand<KeyType>(connection, ['type', key])),
-  )
-  return {
-    next,
-    keys: keys.map((key, index) => ({
-      key,
-      type: types[index],
-    })),
-  }
-}
-
 export default () => {
   const [match, setMatch] = useState('')
   const [hasNextPage, setHasNextPage] = useState(true)
   const handleGetKey = useCallback(
-    (_index: number, previousPageData: ScanResult | null) => {
+    (
+      _index: number,
+      previousPageData: Unpacked<ReturnType<typeof scanFetcher>> | null,
+    ) => {
       if (previousPageData?.next === '0') {
         setHasNextPage(false)
         return null
       }
-      return [`${match}*`, previousPageData?.next || 0]
+      return [connection, `${match}*`, previousPageData?.next || 0]
     },
     [match],
   )
-  const { data, setSize } = useSWRInfinite<ScanResult>(
-    handleGetKey,
-    scanFetcher,
-    { revalidateOnFocus: false },
-  )
+  const { data, setSize } = useSWRInfinite(handleGetKey, scanFetcher, {
+    revalidateOnFocus: false,
+  })
   useEffect(() => {
     setHasNextPage(true)
   }, [match])

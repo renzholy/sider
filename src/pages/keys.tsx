@@ -71,7 +71,7 @@ export default () => {
         leftIcon="search"
         large={true}
         style={{
-          marginBottom: 4,
+          marginBottom: 8,
           backgroundColor: Colors.LIGHT_GRAY4,
           boxShadow: 'none',
           outline: 'none',
@@ -97,9 +97,10 @@ export default () => {
           alignItems: 'center',
           justifyContent: 'space-between',
           backgroundColor: Colors.LIGHT_GRAY4,
+          marginTop: 8,
           borderRadius: 4,
-          marginTop: 4,
           padding: 4,
+          userSelect: 'none',
         }}>
         <Button icon="database" minimal={true} />
         <span>

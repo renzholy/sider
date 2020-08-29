@@ -16,15 +16,15 @@ export default () => {
   const [match, setMatch] = useState('')
   const [hasNextPage, setHasNextPage] = useState(true)
   const { data, setSize } = useSWRInfinite<{
-    next: string
+    cursor: string
     keys: { key: string; type: KeyType }[]
   }>(
     (_index, previousPageData) => {
-      if (previousPageData?.next === '0') {
+      if (previousPageData?.cursor === '0') {
         setHasNextPage(false)
         return null
       }
-      return ['scan', previousPageData?.next || '0', 'match', `${match}*`]
+      return ['scan', previousPageData?.cursor || '0', 'match', `${match}*`]
     },
     async (...command: string[]) => {
       const [cursor, keys] = await runCommand<[string, string[]]>(
@@ -35,7 +35,7 @@ export default () => {
         keys.map((key) => runCommand<KeyType>(connection, ['type', key])),
       )
       return {
-        next: cursor,
+        cursor,
         keys: keys.map((key, index) => ({
           key,
           type: types[index],

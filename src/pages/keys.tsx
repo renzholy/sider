@@ -4,17 +4,36 @@ import { useSWRInfinite } from 'swr'
 
 import { runCommand } from '@/utils/fetcher'
 
+const connection = 'redis://localhost:6379/1'
+
 export default () => {
   const [match, setMatch] = useState('')
-  const { data, size, setSize } = useSWRInfinite<[string, string[]]>(
+  const { data, size, setSize } = useSWRInfinite<{
+    next: string
+    keys: { key: string; type: string }[]
+  }>(
     (_index, previousPageData) => {
-      if (previousPageData?.[0] === '0') {
+      if (previousPageData?.next === '0') {
         return null
       }
-      return ['scan', previousPageData?.[0] || '0', 'match', `${match}*`]
+      return ['scan', previousPageData?.next || '0', 'match', `${match}*`]
     },
-    (...command) =>
-      runCommand<[string, string[]]>('redis://localhost:6379/1', command),
+    async (...command) => {
+      const [cursor, keys] = await runCommand<[string, string[]]>(
+        connection,
+        command,
+      )
+      const types = await Promise.all(
+        keys.map((key) => runCommand<string>(connection, ['type', key])),
+      )
+      return {
+        next: cursor,
+        keys: keys.map((key, index) => ({
+          key,
+          type: types[index],
+        })),
+      }
+    },
     { revalidateOnFocus: false },
   )
 
@@ -28,7 +47,13 @@ export default () => {
           }}
         />
       </div>
-      {data?.map((item) => item[1].map((a) => <div key={a}>{a}</div>))}
+      {data?.map((item) =>
+        item.keys.map(({ key, type }) => (
+          <div key={key}>
+            {type}&nbsp{key}
+          </div>
+        )),
+      )}
       <Button
         text="Load"
         onClick={() => {

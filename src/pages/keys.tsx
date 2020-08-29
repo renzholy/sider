@@ -12,36 +12,49 @@ const connection: Connection = {
   db: 1,
 }
 
+type ScanResult = {
+  next: string
+  keys: { key: string; type: KeyType }[]
+}
+
+async function scanFetcher(match: string, cursor: string): Promise<ScanResult> {
+  const [next, keys] = await runCommand<[string, string[]]>(connection, [
+    'scan',
+    cursor,
+    'match',
+    match,
+  ])
+  if (keys.length === 0 && next !== '0') {
+    return scanFetcher(match, next)
+  }
+  const types = await Promise.all(
+    keys.map((key) => runCommand<KeyType>(connection, ['type', key])),
+  )
+  return {
+    next,
+    keys: keys.map((key, index) => ({
+      key,
+      type: types[index],
+    })),
+  }
+}
+
 export default () => {
   const [match, setMatch] = useState('')
   const [hasNextPage, setHasNextPage] = useState(true)
-  const { data, setSize } = useSWRInfinite<{
-    cursor: string
-    keys: { key: string; type: KeyType }[]
-  }>(
-    (_index, previousPageData) => {
-      if (previousPageData?.cursor === '0') {
+  const handleGetKey = useCallback(
+    (_index: number, previousPageData: ScanResult | null) => {
+      if (previousPageData?.next === '0') {
         setHasNextPage(false)
         return null
       }
-      return ['scan', previousPageData?.cursor || '0', 'match', `${match}*`]
+      return [`${match}*`, previousPageData?.next || 0]
     },
-    async (...command: string[]) => {
-      const [cursor, keys] = await runCommand<[string, string[]]>(
-        connection,
-        command,
-      )
-      const types = await Promise.all(
-        keys.map((key) => runCommand<KeyType>(connection, ['type', key])),
-      )
-      return {
-        cursor,
-        keys: keys.map((key, index) => ({
-          key,
-          type: types[index],
-        })),
-      }
-    },
+    [match],
+  )
+  const { data, setSize } = useSWRInfinite<ScanResult>(
+    handleGetKey,
+    scanFetcher,
     { revalidateOnFocus: false },
   )
   useEffect(() => {

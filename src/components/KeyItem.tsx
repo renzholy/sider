@@ -7,6 +7,7 @@ import type { ListChildComponentProps } from 'react-window'
 import { KeyType } from '@/types'
 import { Colors } from '@blueprintjs/core'
 import { KeyTag } from './KeyTag'
+import styles from './KeyItem.less'
 
 export function KeyItem(props: ListChildComponentProps) {
   const data = props.data as {
@@ -15,10 +16,13 @@ export function KeyItem(props: ListChildComponentProps) {
     onSelect(selected?: string): void
   }
   const items = data.keys
-  const item = items[props.index]
+  const item = items[props.index] as { key: string; type: KeyType } | undefined
   const handleClick = useCallback(() => {
+    if (!item) {
+      return
+    }
     data.onSelect(data.selected === item.key ? undefined : item.key)
-  }, [data, item.key])
+  }, [data, item])
 
   if (!item) {
     return null
@@ -26,28 +30,16 @@ export function KeyItem(props: ListChildComponentProps) {
   return (
     <div
       key={item.key}
+      className={styles.keyItem}
       style={{
         ...props.style,
-        padding: 8,
-        display: 'flex',
-        alignItems: 'center',
-        cursor: 'pointer',
         backgroundColor:
-          data.selected === item.key ? Colors.LIGHT_GRAY3 : 'transparent',
-        borderRadius: 4,
+          data.selected === item.key ? Colors.LIGHT_GRAY3 : undefined,
       }}
       onClick={handleClick}>
       <KeyTag type={item.type} />
       &nbsp;
-      <span
-        style={{
-          display: 'block',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
-        }}>
-        {item.key}
-      </span>
+      <span className={styles.keyItemText}>{item.key}</span>
     </div>
   )
 }

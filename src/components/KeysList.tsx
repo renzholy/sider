@@ -7,7 +7,6 @@ import { KeyItem } from './KeyItem'
 
 export function KeysList(props: {
   items: { key: string; type: KeyType }[]
-  hasNextPage: boolean
   onLoadMoreItems: () => Promise<any> | null
 }) {
   const [selected, setSelected] = useState<string>()
@@ -15,9 +14,11 @@ export function KeysList(props: {
     (index: number) => !!props.items[index],
     [props.items],
   )
-  const itemCount = props.hasNextPage
-    ? props.items.length + 1
-    : props.items.length
+  const handleItemKey = useCallback(
+    (_index: number, data: { key: string }) => data.key,
+    [],
+  )
+  const itemCount = props.items.length + 1
 
   return (
     <AutoSizer>
@@ -29,6 +30,7 @@ export function KeysList(props: {
           {({ onItemsRendered, ref }) => (
             <FixedSizeList
               ref={ref}
+              itemKey={handleItemKey}
               width={width}
               height={height}
               itemSize={36}

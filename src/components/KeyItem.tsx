@@ -5,7 +5,7 @@ import React, { useCallback } from 'react'
 import type { ListChildComponentProps } from 'react-window'
 
 import { KeyType } from '@/types'
-import { Colors } from '@blueprintjs/core'
+import { Colors, Divider } from '@blueprintjs/core'
 import { KeyTag } from './KeyTag'
 import styles from './KeyItem.less'
 
@@ -25,7 +25,18 @@ export function KeyItem(props: ListChildComponentProps) {
   }, [data, item])
 
   if (!item) {
-    return null
+    return (
+      <div
+        style={{
+          ...props.style,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <Divider style={{ width: 64 }} />
+      </div>
+    )
   }
   return (
     <div

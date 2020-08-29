@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react'
+import React, { useState, useMemo, useCallback } from 'react'
 import { InputGroup, Colors, Button, Spinner } from '@blueprintjs/core'
 import useSWR, { useSWRInfinite } from 'swr'
 import { flatMap } from 'lodash'
@@ -16,14 +16,12 @@ const connection: Connection = {
 
 export default () => {
   const [match, setMatch] = useState('')
-  const [hasNextPage, setHasNextPage] = useState(true)
   const handleGetKey = useCallback(
     (
       _index: number,
       previousPageData: Unpacked<ReturnType<typeof scanFetcher>> | null,
     ) => {
       if (previousPageData?.next === '0') {
-        setHasNextPage(false)
         return null
       }
       return [connection, `${match}*`, previousPageData?.next || 0]
@@ -37,9 +35,6 @@ export default () => {
       revalidateOnFocus: false,
     },
   )
-  useEffect(() => {
-    setHasNextPage(true)
-  }, [match])
   const items = useMemo(
     () => (data ? flatMap(data, (item) => item.keys) : undefined),
     [data],
@@ -58,7 +53,7 @@ export default () => {
   )
   const handleReload = useCallback(async () => {
     await setSize(0)
-    revalidate()
+    await revalidate()
   }, [setSize, revalidate])
 
   return (
@@ -92,11 +87,7 @@ export default () => {
           overflow: 'hidden',
         }}>
         {items ? (
-          <KeysList
-            items={items}
-            hasNextPage={hasNextPage}
-            onLoadMoreItems={handleLoadMoreItems}
-          />
+          <KeysList items={items} onLoadMoreItems={handleLoadMoreItems} />
         ) : null}
       </div>
       <div

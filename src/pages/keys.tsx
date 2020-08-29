@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
-import { InputGroup, Button } from '@blueprintjs/core'
+import React, { useState, useMemo, useEffect, useCallback } from 'react'
+import { InputGroup } from '@blueprintjs/core'
 import { useSWRInfinite } from 'swr'
+import { flatMap } from 'lodash'
 
 import { runCommand } from '@/utils/fetcher'
 import { Connection } from '@/types'
+import { KeysList } from '@/components/KeysList'
 
 const connection: Connection = {
   addrs: [':6379'],
@@ -12,24 +14,19 @@ const connection: Connection = {
 
 export default () => {
   const [match, setMatch] = useState('')
-  const { data, size, setSize } = useSWRInfinite<{
+  const [hasNextPage, setHasNextPage] = useState(true)
+  const { data, setSize } = useSWRInfinite<{
     next: string
     keys: { key: string; type: KeyType }[]
   }>(
     (_index, previousPageData) => {
       if (previousPageData?.next === '0') {
+        setHasNextPage(false)
         return null
       }
-      return [
-        'scan',
-        previousPageData?.next || '0',
-        'count',
-        '50',
-        'match',
-        `${match}*`,
-      ]
+      return ['scan', previousPageData?.next || '0', 'match', `${match}*`]
     },
-    async (...command) => {
+    async (...command: string[]) => {
       const [cursor, keys] = await runCommand<[string, string[]]>(
         connection,
         command,
@@ -47,30 +44,37 @@ export default () => {
     },
     { revalidateOnFocus: false },
   )
+  useEffect(() => {
+    setHasNextPage(true)
+  }, [match])
+  const items = useMemo(
+    () => (data ? flatMap(data, (item) => item.keys) : undefined),
+    [data],
+  )
+  const handleMatchChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setMatch(e.target.value)
+    },
+    [],
+  )
+  const handleLoadMoreItems = useCallback(async () => {
+    await setSize((_size) => _size + 1)
+  }, [setSize])
 
   return (
-    <div style={{ width: 240 }}>
+    <div style={{ width: 360, height: '100vh' }}>
       <div style={{ padding: 16 }}>
-        <InputGroup
-          value={match}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setMatch(e.target.value)
-          }}
-        />
+        <InputGroup value={match} onChange={handleMatchChange} />
       </div>
-      {data?.map((item) =>
-        item.keys.map(({ key, type }) => (
-          <div key={key}>
-            {type}&nbsp;{key}
-          </div>
-        )),
+      {items ? (
+        <KeysList
+          items={items}
+          hasNextPage={hasNextPage}
+          onLoadMoreItems={handleLoadMoreItems}
+        />
+      ) : (
+        <div>no data</div>
       )}
-      <Button
-        text="Load"
-        onClick={() => {
-          setSize(size + 1)
-        }}
-      />
     </div>
   )
 }

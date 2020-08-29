@@ -61,7 +61,7 @@ export default () => {
       {data?.map((item) =>
         item.keys.map(({ key, type }) => (
           <div key={key}>
-            {type}&nbsp{key}
+            {type}&nbsp;{key}
           </div>
         )),
       )}

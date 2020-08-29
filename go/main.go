@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
 	"sync"
 
 	"github.com/NYTimes/gziphandler"
@@ -23,7 +22,7 @@ var (
 
 func runCommand(w http.ResponseWriter, r *http.Request) {
 	type Request struct {
-		Connection string
+		Connection redis.UniversalOptions
 		Command    []interface{}
 	}
 	request := Request{}
@@ -34,7 +33,7 @@ func runCommand(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Println(request.Command)
 
-	client, err := create(request.Connection)
+	client, err := getClient(&request.Connection)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -53,9 +52,9 @@ func runCommand(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(bytes))
 }
 
-func create(uri string) (*redis.Client, error) {
-	if cached, ok := clients.Load(uri); ok && cached != nil {
-		return cached.(*redis.Client), nil
+func getClient(opt *redis.UniversalOptions) (redis.UniversalClient, error) {
+	if cached, ok := clients.Load(opt); ok && cached != nil {
+		return cached.(redis.UniversalClient), nil
 	}
 
 	// Use mutex to make sure there is only one active redis client instance for one uri.
@@ -64,17 +63,13 @@ func create(uri string) (*redis.Client, error) {
 	defer creationMutex.Unlock()
 
 	// check again, if it is already created, just return.
-	if cached, ok := clients.Load(uri); ok && cached != nil {
-		return cached.(*redis.Client), nil
+	if cached, ok := clients.Load(opt); ok && cached != nil {
+		return cached.(redis.UniversalClient), nil
 	}
 
-	opt, err := redis.ParseURL(uri)
-	if err != nil {
-		return nil, err
-	}
-	client := redis.NewClient(opt)
+	client := redis.NewUniversalClient(opt)
 
-	clients.Store(uri, client)
+	clients.Store(opt, client)
 	return client, nil
 }
 
@@ -86,13 +81,13 @@ func destory() {
 }
 
 func listConnections(w http.ResponseWriter, r *http.Request) {
-	uris := os.Getenv("REDIS_URIS")
+	opts := os.Getenv("REDIS_OPTS")
 	var data []byte
 	var err error
-	if uris == "" {
+	if opts == "" {
 		data = []byte("[]")
 	} else {
-		data, err = json.Marshal(strings.Split(uris, "|"))
+		data, err = json.Marshal(opts)
 	}
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

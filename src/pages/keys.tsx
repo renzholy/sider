@@ -3,8 +3,12 @@ import { InputGroup, Button } from '@blueprintjs/core'
 import { useSWRInfinite } from 'swr'
 
 import { runCommand } from '@/utils/fetcher'
+import { Connection } from '@/types'
 
-const connection = 'redis://localhost:6379/1'
+const connection: Connection = {
+  addrs: [':6379'],
+  db: 1,
+}
 
 export default () => {
   const [match, setMatch] = useState('')

@@ -1,5 +1,7 @@
+import { Connection } from '@/types'
+
 export async function runCommand<T>(
-  connection: string,
+  connection: Connection,
   command: string[],
 ): Promise<T> {
   const response = await fetch('/api/runCommand', {

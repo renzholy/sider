@@ -1,17 +1,21 @@
 import React, { useState } from 'react'
-import { InputGroup } from '@blueprintjs/core'
-import useSWR from 'swr'
+import { InputGroup, Button } from '@blueprintjs/core'
+import { useSWRInfinite } from 'swr'
+
 import { runCommand } from '@/utils/fetcher'
 
 export default () => {
   const [match, setMatch] = useState('')
-  const { data } = useSWR(`scan/${match}`, () =>
-    runCommand<[string, string[]]>('redis://localhost:6379/1', [
-      'scan',
-      '0',
-      'match',
-      `${match}*`,
-    ]),
+  const { data, size, setSize } = useSWRInfinite<[string, string[]]>(
+    (_index, previousPageData) => {
+      if (previousPageData?.[0] === '0') {
+        return null
+      }
+      return ['scan', previousPageData?.[0] || '0', 'match', `${match}*`]
+    },
+    (...command) =>
+      runCommand<[string, string[]]>('redis://localhost:6379/1', command),
+    { revalidateOnFocus: false },
   )
 
   return (
@@ -24,9 +28,13 @@ export default () => {
           }}
         />
       </div>
-      {data?.[1].map((str) => (
-        <div key="str">{str}</div>
-      ))}
+      {data?.map((item) => item[1].map((a) => <div key={a}>{a}</div>))}
+      <Button
+        text="Load"
+        onClick={() => {
+          setSize(size + 1)
+        }}
+      />
     </div>
   )
 }

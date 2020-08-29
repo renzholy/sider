@@ -39,7 +39,9 @@ export function KeyItem(props: ListChildComponentProps) {
       onClick={handleClick}>
       <KeyTag type={item.type} />
       &nbsp;
-      <span className={styles.keyItemText}>{item.key}</span>
+      <span className={styles.keyItemText} title={item.key}>
+        {item.key}
+      </span>
     </div>
   )
 }

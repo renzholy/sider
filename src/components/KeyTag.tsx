@@ -35,7 +35,10 @@ const minimalMap = {
 
 export function KeyTag(props: { type: KeyType }) {
   return (
-    <Tag intent={intentMap[props.type]} minimal={minimalMap[props.type]}>
+    <Tag
+      title={props.type}
+      intent={intentMap[props.type]}
+      minimal={minimalMap[props.type]}>
       {textMap[props.type]}
     </Tag>
   )

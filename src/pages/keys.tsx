@@ -75,10 +75,14 @@ export default () => {
   }, [setSize])
 
   return (
-    <div style={{ width: 320, height: '100%' }}>
-      <div style={{ padding: 16 }}>
-        <InputGroup value={match} onChange={handleMatchChange} />
-      </div>
+    <div style={{ width: 320, padding: 8, height: '100%' }}>
+      <InputGroup
+        value={match}
+        onChange={handleMatchChange}
+        leftIcon="search"
+        large={true}
+        style={{ marginBottom: 4 }}
+      />
       {items ? (
         <KeysList
           items={items}

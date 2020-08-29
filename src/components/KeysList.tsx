@@ -23,8 +23,6 @@ export function KeysList(props: {
     <AutoSizer
       style={{
         fontFamily: 'monospace',
-        marginLeft: 8,
-        marginRight: 8,
         userSelect: 'none',
       }}>
       {({ height, width }: Size) => (

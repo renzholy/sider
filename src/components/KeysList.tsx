@@ -20,11 +20,7 @@ export function KeysList(props: {
     : props.items.length
 
   return (
-    <AutoSizer
-      style={{
-        fontFamily: 'monospace',
-        userSelect: 'none',
-      }}>
+    <AutoSizer>
       {({ height, width }: Size) => (
         <InfiniteLoader
           isItemLoaded={handleIsItemLoaded}

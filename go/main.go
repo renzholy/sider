@@ -58,8 +58,8 @@ func create(uri string) (*redis.Client, error) {
 		return cached.(*redis.Client), nil
 	}
 
-	// Use mutex to make sure there is only one active mongodb client instance for one uri.
-	// While with mutex, clients for different mongodb servers must be created one by one.
+	// Use mutex to make sure there is only one active redis client instance for one uri.
+	// While with mutex, clients for different redis servers must be created one by one.
 	creationMutex.Lock()
 	defer creationMutex.Unlock()
 
@@ -86,7 +86,7 @@ func destory() {
 }
 
 func listConnections(w http.ResponseWriter, r *http.Request) {
-	uris := os.Getenv("MONGO_URIS")
+	uris := os.Getenv("REDIS_URIS")
 	var data []byte
 	var err error
 	if uris == "" {

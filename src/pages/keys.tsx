@@ -35,7 +35,6 @@ export default () => {
     scanFetcher,
     {
       revalidateOnFocus: false,
-      revalidateAll: true,
     },
   )
   useEffect(() => {
@@ -57,6 +56,10 @@ export default () => {
   const { data: dbSize } = useSWR(`dbsize/${JSON.stringify(connection)}`, () =>
     runCommand<number>(connection, ['dbsize']),
   )
+  const handleReload = useCallback(async () => {
+    await setSize(0)
+    revalidate()
+  }, [setSize, revalidate])
 
   return (
     <div
@@ -112,7 +115,7 @@ export default () => {
             <Spinner size={16} />
           </div>
         ) : (
-          <Button icon="refresh" minimal={true} onClick={revalidate} />
+          <Button icon="refresh" minimal={true} onClick={handleReload} />
         )}
       </div>
     </div>

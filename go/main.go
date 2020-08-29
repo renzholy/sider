@@ -20,12 +20,21 @@ var (
 	mux           = http.NewServeMux()
 )
 
+type connection struct {
+	Addrs      []string
+	DB         int
+	Username   string
+	Password   string
+	MasterName string
+}
+type request struct {
+	Connection connection
+	Command    []interface{}
+}
+
 func runCommand(w http.ResponseWriter, r *http.Request) {
-	type Request struct {
-		Connection redis.UniversalOptions
-		Command    []interface{}
-	}
-	request := Request{}
+
+	request := request{}
 	err := json.NewDecoder(r.Body).Decode(&request)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -33,7 +42,7 @@ func runCommand(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Println(request.Command)
 
-	client, err := getClient(&request.Connection)
+	client, err := getClient(request.Connection)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -52,8 +61,14 @@ func runCommand(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(bytes))
 }
 
-func getClient(opt *redis.UniversalOptions) (redis.UniversalClient, error) {
-	if cached, ok := clients.Load(opt); ok && cached != nil {
+func getClient(opt connection) (redis.UniversalClient, error) {
+	uri, err := json.Marshal(opt)
+	key := string(uri)
+	if err != nil {
+		return nil, err
+	}
+
+	if cached, ok := clients.Load(key); ok && cached != nil {
 		return cached.(redis.UniversalClient), nil
 	}
 
@@ -63,19 +78,25 @@ func getClient(opt *redis.UniversalOptions) (redis.UniversalClient, error) {
 	defer creationMutex.Unlock()
 
 	// check again, if it is already created, just return.
-	if cached, ok := clients.Load(opt); ok && cached != nil {
+	if cached, ok := clients.Load(key); ok && cached != nil {
 		return cached.(redis.UniversalClient), nil
 	}
 
-	client := redis.NewUniversalClient(opt)
+	client := redis.NewUniversalClient(&redis.UniversalOptions{
+		Addrs:      opt.Addrs,
+		DB:         opt.DB,
+		Username:   opt.Username,
+		Password:   opt.Password,
+		MasterName: opt.MasterName,
+	})
 
-	clients.Store(opt, client)
+	clients.Store(key, client)
 	return client, nil
 }
 
 func destory() {
 	clients.Range(func(k, v interface{}) bool {
-		v.(*redis.Client).Close()
+		v.(redis.UniversalClient).Close()
 		return true
 	})
 }

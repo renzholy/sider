@@ -6,6 +6,7 @@ import {
   MenuItem,
   Classes,
   Intent,
+  Divider,
 } from '@blueprintjs/core'
 import useSWR from 'swr'
 import { useDispatch, useSelector } from 'react-redux'
@@ -26,7 +27,7 @@ export function ConnectionSelector() {
   return (
     <Popover>
       <Button icon="database" minimal={true} />
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: 'flex', padding: 4 }}>
         <Menu>
           {data?.map((c) => (
             <MenuItem
@@ -39,6 +40,7 @@ export function ConnectionSelector() {
             />
           ))}
         </Menu>
+        <Divider />
         <div style={{ display: 'flex', padding: 6 }}>
           {range(0, 4).map((num1) => {
             return (

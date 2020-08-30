@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback } from 'react'
-import { Colors, Button, Spinner } from '@blueprintjs/core'
+import { Colors, Button, Spinner, Tooltip } from '@blueprintjs/core'
 import useSWR, { useSWRInfinite } from 'swr'
 import { flatMap } from 'lodash'
 import { useSelector } from 'react-redux'
@@ -104,7 +104,9 @@ export default () => {
             <Spinner size={16} />
           </div>
         ) : (
-          <Button icon="refresh" minimal={true} onClick={handleReload} />
+          <Tooltip content="Refresh">
+            <Button icon="refresh" minimal={true} onClick={handleReload} />
+          </Tooltip>
         )}
       </div>
     </div>

@@ -93,7 +93,7 @@ export default () => {
             backgroundColor: Colors.LIGHT_GRAY4,
             marginTop: 8,
             borderRadius: 4,
-            padding: 4,
+            padding: 5,
             userSelect: 'none',
           }}>
           <ConnectionSelector />

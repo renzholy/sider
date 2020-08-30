@@ -10,5 +10,6 @@ export function StringPanel(props: { value: string }) {
     connection ? `get/${connection}/${props.value}` : null,
     () => runCommand<string>(connection!, ['get', props.value]),
   )
-  return <div>{data}</div>
+
+  return <code style={{ wordBreak: 'break-all' }}>{data}</code>
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
 import { FixedSizeList } from 'react-window'
 import InfiniteLoader from 'react-window-infinite-loader'
@@ -9,7 +9,6 @@ export function KeysList(props: {
   items: { key: string; type: KeyType }[]
   onLoadMoreItems: () => Promise<any> | null
 }) {
-  const [selected, setSelected] = useState<string>()
   const handleIsItemLoaded = useCallback(
     (index: number) => !!props.items[index],
     [props.items],
@@ -35,11 +34,7 @@ export function KeysList(props: {
               height={height}
               itemSize={36}
               itemCount={itemCount}
-              itemData={{
-                keys: props.items,
-                selected,
-                onSelect: setSelected,
-              }}
+              itemData={props.items}
               onItemsRendered={onItemsRendered}>
               {KeyItem}
             </FixedSizeList>

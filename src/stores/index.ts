@@ -1,9 +1,15 @@
 import { combineReducers } from 'redux'
 import { configureStore } from '@reduxjs/toolkit'
 
-const rootReducer = combineReducers({})
+import keys from './keys'
 
-export const actions = {}
+const rootReducer = combineReducers({
+  keys: keys.reducer,
+})
+
+export const actions = {
+  keys: keys.actions,
+}
 
 export const store = configureStore({
   reducer: rootReducer,

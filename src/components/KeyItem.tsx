@@ -1,28 +1,36 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import type { ListChildComponentProps } from 'react-window'
+import { useSelector, useDispatch } from 'react-redux'
+import { isEqual } from 'lodash'
 
 import { KeyType } from '@/types'
 import { Colors, Divider } from '@blueprintjs/core'
+import { actions } from '@/stores'
 import { KeyTag } from './KeyTag'
 import styles from './KeyItem.less'
 
 export function KeyItem(props: ListChildComponentProps) {
-  const data = props.data as {
-    keys: { key: string; type: KeyType }[]
-    selected?: string
-    onSelect(selected?: string): void
-  }
-  const items = data.keys
+  const items = props.data as { key: string; type: KeyType }[]
+  const selectedKey = useSelector((state) => state.keys.selectedKey)
+  const dispatch = useDispatch()
   const item = items[props.index] as { key: string; type: KeyType } | undefined
   const handleClick = useCallback(() => {
     if (!item) {
       return
     }
-    data.onSelect(data.selected === item.key ? undefined : item.key)
-  }, [data, item])
+    dispatch(
+      actions.keys.setSelectedKey(
+        isEqual(selectedKey, item) ? undefined : item,
+      ),
+    )
+  }, [dispatch, item, selectedKey])
+  const backgroundColor = useMemo(
+    () => (isEqual(selectedKey, item) ? Colors.LIGHT_GRAY3 : undefined),
+    [item, selectedKey],
+  )
 
   if (!item) {
     return (
@@ -44,8 +52,7 @@ export function KeyItem(props: ListChildComponentProps) {
       className={styles.keyItem}
       style={{
         ...props.style,
-        backgroundColor:
-          data.selected === item.key ? Colors.LIGHT_GRAY3 : undefined,
+        backgroundColor,
       }}
       onClick={handleClick}>
       <KeyTag type={item.type} />

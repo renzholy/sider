@@ -22,7 +22,7 @@ export default () => {
         return null
       }
       return connection
-        ? [connection, `${match}*`, previousPageData?.next || 0]
+        ? [connection, `${match}*`, previousPageData?.next || '0']
         : null
     },
     [match, connection],

@@ -49,14 +49,15 @@ export default () => {
   const handleLoadMoreItems = useCallback(async () => {
     await setSize((_size) => _size + 1)
   }, [setSize])
-  const { data: dbSize } = useSWR(
+  const { data: dbSize, revalidate: revalidateDbSize } = useSWR(
     connection ? `dbsize/${JSON.stringify(connection)}` : null,
     () => runCommand<number>(connection!, ['dbsize']),
   )
   const handleReload = useCallback(async () => {
     await setSize(0)
     await revalidate()
-  }, [setSize, revalidate])
+    await revalidateDbSize()
+  }, [setSize, revalidate, revalidateDbSize])
 
   return (
     <div

@@ -20,7 +20,7 @@ export async function runCommand<T>(
   throw new Error(await response.text())
 }
 
-export async function listConnections(): Promise<string[]> {
+export async function listConnections(): Promise<Connection[]> {
   const response = await fetch('/api/listConnections', {
     method: 'POST',
   })

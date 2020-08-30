@@ -8,6 +8,7 @@ import { Connection } from '@/types'
 import { KeysList } from '@/components/KeysList'
 import { Unpacked } from '@/utils/index'
 import { formatNumber } from '@/utils/formatter'
+import { ConnectionSelector } from '@/components/ConnectionSelector'
 
 const connection: Connection = {
   addrs: [':6379'],
@@ -68,7 +69,7 @@ export default () => {
       <InputGroup
         value={match}
         onChange={handleMatchChange}
-        leftIcon="search"
+        leftElement={<Button icon="filter-list" minimal={true} />}
         large={true}
         style={{
           marginBottom: 8,
@@ -102,7 +103,7 @@ export default () => {
           padding: 4,
           userSelect: 'none',
         }}>
-        <Button icon="database" minimal={true} />
+        <ConnectionSelector />
         <span>
           {formatNumber(items?.length || 0)}&nbsp;of&nbsp;
           {formatNumber(dbSize || 0)}

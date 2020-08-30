@@ -103,19 +103,11 @@ func destory() {
 
 func listConnections(w http.ResponseWriter, r *http.Request) {
 	opts := os.Getenv("REDIS_OPTS")
-	var data []byte
-	var err error
 	if opts == "" {
-		data = []byte("[]")
-	} else {
-		data, err = json.Marshal(opts)
-	}
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+		opts = "[]"
 	}
 	w.Header().Set("Content-Type", "application/json")
-	w.Write(data)
+	w.Write([]byte(opts))
 }
 
 func main() {

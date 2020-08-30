@@ -4,7 +4,8 @@ import useSWR, { useSWRInfinite } from 'swr'
 import { flatMap } from 'lodash'
 import { useSelector } from 'react-redux'
 
-import { scanFetcher, runCommand } from '@/utils/fetcher'
+import { runCommand } from '@/utils/fetcher'
+import { scan } from '@/utils/scanner'
 import { KeysList } from '@/components/KeysList'
 import { Unpacked } from '@/utils/index'
 import { formatNumber } from '@/utils/formatter'
@@ -20,7 +21,7 @@ export default () => {
   const handleGetKey = useCallback(
     (
       _index: number,
-      previousPageData: Unpacked<ReturnType<typeof scanFetcher>> | null,
+      previousPageData: Unpacked<ReturnType<typeof scan>> | null,
     ) => {
       if (previousPageData?.next === '0') {
         return null
@@ -38,7 +39,7 @@ export default () => {
   )
   const { data, setSize, isValidating, revalidate } = useSWRInfinite(
     handleGetKey,
-    scanFetcher,
+    scan,
     {
       revalidateOnFocus: false,
     },

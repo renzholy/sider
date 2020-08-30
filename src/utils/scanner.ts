@@ -29,3 +29,25 @@ export async function scan(
       .filter(({ type }) => !keyType || type === keyType),
   }
 }
+
+export async function sscan(
+  connection: Connection,
+  key: string,
+  match: string,
+  cursor: string,
+): Promise<{
+  next: string
+  keys: string[]
+}> {
+  const [next, keys] = await runCommand<[string, string[]]>(connection, [
+    'sscan',
+    key,
+    cursor,
+    'match',
+    match,
+  ])
+  return {
+    next,
+    keys,
+  }
+}

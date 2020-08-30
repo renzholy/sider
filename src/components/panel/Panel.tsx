@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { Colors } from '@blueprintjs/core'
 
 import { KeyType } from '@/types'
+import { SetPanel } from './SetPanel'
 import { StringPanel } from './StringPanel'
 import { KeyTag } from '../KeyTag'
 
@@ -10,6 +11,9 @@ function PanelInner(props: { value: { type: KeyType; key: string } }) {
   switch (props.value.type) {
     case KeyType.STRING: {
       return <StringPanel value={props.value.key} />
+    }
+    case KeyType.SET: {
+      return <SetPanel value={props.value.key} />
     }
     default: {
       return null

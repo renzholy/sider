@@ -1,2 +1,3 @@
-# sider
+# Sider
+
 A Morden Redis GUI

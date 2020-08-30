@@ -1,0 +1,14 @@
+.git/
+node_modules/
+dist/
+screenshot/
+src/.umi/
+npm-debug.log
+go/pkged.go
+go/sider
+go/pkged.go
+go/sider.app
+go/sider-darwin
+go/sider.exe
+go/sider-windows
+.DS_Store

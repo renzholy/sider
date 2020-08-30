@@ -8,11 +8,13 @@ export default createSlice({
     connections: [],
     connection: undefined,
     selectedKey: undefined,
+    match: '',
     keyType: undefined,
   } as {
     connections: Connection[]
     connection?: Connection
     selectedKey?: { type: KeyType; key: string }
+    match: string
     keyType?: KeyType
   },
   reducers: {
@@ -33,6 +35,10 @@ export default createSlice({
     ) => ({
       ...state,
       selectedKey: payload,
+    }),
+    setMatch: (state, { payload }: PayloadAction<string>) => ({
+      ...state,
+      match: payload,
     }),
     setKeyType: (state, { payload }: PayloadAction<KeyType | undefined>) => ({
       ...state,

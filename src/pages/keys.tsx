@@ -1,8 +1,8 @@
-import React, { useState, useMemo, useCallback } from 'react'
+import React, { useMemo, useCallback } from 'react'
 import { InputGroup, Colors, Button, Spinner } from '@blueprintjs/core'
 import useSWR, { useSWRInfinite } from 'swr'
 import { flatMap } from 'lodash'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 import { scanFetcher, runCommand } from '@/utils/fetcher'
 import { KeysList } from '@/components/KeysList'
@@ -10,11 +10,13 @@ import { Unpacked } from '@/utils/index'
 import { formatNumber } from '@/utils/formatter'
 import { ConnectionSelector } from '@/components/ConnectionSelector'
 import { KeyTypeSelector } from '@/components/KeyTypeSelector'
+import { actions } from '@/stores'
 
 export default () => {
-  const [match, setMatch] = useState('')
+  const match = useSelector((state) => state.keys.match)
   const connection = useSelector((state) => state.keys.connection)
   const keyType = useSelector((state) => state.keys.keyType)
+  const dispatch = useDispatch()
   const handleGetKey = useCallback(
     (
       _index: number,
@@ -42,9 +44,9 @@ export default () => {
   )
   const handleMatchChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setMatch(e.target.value)
+      dispatch(actions.keys.setMatch(e.target.value))
     },
-    [],
+    [dispatch],
   )
   const handleLoadMoreItems = useCallback(async () => {
     await setSize((_size) => _size + 1)

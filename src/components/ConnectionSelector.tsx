@@ -22,6 +22,10 @@ export function ConnectionSelector() {
   useEffect(() => {
     dispatch(actions.keys.setConnection(data?.[0]))
   }, [data, dispatch])
+  useEffect(() => {
+    dispatch(actions.keys.setSelectedKey(undefined))
+    dispatch(actions.keys.setMatch(''))
+  }, [connection, dispatch])
   const db = connection?.db || 0
 
   return (

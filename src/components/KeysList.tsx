@@ -14,7 +14,7 @@ export function KeysList(props: {
     [props.items],
   )
   const handleItemKey = useCallback(
-    (_index: number, data: { key: string }) => data.key,
+    (index: number, data: { key: string }[]) => data[index]?.key || index,
     [],
   )
   const itemCount = props.items.length + 1

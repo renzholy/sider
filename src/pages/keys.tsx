@@ -4,19 +4,15 @@ import useSWR, { useSWRInfinite } from 'swr'
 import { flatMap } from 'lodash'
 
 import { scanFetcher, runCommand } from '@/utils/fetcher'
-import { Connection } from '@/types'
 import { KeysList } from '@/components/KeysList'
 import { Unpacked } from '@/utils/index'
 import { formatNumber } from '@/utils/formatter'
 import { ConnectionSelector } from '@/components/ConnectionSelector'
-
-const connection: Connection = {
-  addrs: [':6379'],
-  db: 1,
-}
+import { useSelector } from 'react-redux'
 
 export default () => {
   const [match, setMatch] = useState('')
+  const connection = useSelector((state) => state.keys.connection)
   const handleGetKey = useCallback(
     (
       _index: number,
@@ -25,9 +21,11 @@ export default () => {
       if (previousPageData?.next === '0') {
         return null
       }
-      return [connection, `${match}*`, previousPageData?.next || 0]
+      return connection
+        ? [connection, `${match}*`, previousPageData?.next || 0]
+        : null
     },
-    [match],
+    [match, connection],
   )
   const { data, setSize, isValidating, revalidate } = useSWRInfinite(
     handleGetKey,
@@ -49,8 +47,9 @@ export default () => {
   const handleLoadMoreItems = useCallback(async () => {
     await setSize((_size) => _size + 1)
   }, [setSize])
-  const { data: dbSize } = useSWR(`dbsize/${JSON.stringify(connection)}`, () =>
-    runCommand<number>(connection, ['dbsize']),
+  const { data: dbSize } = useSWR(
+    connection ? `dbsize/${JSON.stringify(connection)}` : null,
+    () => runCommand<number>(connection!, ['dbsize']),
   )
   const handleReload = useCallback(async () => {
     await setSize(0)

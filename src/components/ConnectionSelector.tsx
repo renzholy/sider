@@ -21,6 +21,7 @@ export function ConnectionSelector() {
   useEffect(() => {
     dispatch(actions.keys.setConnection(data?.[0]))
   }, [data, dispatch])
+  const db = connection?.db || 0
 
   return (
     <Popover>
@@ -29,6 +30,7 @@ export function ConnectionSelector() {
         <Menu>
           {data?.map((c) => (
             <MenuItem
+              key={c.addrs.join(',')}
               text={c.addrs.join(',')}
               active={isEqual(c.addrs, connection?.addrs)}
               onClick={() => {
@@ -48,10 +50,8 @@ export function ConnectionSelector() {
                       key={num}
                       minimal={true}
                       text={num}
-                      intent={
-                        num === connection?.db ? Intent.PRIMARY : Intent.NONE
-                      }
-                      active={num === connection?.db}
+                      intent={num === db ? Intent.PRIMARY : Intent.NONE}
+                      active={num === db}
                       className={Classes.POPOVER_DISMISS}
                       style={{
                         width: 16,

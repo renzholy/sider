@@ -10,6 +10,7 @@ export default (props: { children: React.ReactNode }) => {
         style={{
           height: '100vh',
           overflow: 'hidden',
+          display: 'flex',
         }}>
         {props.children}
       </div>

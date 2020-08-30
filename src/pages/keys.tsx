@@ -10,6 +10,7 @@ import { Unpacked } from '@/utils/index'
 import { formatNumber } from '@/utils/formatter'
 import { ConnectionSelector } from '@/components/ConnectionSelector'
 import { MatchInput } from '@/components/MatchInput'
+import { Panel } from '@/components/panel/Panel'
 
 export default () => {
   const connection = useSelector((state) => state.keys.connection)
@@ -60,55 +61,58 @@ export default () => {
   }, [setSize, revalidate, revalidateDbSize])
 
   return (
-    <div
-      style={{
-        width: 320,
-        padding: 8,
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-      }}>
-      <MatchInput />
+    <>
       <div
         style={{
-          fontFamily: 'monospace',
-          userSelect: 'none',
-          height: 0,
-          flex: 1,
-          borderRadius: 4,
-          overflow: 'hidden',
-        }}>
-        {data ? (
-          <KeysList items={data} onLoadMoreItems={handleLoadMoreItems} />
-        ) : null}
-      </div>
-      <div
-        style={{
-          height: 40,
+          width: 320,
+          padding: 8,
+          height: '100%',
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          backgroundColor: Colors.LIGHT_GRAY4,
-          marginTop: 8,
-          borderRadius: 4,
-          padding: 4,
-          userSelect: 'none',
+          flexDirection: 'column',
         }}>
-        <ConnectionSelector />
-        <span>
-          {formatNumber(length)}&nbsp;of&nbsp;
-          {formatNumber(dbSize || 0)}
-        </span>
-        {isValidating ? (
-          <div style={{ width: 30, cursor: 'not-allowed' }}>
-            <Spinner size={16} />
-          </div>
-        ) : (
-          <Tooltip content="Refresh">
-            <Button icon="refresh" minimal={true} onClick={handleReload} />
-          </Tooltip>
-        )}
+        <MatchInput />
+        <div
+          style={{
+            fontFamily: 'monospace',
+            userSelect: 'none',
+            height: 0,
+            flex: 1,
+            borderRadius: 4,
+            overflow: 'hidden',
+          }}>
+          {data ? (
+            <KeysList items={data} onLoadMoreItems={handleLoadMoreItems} />
+          ) : null}
+        </div>
+        <div
+          style={{
+            height: 40,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            backgroundColor: Colors.LIGHT_GRAY4,
+            marginTop: 8,
+            borderRadius: 4,
+            padding: 4,
+            userSelect: 'none',
+          }}>
+          <ConnectionSelector />
+          <span>
+            {formatNumber(length)}&nbsp;of&nbsp;
+            {formatNumber(dbSize || 0)}
+          </span>
+          {isValidating ? (
+            <div style={{ width: 30, cursor: 'not-allowed' }}>
+              <Spinner size={16} />
+            </div>
+          ) : (
+            <Tooltip content="Refresh">
+              <Button icon="refresh" minimal={true} onClick={handleReload} />
+            </Tooltip>
+          )}
+        </div>
       </div>
-    </div>
+      <Panel />
+    </>
   )
 }

@@ -1,9 +1,12 @@
+/* eslint-disable react/jsx-props-no-spreading */
+
 import React, { useCallback, useRef, useEffect } from 'react'
-import { VariableSizeList } from 'react-window'
+import type { VariableSizeList, ListChildComponentProps } from 'react-window'
 
 import { KeyType } from '@/types'
-import { KeyItems } from './KeyItems'
+import { ScanListItems } from './pure/ScanListItems'
 import { InfiniteList } from './pure/InfiniteList'
+import { KeyItem } from './KeyItem'
 
 export function KeysList(props: {
   items: { next: string; keys: { key: string; type: KeyType }[] }[]
@@ -19,13 +22,19 @@ export function KeysList(props: {
   useEffect(() => {
     variableSizeListRef.current?.resetAfterIndex(props.items.length - 1)
   }, [props.items.length])
+  const renderScanListItems = useCallback(
+    (p: ListChildComponentProps) => (
+      <ScanListItems {...p}>{KeyItem}</ScanListItems>
+    ),
+    [],
+  )
 
   return (
     <InfiniteList
       items={props.items}
       onLoadMoreItems={props.onLoadMoreItems}
       onItemSize={handleItemSize}>
-      {KeyItems}
+      {renderScanListItems}
     </InfiniteList>
   )
 }

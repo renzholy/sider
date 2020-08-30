@@ -1,8 +1,11 @@
-import React, { useCallback, useRef, useEffect } from 'react'
-import { VariableSizeList } from 'react-window'
+/* eslint-disable react/jsx-props-no-spreading */
 
-import { SetKeyItems } from './SetKeyItems'
+import React, { useCallback, useRef, useEffect } from 'react'
+import { VariableSizeList, ListChildComponentProps } from 'react-window'
+
+import { SetKeyItem } from './SetKeyItem'
 import { InfiniteList } from '../pure/InfiniteList'
+import { ScanListItems } from '../pure/ScanListItems'
 
 export function SetList(props: {
   items: { next: string; keys: string[] }[]
@@ -18,13 +21,19 @@ export function SetList(props: {
   useEffect(() => {
     variableSizeListRef.current?.resetAfterIndex(props.items.length - 1)
   }, [props.items.length])
+  const renderScanListItems = useCallback(
+    (p: ListChildComponentProps) => (
+      <ScanListItems {...p}>{SetKeyItem}</ScanListItems>
+    ),
+    [],
+  )
 
   return (
     <InfiniteList
       items={props.items}
       onLoadMoreItems={props.onLoadMoreItems}
       onItemSize={handleItemSize}>
-      {SetKeyItems}
+      {renderScanListItems}
     </InfiniteList>
   )
 }

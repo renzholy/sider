@@ -1,22 +1,21 @@
 import React, { useMemo, useCallback } from 'react'
-import { InputGroup, Colors, Button, Spinner } from '@blueprintjs/core'
+import { Colors, Button, Spinner } from '@blueprintjs/core'
 import useSWR, { useSWRInfinite } from 'swr'
 import { flatMap } from 'lodash'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import { scanFetcher, runCommand } from '@/utils/fetcher'
 import { KeysList } from '@/components/KeysList'
 import { Unpacked } from '@/utils/index'
 import { formatNumber } from '@/utils/formatter'
 import { ConnectionSelector } from '@/components/ConnectionSelector'
-import { KeyTypeSelector } from '@/components/KeyTypeSelector'
-import { actions } from '@/stores'
+import { MatchInput } from '@/components/MatchInput'
 
 export default () => {
-  const match = useSelector((state) => state.keys.match)
   const connection = useSelector((state) => state.keys.connection)
+  const match = useSelector((state) => state.keys.match)
   const keyType = useSelector((state) => state.keys.keyType)
-  const dispatch = useDispatch()
+  const isPrefix = useSelector((state) => state.keys.isPrefix)
   const handleGetKey = useCallback(
     (
       _index: number,
@@ -26,10 +25,15 @@ export default () => {
         return null
       }
       return connection
-        ? [connection, `${match}*`, previousPageData?.next || '0', keyType]
+        ? [
+            connection,
+            isPrefix ? `${match}*` : match || '*',
+            previousPageData?.next || '0',
+            keyType,
+          ]
         : null
     },
-    [match, connection, keyType],
+    [match, connection, keyType, isPrefix],
   )
   const { data, setSize, isValidating, revalidate } = useSWRInfinite(
     handleGetKey,
@@ -41,12 +45,6 @@ export default () => {
   const length = useMemo(
     () => (data ? flatMap(data, (item) => item.keys).length : 0),
     [data],
-  )
-  const handleMatchChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      dispatch(actions.keys.setMatch(e.target.value))
-    },
-    [dispatch],
   )
   const handleLoadMoreItems = useCallback(async () => {
     await setSize((_size) => _size + 1)
@@ -70,18 +68,7 @@ export default () => {
         display: 'flex',
         flexDirection: 'column',
       }}>
-      <InputGroup
-        value={match}
-        onChange={handleMatchChange}
-        leftElement={<KeyTypeSelector />}
-        large={true}
-        style={{
-          marginBottom: 8,
-          backgroundColor: Colors.LIGHT_GRAY4,
-          boxShadow: 'none',
-          outline: 'none',
-        }}
-      />
+      <MatchInput />
       <div
         style={{
           fontFamily: 'monospace',

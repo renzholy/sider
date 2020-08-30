@@ -10,12 +10,14 @@ export default createSlice({
     selectedKey: undefined,
     match: '',
     keyType: undefined,
+    isPrefix: true,
   } as {
     connections: Connection[]
     connection?: Connection
     selectedKey?: { type: KeyType; key: string }
     match: string
     keyType?: KeyType
+    isPrefix: boolean
   },
   reducers: {
     setConnections: (state, { payload }: PayloadAction<Connection[]>) => ({
@@ -43,6 +45,10 @@ export default createSlice({
     setKeyType: (state, { payload }: PayloadAction<KeyType | undefined>) => ({
       ...state,
       keyType: payload,
+    }),
+    setIsPrefix: (state, { payload }: PayloadAction<boolean>) => ({
+      ...state,
+      isPrefix: payload,
     }),
   },
 })

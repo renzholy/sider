@@ -34,8 +34,8 @@ export default () => {
       revalidateOnFocus: false,
     },
   )
-  const items = useMemo(
-    () => (data ? flatMap(data, (item) => item.keys) : undefined),
+  const length = useMemo(
+    () => (data ? flatMap(data, (item) => item.keys).length : 0),
     [data],
   )
   const handleMatchChange = useCallback(
@@ -86,8 +86,8 @@ export default () => {
           borderRadius: 4,
           overflow: 'hidden',
         }}>
-        {items ? (
-          <KeysList items={items} onLoadMoreItems={handleLoadMoreItems} />
+        {data ? (
+          <KeysList items={data} onLoadMoreItems={handleLoadMoreItems} />
         ) : null}
       </div>
       <div
@@ -104,7 +104,7 @@ export default () => {
         }}>
         <ConnectionSelector />
         <span>
-          {formatNumber(items?.length || 0)}&nbsp;of&nbsp;
+          {formatNumber(length)}&nbsp;of&nbsp;
           {formatNumber(dbSize || 0)}
         </span>
         {isValidating ? (

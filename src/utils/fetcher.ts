@@ -44,9 +44,6 @@ export async function scanFetcher(
     'match',
     match,
   ])
-  if (keys.length === 0 && next !== '0') {
-    return scanFetcher(connection, match, next)
-  }
   const types = await Promise.all(
     keys.map((key) => runCommand<KeyType>(connection, ['type', key])),
   )

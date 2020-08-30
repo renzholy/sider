@@ -2,7 +2,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 
 import React, { useCallback, useMemo } from 'react'
-import type { ListChildComponentProps } from 'react-window'
 import { useSelector, useDispatch } from 'react-redux'
 import { isEqual } from 'lodash'
 
@@ -12,11 +11,10 @@ import { actions } from '@/stores'
 import { KeyTag } from './KeyTag'
 import styles from './KeyItem.less'
 
-export function KeyItem(props: ListChildComponentProps) {
-  const items = props.data as { key: string; type: KeyType }[]
+export function KeyItem(props: { value?: { key: string; type: KeyType } }) {
   const selectedKey = useSelector((state) => state.keys.selectedKey)
   const dispatch = useDispatch()
-  const item = items[props.index] as { key: string; type: KeyType } | undefined
+  const item = props.value
   const handleClick = useCallback(() => {
     if (!item) {
       return
@@ -36,7 +34,6 @@ export function KeyItem(props: ListChildComponentProps) {
     return (
       <div
         style={{
-          ...props.style,
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
@@ -51,7 +48,6 @@ export function KeyItem(props: ListChildComponentProps) {
       key={item.key}
       className={styles.keyItem}
       style={{
-        ...props.style,
         backgroundColor,
       }}
       onClick={handleClick}>

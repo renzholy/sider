@@ -1,22 +1,29 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useRef, useEffect } from 'react'
 import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
-import { FixedSizeList } from 'react-window'
+import { VariableSizeList } from 'react-window'
 import InfiniteLoader from 'react-window-infinite-loader'
+import mergeRefs from 'react-merge-refs'
 
-import { KeyItem } from './KeyItem'
+import { KeyItems } from './KeyItems'
 
 export function KeysList(props: {
-  items: { key: string; type: KeyType }[]
+  items: { next: string; keys: { key: string; type: KeyType }[] }[]
   onLoadMoreItems: () => Promise<any> | null
 }) {
   const handleIsItemLoaded = useCallback(
     (index: number) => !!props.items[index],
     [props.items],
   )
-  const handleItemKey = useCallback(
-    (index: number, data: { key: string }[]) => data[index]?.key || index,
-    [],
+  const handleItemSize = useCallback(
+    (index: number) => {
+      return props.items[index] ? props.items[index].keys.length * 36 : 36
+    },
+    [props.items],
   )
+  const variableSizeListRef = useRef<VariableSizeList>(null)
+  useEffect(() => {
+    variableSizeListRef.current?.resetAfterIndex(props.items.length - 1)
+  }, [props.items.length])
   const itemCount = props.items.length + 1
 
   return (
@@ -27,17 +34,16 @@ export function KeysList(props: {
           itemCount={itemCount}
           loadMoreItems={props.onLoadMoreItems}>
           {({ onItemsRendered, ref }) => (
-            <FixedSizeList
-              ref={ref}
-              itemKey={handleItemKey}
+            <VariableSizeList
+              ref={mergeRefs([ref, variableSizeListRef])}
               width={width}
               height={height}
-              itemSize={36}
+              itemSize={handleItemSize}
               itemCount={itemCount}
               itemData={props.items}
               onItemsRendered={onItemsRendered}>
-              {KeyItem}
-            </FixedSizeList>
+              {KeyItems}
+            </VariableSizeList>
           )}
         </InfiniteLoader>
       )}

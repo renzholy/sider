@@ -1,12 +1,11 @@
 import React, { useCallback, useRef, useEffect } from 'react'
 import { VariableSizeList } from 'react-window'
 
-import { KeyType } from '@/types'
-import { KeyItems } from './KeyItems'
-import { InfiniteList } from './pure/InfiniteList'
+import { SetKeyItems } from './SetKeyItems'
+import { InfiniteList } from '../pure/InfiniteList'
 
-export function KeysList(props: {
-  items: { next: string; keys: { key: string; type: KeyType }[] }[]
+export function SetList(props: {
+  items: { next: string; keys: string[] }[]
   onLoadMoreItems: () => Promise<any> | null
 }) {
   const handleItemSize = useCallback(
@@ -25,7 +24,7 @@ export function KeysList(props: {
       items={props.items}
       onLoadMoreItems={props.onLoadMoreItems}
       onItemSize={handleItemSize}>
-      {KeyItems}
+      {SetKeyItems}
     </InfiniteList>
   )
 }

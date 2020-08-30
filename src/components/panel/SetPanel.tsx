@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux'
 
 import { Unpacked } from '@/utils'
 import { sscan } from '@/utils/scanner'
+import { SetMatchInput } from './SetMatchInput'
+import { SetList } from './SetList'
 
 export function SetPanel(props: { value: string }) {
   const connection = useSelector((state) => state.keys.connection)
@@ -28,9 +30,27 @@ export function SetPanel(props: { value: string }) {
     },
     [connection, props.value, match, isPrefix],
   )
-  const { data } = useSWRInfinite(handleGetKey, sscan, {
+  const { data, setSize } = useSWRInfinite(handleGetKey, sscan, {
     revalidateOnFocus: false,
   })
+  const handleLoadMoreItems = useCallback(async () => {
+    await setSize((_size) => _size + 1)
+  }, [setSize])
 
-  return <code>{JSON.stringify(data)}</code>
+  return (
+    <div
+      style={{
+        marginTop: 8,
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+      }}>
+      <SetMatchInput />
+      {data ? (
+        <div style={{ flex: 1 }}>
+          <SetList items={data} onLoadMoreItems={handleLoadMoreItems} />
+        </div>
+      ) : null}
+    </div>
+  )
 }

@@ -10,7 +10,7 @@ import { KeysList } from '@/components/KeysList'
 import { Unpacked } from '@/utils/index'
 import { formatNumber } from '@/utils/formatter'
 import { ConnectionSelector } from '@/components/ConnectionSelector'
-import { MatchInput } from '@/components/MatchInput'
+import { KeysMatchInput } from '@/components/KeysMatchInput'
 import { Panel } from '@/components/panel/Panel'
 
 export default () => {
@@ -71,11 +71,9 @@ export default () => {
           display: 'flex',
           flexDirection: 'column',
         }}>
-        <MatchInput />
+        <KeysMatchInput />
         <div
           style={{
-            fontFamily: 'monospace',
-            userSelect: 'none',
             height: 0,
             flex: 1,
             borderRadius: 4,

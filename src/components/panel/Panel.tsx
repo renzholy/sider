@@ -52,15 +52,7 @@ export function Panel() {
           {selectedKey.key}
         </span>
       </div>
-      <div
-        style={{
-          borderRadius: 4,
-          padding: 5,
-          marginTop: 8,
-          backgroundColor: Colors.LIGHT_GRAY5,
-        }}>
-        <PanelInner value={selectedKey} />
-      </div>
+      <PanelInner value={selectedKey} />
     </div>
   )
 }

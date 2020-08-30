@@ -5,9 +5,11 @@ export default createSlice({
   initialState: {
     match: '',
     isPrefix: true,
+    selectedKey: undefined,
   } as {
     match: string
     isPrefix: boolean
+    selectedKey?: string
   },
   reducers: {
     setMatch: (state, { payload }: PayloadAction<string>) => ({
@@ -17,6 +19,13 @@ export default createSlice({
     setIsPrefix: (state, { payload }: PayloadAction<boolean>) => ({
       ...state,
       isPrefix: payload,
+    }),
+    setSelectedKey: (
+      state,
+      { payload }: PayloadAction<string | undefined>,
+    ) => ({
+      ...state,
+      selectedKey: payload,
     }),
   },
 })

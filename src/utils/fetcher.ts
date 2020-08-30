@@ -1,4 +1,4 @@
-import { Connection } from '@/types'
+import { Connection, KeyType } from '@/types'
 
 export async function runCommand<T>(
   connection: Connection,
@@ -34,6 +34,7 @@ export async function scanFetcher(
   connection: Connection,
   match: string,
   cursor: string,
+  keyType: KeyType | undefined,
 ): Promise<{
   next: string
   keys: { key: string; type: KeyType }[]
@@ -49,9 +50,11 @@ export async function scanFetcher(
   )
   return {
     next,
-    keys: keys.map((key, index) => ({
-      key,
-      type: types[index],
-    })),
+    keys: keys
+      .map((key, index) => ({
+        key,
+        type: types[index],
+      }))
+      .filter(({ type }) => !keyType || type === keyType),
   }
 }

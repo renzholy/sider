@@ -8,10 +8,12 @@ export default createSlice({
     connections: [],
     connection: undefined,
     selectedKey: undefined,
+    keyType: undefined,
   } as {
     connections: Connection[]
     connection?: Connection
     selectedKey?: { type: KeyType; key: string }
+    keyType?: KeyType
   },
   reducers: {
     setConnections: (state, { payload }: PayloadAction<Connection[]>) => ({
@@ -31,6 +33,10 @@ export default createSlice({
     ) => ({
       ...state,
       selectedKey: payload,
+    }),
+    setKeyType: (state, { payload }: PayloadAction<KeyType | undefined>) => ({
+      ...state,
+      keyType: payload,
     }),
   },
 })

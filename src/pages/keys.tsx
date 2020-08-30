@@ -14,6 +14,7 @@ import { KeyTypeSelector } from '@/components/KeyTypeSelector'
 export default () => {
   const [match, setMatch] = useState('')
   const connection = useSelector((state) => state.keys.connection)
+  const keyType = useSelector((state) => state.keys.keyType)
   const handleGetKey = useCallback(
     (
       _index: number,
@@ -23,10 +24,10 @@ export default () => {
         return null
       }
       return connection
-        ? [connection, `${match}*`, previousPageData?.next || '0']
+        ? [connection, `${match}*`, previousPageData?.next || '0', keyType]
         : null
     },
-    [match, connection],
+    [match, connection, keyType],
   )
   const { data, setSize, isValidating, revalidate } = useSWRInfinite(
     handleGetKey,

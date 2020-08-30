@@ -10,11 +10,11 @@ export type Connection = {
 }
 
 export enum KeyType {
+  NONE = 'none',
   STRING = 'string',
   LIST = 'list',
   SET = 'set',
   ZSET = 'zset',
   HASH = 'hash',
   STREAM = 'stream',
-  NONE = 'none',
 }

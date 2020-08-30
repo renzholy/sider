@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { CSSProperties } from 'react'
 import { Tag, Intent } from '@blueprintjs/core'
 
 import { KeyType } from '@/types'
@@ -6,10 +6,10 @@ import { KeyType } from '@/types'
 const intentMap = {
   [KeyType.STRING]: Intent.NONE,
   [KeyType.HASH]: Intent.PRIMARY,
-  [KeyType.LIST]: Intent.DANGER,
+  [KeyType.LIST]: Intent.WARNING,
   [KeyType.SET]: Intent.SUCCESS,
   [KeyType.ZSET]: Intent.DANGER,
-  [KeyType.STREAM]: Intent.PRIMARY,
+  [KeyType.STREAM]: Intent.NONE,
   [KeyType.NONE]: Intent.NONE,
 }
 
@@ -33,9 +33,10 @@ const minimalMap = {
   [KeyType.NONE]: true,
 }
 
-export function KeyTag(props: { type: KeyType }) {
+export function KeyTag(props: { type: KeyType; style?: CSSProperties }) {
   return (
     <Tag
+      style={props.style}
       title={props.type}
       intent={intentMap[props.type]}
       minimal={minimalMap[props.type]}>

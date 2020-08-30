@@ -4,6 +4,7 @@ import { VariableSizeList } from 'react-window'
 import InfiniteLoader from 'react-window-infinite-loader'
 import mergeRefs from 'react-merge-refs'
 
+import { KeyType } from '@/types'
 import { KeyItems } from './KeyItems'
 
 export function KeysList(props: {

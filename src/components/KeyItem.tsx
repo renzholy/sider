@@ -4,14 +4,14 @@
 import React, { useCallback, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { isEqual } from 'lodash'
-import { Colors, Divider } from '@blueprintjs/core'
+import { Colors } from '@blueprintjs/core'
 
 import { KeyType } from '@/types'
 import { actions } from '@/stores'
 import { KeyTag } from './KeyTag'
 import styles from './KeyItem.less'
 
-export function KeyItem(props: { value?: { key: string; type: KeyType } }) {
+export function KeyItem(props: { value: { key: string; type: KeyType } }) {
   const selectedKey = useSelector((state) => state.keys.selectedKey)
   const dispatch = useDispatch()
   const item = props.value
@@ -30,19 +30,6 @@ export function KeyItem(props: { value?: { key: string; type: KeyType } }) {
     [item, selectedKey],
   )
 
-  if (!item) {
-    return (
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <Divider style={{ width: 64 }} />
-      </div>
-    )
-  }
   return (
     <div
       key={item.key}

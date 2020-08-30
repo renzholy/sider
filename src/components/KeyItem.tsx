@@ -4,9 +4,9 @@
 import React, { useCallback, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { isEqual } from 'lodash'
+import { Colors, Divider } from '@blueprintjs/core'
 
 import { KeyType } from '@/types'
-import { Colors, Divider } from '@blueprintjs/core'
 import { actions } from '@/stores'
 import { KeyTag } from './KeyTag'
 import styles from './KeyItem.less'

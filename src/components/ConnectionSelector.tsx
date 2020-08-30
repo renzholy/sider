@@ -23,6 +23,7 @@ export function ConnectionSelector() {
     dispatch(actions.keys.setConnection(data?.[0]))
   }, [data, dispatch])
   useEffect(() => {
+    dispatch(actions.keys.setKeyType(undefined))
     dispatch(actions.keys.setSelectedKey(undefined))
     dispatch(actions.keys.setMatch(''))
   }, [connection, dispatch])

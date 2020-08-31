@@ -15,6 +15,7 @@ export function StringPanel(props: { value: string }) {
   return (
     <Editor
       style={{
+        height: '100%',
         marginTop: 8,
       }}
       value={data}

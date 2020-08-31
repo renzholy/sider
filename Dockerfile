@@ -5,7 +5,7 @@ COPY package-lock.json .
 RUN npm ci
 COPY .umirc.ts .
 COPY tsconfig.json .
-# COPY public ./public
+COPY public ./public
 COPY src ./src
 RUN npm run build
 

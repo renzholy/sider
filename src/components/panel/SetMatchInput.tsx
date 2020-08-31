@@ -23,7 +23,6 @@ export function SetMatchInput() {
       style={{
         marginBottom: 8,
       }}
-      leftElement={<Icon icon="filter" />}
       rightElement={
         <Tooltip content="Prefix match">
           <Button

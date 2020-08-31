@@ -64,7 +64,6 @@ export function Panel() {
         <KeyTag large={true} type={selectedKey.type} />
         <span
           style={{
-            fontFamily: 'monospace',
             marginLeft: 8,
             display: 'block',
             overflow: 'hidden',

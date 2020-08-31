@@ -121,7 +121,6 @@ export function ZsetPanel(props: { value: string }) {
                 marginLeft: 8,
                 marginBottom: 8,
                 height: 40,
-                fontFamily: 'monospace',
                 backgroundColor: Colors.LIGHT_GRAY4,
                 borderRadius: 4,
                 padding: 8,

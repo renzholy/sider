@@ -20,7 +20,7 @@ export function Editor(props: { style?: CSSProperties; value?: string }) {
   }, [props.value])
   const isDarkMode = useIsDarkMode()
 
-  return str === undefined ? null : (
+  return (
     <div
       style={{
         ...props.style,

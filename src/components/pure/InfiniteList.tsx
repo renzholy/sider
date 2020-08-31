@@ -1,24 +1,19 @@
-import React, { useCallback, useRef, useEffect } from 'react'
+import React, { useCallback, useRef, useEffect, ComponentType } from 'react'
 import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
-import { VariableSizeList } from 'react-window'
+import { VariableSizeList, ListChildComponentProps } from 'react-window'
 import InfiniteLoader from 'react-window-infinite-loader'
 import mergeRefs from 'react-merge-refs'
 
-import { KeyType } from '@/types'
-import { KeyItems } from './KeyItems'
-
-export function KeysList(props: {
-  items: { next: string; keys: { key: string; type: KeyType }[] }[]
-  onLoadMoreItems: () => Promise<any> | null
+export function InfiniteList<T>(props: {
+  items: { next: string; keys: T[] }[]
+  children: ComponentType<ListChildComponentProps>
+  onLoadMoreItems: (
+    startIndex: number,
+    stopIndex: number,
+  ) => Promise<any> | null
 }) {
   const handleIsItemLoaded = useCallback(
     (index: number) => !!props.items[index],
-    [props.items],
-  )
-  const handleItemSize = useCallback(
-    (index: number) => {
-      return props.items[index] ? props.items[index].keys.length * 36 : 36
-    },
     [props.items],
   )
   const variableSizeListRef = useRef<VariableSizeList>(null)
@@ -26,6 +21,12 @@ export function KeysList(props: {
     variableSizeListRef.current?.resetAfterIndex(props.items.length - 1)
   }, [props.items.length])
   const itemCount = props.items.length + 1
+  const handleItemSize = useCallback(
+    (index: number) => {
+      return props.items[index] ? props.items[index].keys.length * 36 : 36
+    },
+    [props.items],
+  )
 
   return (
     <AutoSizer>
@@ -43,7 +44,7 @@ export function KeysList(props: {
               itemCount={itemCount}
               itemData={props.items}
               onItemsRendered={onItemsRendered}>
-              {KeyItems}
+              {props.children}
             </VariableSizeList>
           )}
         </InfiniteLoader>

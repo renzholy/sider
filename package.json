@@ -27,6 +27,7 @@
     "@blueprintjs/icons": "3.20.1",
     "@reduxjs/toolkit": "1.4.0",
     "lodash": "4.17.20",
+    "ms": "2.1.2",
     "normalize.css": "8.0.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
@@ -39,6 +40,7 @@
   },
   "devDependencies": {
     "@types/lodash": "4.14.161",
+    "@types/ms": "0.7.31",
     "@types/react": "16.9.48",
     "@types/react-dom": "16.9.8",
     "@types/react-redux": "7.1.9",

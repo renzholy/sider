@@ -2,18 +2,16 @@ import React, { useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { isEqual } from 'lodash'
 
-import { KeyType } from '@/types'
 import { actions } from '@/stores'
-import { KeyTag } from './KeyTag'
-import { InfiniteListItem } from './pure/InfiniteListItem'
+import { InfiniteListItem } from '../pure/InfiniteListItem'
 
-export function KeyItem(props: { value: { key: string; type: KeyType } }) {
-  const selectedKey = useSelector((state) => state.keys.selectedKey)
+export function ListItem(props: { value: string }) {
+  const selectedKey = useSelector((state) => state.list.selectedKey)
   const dispatch = useDispatch()
   const item = props.value
   const handleSelect = useCallback(
     (isSelected: boolean) => {
-      dispatch(actions.keys.setSelectedKey(isSelected ? item : undefined))
+      dispatch(actions.list.setSelectedKey(isSelected ? item : undefined))
     },
     [dispatch, item],
   )
@@ -22,9 +20,7 @@ export function KeyItem(props: { value: { key: string; type: KeyType } }) {
     <InfiniteListItem
       isSelected={isEqual(selectedKey, item)}
       onSelect={handleSelect}>
-      <KeyTag type={item.type} />
-      &nbsp;
-      <span title={item.key}>{item.key}</span>
+      <span title={item}>{item}</span>
     </InfiniteListItem>
   )
 }

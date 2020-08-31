@@ -1,25 +1,29 @@
-import { InputGroup, Colors, Button, Tooltip } from '@blueprintjs/core'
 import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Button, Tooltip } from '@blueprintjs/core'
 
 import { actions } from '@/stores'
 import { KeyTypeSelector } from './KeyTypeSelector'
+import { MatchInput } from './pure/MatchInput'
 
-export function MatchInput() {
+export function KeysMatchInput() {
   const match = useSelector((state) => state.keys.match)
   const isPrefix = useSelector((state) => state.keys.isPrefix)
   const dispatch = useDispatch()
   const handleMatchChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      dispatch(actions.keys.setMatch(e.target.value))
+    (_match: string) => {
+      dispatch(actions.keys.setMatch(_match))
     },
     [dispatch],
   )
 
   return (
-    <InputGroup
+    <MatchInput
       value={match}
       onChange={handleMatchChange}
+      style={{
+        marginBottom: 8,
+      }}
       leftElement={<KeyTypeSelector />}
       rightElement={
         <Tooltip content="Prefix match">
@@ -33,13 +37,6 @@ export function MatchInput() {
           />
         </Tooltip>
       }
-      large={true}
-      style={{
-        marginBottom: 8,
-        backgroundColor: Colors.LIGHT_GRAY4,
-        boxShadow: 'none',
-        outline: 'none',
-      }}
     />
   )
 }

@@ -33,9 +33,14 @@ const minimalMap = {
   [KeyType.NONE]: true,
 }
 
-export function KeyTag(props: { type: KeyType; style?: CSSProperties }) {
+export function KeyTag(props: {
+  large?: boolean
+  type: KeyType
+  style?: CSSProperties
+}) {
   return (
     <Tag
+      large={props.large}
       style={props.style}
       title={props.type}
       intent={intentMap[props.type]}

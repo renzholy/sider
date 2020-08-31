@@ -1,15 +1,21 @@
-import React, { useMemo, useCallback } from 'react'
-import { Colors, Button, Spinner, Tooltip } from '@blueprintjs/core'
+import React, { useCallback } from 'react'
 import useSWR, { useSWRInfinite } from 'swr'
-import { flatMap } from 'lodash'
 import { useSelector } from 'react-redux'
+import { ListChildComponentProps } from 'react-window'
 
-import { scanFetcher, runCommand } from '@/utils/fetcher'
-import { KeysList } from '@/components/KeysList'
+import { runCommand } from '@/utils/fetcher'
+import { scan } from '@/utils/scanner'
 import { Unpacked } from '@/utils/index'
 import { formatNumber } from '@/utils/formatter'
 import { ConnectionSelector } from '@/components/ConnectionSelector'
-import { MatchInput } from '@/components/MatchInput'
+import { KeysMatchInput } from '@/components/KeysMatchInput'
+import { Panel } from '@/components/panel/Panel'
+import { InfiniteList } from '@/components/pure/InfiniteList'
+import { InfiniteListItems } from '@/components/pure/InfiniteListItems'
+import { KeyItem } from '@/components/KeyItem'
+import { Footer } from '@/components/pure/Footer'
+import { ReloadButton } from '@/components/pure/ReloadButton'
+import { useScanSize } from '@/hooks/useScanSize'
 
 export default () => {
   const connection = useSelector((state) => state.keys.connection)
@@ -19,7 +25,7 @@ export default () => {
   const handleGetKey = useCallback(
     (
       _index: number,
-      previousPageData: Unpacked<ReturnType<typeof scanFetcher>> | null,
+      previousPageData: Unpacked<ReturnType<typeof scan>> | null,
     ) => {
       if (previousPageData?.next === '0') {
         return null
@@ -37,15 +43,12 @@ export default () => {
   )
   const { data, setSize, isValidating, revalidate } = useSWRInfinite(
     handleGetKey,
-    scanFetcher,
+    scan,
     {
       revalidateOnFocus: false,
     },
   )
-  const length = useMemo(
-    () => (data ? flatMap(data, (item) => item.keys).length : 0),
-    [data],
-  )
+  const scanSize = useScanSize(data)
   const handleLoadMoreItems = useCallback(async () => {
     await setSize((_size) => _size + 1)
   }, [setSize])
@@ -58,57 +61,48 @@ export default () => {
     await revalidate()
     await revalidateDbSize()
   }, [setSize, revalidate, revalidateDbSize])
+  const renderItems = useCallback(
+    (p: ListChildComponentProps) => (
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      <InfiniteListItems {...p}>{KeyItem}</InfiniteListItems>
+    ),
+    [],
+  )
 
   return (
-    <div
-      style={{
-        width: 320,
-        padding: 8,
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-      }}>
-      <MatchInput />
+    <>
       <div
         style={{
-          fontFamily: 'monospace',
-          userSelect: 'none',
-          height: 0,
-          flex: 1,
-          borderRadius: 4,
-          overflow: 'hidden',
-        }}>
-        {data ? (
-          <KeysList items={data} onLoadMoreItems={handleLoadMoreItems} />
-        ) : null}
-      </div>
-      <div
-        style={{
-          height: 40,
+          width: 360,
+          padding: 8,
+          height: '100%',
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          backgroundColor: Colors.LIGHT_GRAY4,
-          marginTop: 8,
-          borderRadius: 4,
-          padding: 4,
-          userSelect: 'none',
+          flexDirection: 'column',
         }}>
-        <ConnectionSelector />
-        <span>
-          {formatNumber(length)}&nbsp;of&nbsp;
-          {formatNumber(dbSize || 0)}
-        </span>
-        {isValidating ? (
-          <div style={{ width: 30, cursor: 'not-allowed' }}>
-            <Spinner size={16} />
-          </div>
-        ) : (
-          <Tooltip content="Refresh">
-            <Button icon="refresh" minimal={true} onClick={handleReload} />
-          </Tooltip>
-        )}
+        <KeysMatchInput />
+        <div
+          style={{
+            height: 0,
+            flex: 1,
+            borderRadius: 4,
+            overflow: 'hidden',
+          }}>
+          {data ? (
+            <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
+              {renderItems}
+            </InfiniteList>
+          ) : null}
+        </div>
+        <Footer>
+          <ReloadButton isLoading={isValidating} onReload={handleReload} />
+          <span>
+            {formatNumber(scanSize)}&nbsp;of&nbsp;
+            {formatNumber(dbSize || 0)}
+          </span>
+          <ConnectionSelector />
+        </Footer>
       </div>
-    </div>
+      <Panel />
+    </>
   )
 }

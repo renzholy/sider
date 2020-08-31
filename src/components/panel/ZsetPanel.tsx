@@ -9,7 +9,6 @@ import { ZsetMatchInput } from './ZsetMatchInput'
 import { InfiniteList } from '../pure/InfiniteList'
 import { ListItems } from '../pure/ListItems'
 import { ZsetKeyItem } from './ZsetKeyItem'
-import { Editor } from '../pure/Editor'
 
 export function ZsetPanel(props: { value: string }) {
   const connection = useSelector((state) => state.keys.connection)
@@ -45,7 +44,6 @@ export function ZsetPanel(props: { value: string }) {
     (p: ListChildComponentProps) => <ListItems {...p}>{ZsetKeyItem}</ListItems>,
     [],
   )
-  const selectedKey = useSelector((state) => state.zset.selectedKey)
 
   return (
     <div
@@ -55,23 +53,12 @@ export function ZsetPanel(props: { value: string }) {
         flexDirection: 'column',
         height: '100%',
       }}>
-      <div style={{ flex: 1, display: 'flex' }}>
-        <div style={{ width: 320 }}>
-          <ZsetMatchInput />
-          {data ? (
-            <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
-              {renderItems}
-            </InfiniteList>
-          ) : null}
-        </div>
-        {selectedKey ? (
-          <Editor
-            style={{
-              flex: 1,
-              marginLeft: 8,
-            }}
-            value={selectedKey.value}
-          />
+      <div style={{ flex: 1 }}>
+        <ZsetMatchInput />
+        {data ? (
+          <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
+            {renderItems}
+          </InfiniteList>
         ) : null}
       </div>
     </div>

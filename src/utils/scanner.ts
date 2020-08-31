@@ -83,7 +83,7 @@ export async function zscan(
   cursor: string,
 ): Promise<{
   next: string
-  keys: { score: number; value: string }[]
+  keys: { key: string; score: number }[]
 }> {
   const [next, keys] = await runCommand<[string, string[]]>(connection, [
     'zscan',
@@ -94,9 +94,9 @@ export async function zscan(
   ])
   return {
     next,
-    keys: chunk(keys, 2).map(([value, score]) => ({
+    keys: chunk(keys, 2).map(([k, score]) => ({
+      key: k,
       score: parseInt(score, 10),
-      value,
     })),
   }
 }

@@ -5,9 +5,7 @@ import { isEqual } from 'lodash'
 import { actions } from '@/stores'
 import { ListItem } from '../pure/ListItem'
 
-export function ZsetKeyItem(props: {
-  value: { score: number; value: string }
-}) {
+export function ZsetKeyItem(props: { value: { key: string; score: number } }) {
   const selectedKey = useSelector((state) => state.zset.selectedKey)
   const dispatch = useDispatch()
   const item = props.value
@@ -20,7 +18,15 @@ export function ZsetKeyItem(props: {
 
   return (
     <ListItem isSelected={isEqual(selectedKey, item)} onSelect={handleSelect}>
-      <span title={item.score.toString()}>{item.score}</span>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginRight: 8,
+        }}>
+        <span title={item.key}>{item.key}</span>
+        <span title={item.score.toString()}>{item.score}</span>
+      </div>
     </ListItem>
   )
 }

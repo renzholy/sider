@@ -9,7 +9,7 @@ export default createSlice({
   } as {
     match: string
     isPrefix: boolean
-    selectedKey?: { score: number; value: string }
+    selectedKey?: { key: string; score: number }
   },
   reducers: {
     setMatch: (state, { payload }: PayloadAction<string>) => ({
@@ -22,7 +22,7 @@ export default createSlice({
     }),
     setSelectedKey: (
       state,
-      { payload }: PayloadAction<{ score: number; value: string } | undefined>,
+      { payload }: PayloadAction<{ key: string; score: number } | undefined>,
     ) => ({
       ...state,
       selectedKey: payload,

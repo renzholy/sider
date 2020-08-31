@@ -1,5 +1,5 @@
 import React, { CSSProperties } from 'react'
-import { Spinner, Tooltip, Button } from '@blueprintjs/core'
+import { Spinner, Button } from '@blueprintjs/core'
 
 export function ReloadButton(props: {
   style?: CSSProperties
@@ -20,9 +20,12 @@ export function ReloadButton(props: {
     </div>
   ) : (
     <div style={props.style}>
-      <Tooltip content="Refresh">
-        <Button icon="refresh" minimal={true} onClick={props.onReload} />
-      </Tooltip>
+      <Button
+        style={props.style}
+        icon="refresh"
+        minimal={true}
+        onClick={props.onReload}
+      />
     </div>
   )
 }

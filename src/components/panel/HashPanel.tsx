@@ -94,7 +94,7 @@ export function HashPanel(props: { value: string }) {
           </div>
           <Footer>
             <ReloadButton
-              style={{ flexBasis: 100 }}
+              style={{ flexBasis: 80 }}
               isLoading={isValidating}
               onReload={handleReload}
             />
@@ -104,7 +104,7 @@ export function HashPanel(props: { value: string }) {
             </span>
             <TTLButton
               style={{
-                flexBasis: 100,
+                flexBasis: 80,
                 display: 'flex',
                 justifyContent: 'flex-end',
               }}

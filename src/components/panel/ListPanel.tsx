@@ -1,13 +1,19 @@
 import React, { useCallback } from 'react'
-import { useSWRInfinite } from 'swr'
+import useSWR, { useSWRInfinite } from 'swr'
 import { useSelector } from 'react-redux'
 import { ListChildComponentProps } from 'react-window'
 
 import { Unpacked } from '@/utils'
 import { lrange } from '@/utils/scanner'
+import { formatNumber } from '@/utils/formatter'
+import { useScanSize } from '@/hooks/useScanSize'
+import { runCommand } from '@/utils/fetcher'
 import { InfiniteList } from '../pure/InfiniteList'
 import { InfiniteListItems } from '../pure/InfiniteListItems'
 import { ListItem } from './ListItem'
+import { Footer } from '../pure/Footer'
+import { TTLButton } from '../TTLButton'
+import { ReloadButton } from '../pure/ReloadButton'
 
 export function ListPanel(props: { value: string }) {
   const connection = useSelector((state) => state.keys.connection)
@@ -25,9 +31,13 @@ export function ListPanel(props: { value: string }) {
     },
     [connection, props.value],
   )
-  const { data, setSize } = useSWRInfinite(handleGetKey, lrange, {
-    revalidateOnFocus: false,
-  })
+  const { data, setSize, isValidating, revalidate } = useSWRInfinite(
+    handleGetKey,
+    lrange,
+    {
+      revalidateOnFocus: false,
+    },
+  )
   const handleLoadMoreItems = useCallback(async () => {
     await setSize((_size) => _size + 1)
   }, [setSize])
@@ -38,6 +48,16 @@ export function ListPanel(props: { value: string }) {
     ),
     [],
   )
+  const { data: llen, revalidate: revalidateLlen } = useSWR(
+    connection ? `llen/${connection}/${props.value}` : null,
+    () => runCommand<number>(connection!, ['llen', props.value]),
+  )
+  const handleReload = useCallback(async () => {
+    await setSize(0)
+    await revalidate()
+    await revalidateLlen()
+  }, [setSize, revalidate, revalidateLlen])
+  const scanSize = useScanSize(data)
 
   return (
     <div
@@ -47,13 +67,21 @@ export function ListPanel(props: { value: string }) {
         flexDirection: 'column',
         height: '100%',
       }}>
-      {data ? (
-        <div style={{ flex: 1 }}>
+      <div style={{ flex: 1 }}>
+        {data ? (
           <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
             {renderItems}
           </InfiniteList>
-        </div>
-      ) : null}
+        ) : null}
+      </div>
+      <Footer>
+        <ReloadButton isLoading={isValidating} onReload={handleReload} />
+        <span>
+          {formatNumber(scanSize)}&nbsp;of&nbsp;
+          {formatNumber(llen || 0)}
+        </span>
+        <TTLButton value={props.value} />
+      </Footer>
     </div>
   )
 }

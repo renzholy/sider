@@ -1,8 +1,9 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { Colors } from '@blueprintjs/core'
 
 import { KeyType } from '@/types'
+import { actions } from '@/stores'
 import { KeyTag } from '../KeyTag'
 import { SetPanel } from './SetPanel'
 import { StringPanel } from './StringPanel'
@@ -35,6 +36,15 @@ function PanelInner(props: { value: { type: KeyType; key: string } }) {
 
 export function Panel() {
   const selectedKey = useSelector((state) => state.keys.selectedKey)
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(actions.hash.setIsPrefix(true))
+    dispatch(actions.hash.setMatch(''))
+    dispatch(actions.set.setIsPrefix(true))
+    dispatch(actions.set.setMatch(''))
+    dispatch(actions.zset.setIsPrefix(true))
+    dispatch(actions.zset.setMatch(''))
+  }, [selectedKey, dispatch])
 
   if (!selectedKey) {
     return null

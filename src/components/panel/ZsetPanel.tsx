@@ -1,6 +1,6 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import useSWR, { useSWRInfinite } from 'swr'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { ListChildComponentProps } from 'react-window'
 
 import { Unpacked } from '@/utils'
@@ -8,6 +8,7 @@ import { zscan } from '@/utils/scanner'
 import { formatNumber } from '@/utils/formatter'
 import { runCommand } from '@/utils/fetcher'
 import { useScanSize } from '@/hooks/useScanSize'
+import { actions } from '@/stores'
 import { ZsetMatchInput } from './ZsetMatchInput'
 import { InfiniteList } from '../pure/InfiniteList'
 import { InfiniteListItems } from '../pure/InfiniteListItems'
@@ -69,6 +70,10 @@ export function ZsetPanel(props: { value: string }) {
     await revalidateCount()
   }, [setSize, revalidate, revalidateCount])
   const selectedKey = useSelector((state) => state.zset.selectedKey)
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(actions.zset.setSelectedKey(undefined))
+  }, [props.value, dispatch])
 
   return (
     <div

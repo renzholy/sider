@@ -1,6 +1,6 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import useSWR, { useSWRInfinite } from 'swr'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { ListChildComponentProps } from 'react-window'
 
 import { Unpacked } from '@/utils'
@@ -8,6 +8,7 @@ import { lrange } from '@/utils/scanner'
 import { formatNumber } from '@/utils/formatter'
 import { useScanSize } from '@/hooks/useScanSize'
 import { runCommand } from '@/utils/fetcher'
+import { actions } from '@/stores'
 import { InfiniteList } from '../pure/InfiniteList'
 import { InfiniteListItems } from '../pure/InfiniteListItems'
 import { ListItem } from './ListItem'
@@ -60,6 +61,10 @@ export function ListPanel(props: { value: string }) {
   }, [setSize, revalidate, revalidateLlen])
   const scanSize = useScanSize(data)
   const selectedKey = useSelector((state) => state.list.selectedKey)
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(actions.list.setSelectedKey(undefined))
+  }, [props.value, dispatch])
 
   return (
     <div

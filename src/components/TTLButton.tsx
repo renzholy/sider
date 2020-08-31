@@ -25,7 +25,7 @@ export function TTLButton(props: { style?: CSSProperties; value: string }) {
         content={data < 0 ? 'TTL' : `TTL ${formatNumber(data)}s`}>
         <Button
           disabled={data < 0}
-          text={data < 0 ? 'Forever' : ms(data)}
+          text={data < 0 ? 'Forever' : ms(data * 1000)}
           minimal={true}
           rightIcon="time"
           style={{ paddingRight: 5 }}

@@ -6,7 +6,7 @@ import { ListChildComponentProps } from 'react-window'
 import { Unpacked } from '@/utils'
 import { hscan } from '@/utils/scanner'
 import { runCommand } from '@/utils/fetcher'
-import { useScanSize } from '@/hooks/useScanSize'
+import { useScanSize } from '@/hooks/use-scan-size'
 import { formatNumber } from '@/utils/formatter'
 import { actions } from '@/stores'
 import { HashMatchInput } from './HashMatchInput'
@@ -114,15 +114,13 @@ export function HashPanel(props: { value: string }) {
             />
           </Footer>
         </div>
-        {selectedKey ? (
-          <Editor
-            style={{
-              flex: 1,
-              marginLeft: 8,
-            }}
-            value={selectedKey.value}
-          />
-        ) : null}
+        <Editor
+          style={{
+            flex: 1,
+            marginLeft: 8,
+          }}
+          value={selectedKey?.value}
+        />
       </div>
     </div>
   )

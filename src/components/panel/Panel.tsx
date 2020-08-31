@@ -4,7 +4,7 @@ import { Colors } from '@blueprintjs/core'
 
 import { KeyType } from '@/types'
 import { actions } from '@/stores'
-import { useIsDarkMode } from '@/hooks/useIsDarkMode'
+import { useIsDarkMode } from '@/hooks/use-is-dark-mode'
 import { KeyTag } from '../KeyTag'
 import { SetPanel } from './SetPanel'
 import { StringPanel } from './StringPanel'

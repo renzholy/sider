@@ -5,7 +5,7 @@ import { ListChildComponentProps } from 'react-window'
 
 import { Unpacked } from '@/utils'
 import { sscan } from '@/utils/scanner'
-import { useScanSize } from '@/hooks/useScanSize'
+import { useScanSize } from '@/hooks/use-scan-size'
 import { formatNumber } from '@/utils/formatter'
 import { runCommand } from '@/utils/fetcher'
 import { actions } from '@/stores'
@@ -103,15 +103,13 @@ export function SetPanel(props: { value: string }) {
             <TTLButton value={props.value} />
           </Footer>
         </div>
-        {selectedKey ? (
-          <Editor
-            style={{
-              flex: 1,
-              marginLeft: 8,
-            }}
-            value={selectedKey}
-          />
-        ) : null}
+        <Editor
+          style={{
+            flex: 1,
+            marginLeft: 8,
+          }}
+          value={selectedKey}
+        />
       </div>
     </div>
   )

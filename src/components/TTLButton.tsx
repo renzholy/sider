@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { CSSProperties } from 'react'
 import { Button, Tooltip } from '@blueprintjs/core'
 import useSWR from 'swr'
 import { useSelector } from 'react-redux'
@@ -7,7 +7,7 @@ import ms from 'ms'
 import { runCommand } from '@/utils/fetcher'
 import { formatNumber } from '@/utils/formatter'
 
-export function TTLButton(props: { value: string }) {
+export function TTLButton(props: { style?: CSSProperties; value: string }) {
   const connection = useSelector((state) => state.keys.connection)
   const { data } = useSWR(
     connection ? `ttl/${connection}/${props.value}` : null,
@@ -19,16 +19,18 @@ export function TTLButton(props: { value: string }) {
     return null
   }
   return (
-    <Tooltip
-      disabled={data < 0}
-      content={data < 0 ? 'TTL' : `TTL ${formatNumber(data)}s`}>
-      <Button
+    <div style={props.style}>
+      <Tooltip
         disabled={data < 0}
-        text={data < 0 ? 'Forever' : ms(data)}
-        minimal={true}
-        rightIcon="time"
-        style={{ paddingRight: 5 }}
-      />
-    </Tooltip>
+        content={data < 0 ? 'TTL' : `TTL ${formatNumber(data)}s`}>
+        <Button
+          disabled={data < 0}
+          text={data < 0 ? 'Forever' : ms(data)}
+          minimal={true}
+          rightIcon="time"
+          style={{ paddingRight: 5 }}
+        />
+      </Tooltip>
+    </div>
   )
 }

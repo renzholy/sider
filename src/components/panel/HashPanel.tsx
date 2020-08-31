@@ -1,15 +1,21 @@
 import React, { useCallback } from 'react'
-import { useSWRInfinite } from 'swr'
+import useSWR, { useSWRInfinite } from 'swr'
 import { useSelector } from 'react-redux'
 import { ListChildComponentProps } from 'react-window'
 
 import { Unpacked } from '@/utils'
 import { hscan } from '@/utils/scanner'
+import { runCommand } from '@/utils/fetcher'
+import { useScanSize } from '@/hooks/useScanSize'
+import { formatNumber } from '@/utils/formatter'
 import { HashMatchInput } from './HashMatchInput'
 import { InfiniteList } from '../pure/InfiniteList'
 import { InfiniteListItems } from '../pure/InfiniteListItems'
 import { HashItem } from './HashItem'
 import { Editor } from '../pure/Editor'
+import { Footer } from '../pure/Footer'
+import { ReloadButton } from '../pure/ReloadButton'
+import { TTLButton } from '../TTLButton'
 
 export function HashPanel(props: { value: string }) {
   const connection = useSelector((state) => state.keys.connection)
@@ -34,9 +40,17 @@ export function HashPanel(props: { value: string }) {
     },
     [connection, props.value, match, isPrefix],
   )
-  const { data, setSize } = useSWRInfinite(handleGetKey, hscan, {
-    revalidateOnFocus: false,
-  })
+  const { data, setSize, isValidating, revalidate } = useSWRInfinite(
+    handleGetKey,
+    hscan,
+    {
+      revalidateOnFocus: false,
+    },
+  )
+  const { data: hlen, revalidate: revalidateHlen } = useSWR(
+    connection ? `hlen/${connection}/${props.value}` : null,
+    () => runCommand<number>(connection!, ['hlen', props.value]),
+  )
   const handleLoadMoreItems = useCallback(async () => {
     await setSize((_size) => _size + 1)
   }, [setSize])
@@ -48,6 +62,12 @@ export function HashPanel(props: { value: string }) {
     [],
   )
   const selectedKey = useSelector((state) => state.hash.selectedKey)
+  const handleReload = useCallback(async () => {
+    await setSize(0)
+    await revalidate()
+    await revalidateHlen()
+  }, [setSize, revalidate, revalidateHlen])
+  const scanSize = useScanSize(data)
 
   return (
     <div
@@ -58,13 +78,34 @@ export function HashPanel(props: { value: string }) {
         height: '100%',
       }}>
       <div style={{ flex: 1, display: 'flex' }}>
-        <div style={{ width: 320 }}>
+        <div style={{ width: 320, display: 'flex', flexDirection: 'column' }}>
           <HashMatchInput />
-          {data ? (
-            <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
-              {renderItems}
-            </InfiniteList>
-          ) : null}
+          <div style={{ flex: 1 }}>
+            {data ? (
+              <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
+                {renderItems}
+              </InfiniteList>
+            ) : null}
+          </div>
+          <Footer>
+            <ReloadButton
+              style={{ flexBasis: 100 }}
+              isLoading={isValidating}
+              onReload={handleReload}
+            />
+            <span>
+              {formatNumber(scanSize)}&nbsp;of&nbsp;
+              {formatNumber(hlen || 0)}
+            </span>
+            <TTLButton
+              style={{
+                flexBasis: 100,
+                display: 'flex',
+                justifyContent: 'flex-end',
+              }}
+              value={props.value}
+            />
+          </Footer>
         </div>
         {selectedKey ? (
           <Editor

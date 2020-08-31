@@ -8,7 +8,7 @@ import { sscan } from '@/utils/scanner'
 import { SetMatchInput } from './SetMatchInput'
 import { InfiniteList } from '../pure/InfiniteList'
 import { InfiniteListItems } from '../pure/InfiniteListItems'
-import { SetKeyItem } from './SetKeyItem'
+import { SetItem } from './SetItem'
 
 export function SetPanel(props: { value: string }) {
   const connection = useSelector((state) => state.keys.connection)
@@ -42,7 +42,7 @@ export function SetPanel(props: { value: string }) {
   const renderItems = useCallback(
     // eslint-disable-next-line react/jsx-props-no-spreading
     (p: ListChildComponentProps) => (
-      <InfiniteListItems {...p}>{SetKeyItem}</InfiniteListItems>
+      <InfiniteListItems {...p}>{SetItem}</InfiniteListItems>
     ),
     [],
   )

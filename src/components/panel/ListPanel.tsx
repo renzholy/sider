@@ -7,7 +7,7 @@ import { Unpacked } from '@/utils'
 import { lrange } from '@/utils/scanner'
 import { InfiniteList } from '../pure/InfiniteList'
 import { InfiniteListItems } from '../pure/InfiniteListItems'
-import { ListKeyItem } from './ListKeyItem'
+import { ListItem } from './ListItem'
 
 export function ListPanel(props: { value: string }) {
   const connection = useSelector((state) => state.keys.connection)
@@ -34,7 +34,7 @@ export function ListPanel(props: { value: string }) {
   const renderItems = useCallback(
     (p: ListChildComponentProps) => (
       // eslint-disable-next-line react/jsx-props-no-spreading
-      <InfiniteListItems {...p}>{ListKeyItem}</InfiniteListItems>
+      <InfiniteListItems {...p}>{ListItem}</InfiniteListItems>
     ),
     [],
   )

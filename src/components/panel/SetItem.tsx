@@ -5,13 +5,13 @@ import { isEqual } from 'lodash'
 import { actions } from '@/stores'
 import { InfiniteListItem } from '../pure/InfiniteListItem'
 
-export function ListKeyItem(props: { value: string }) {
-  const selectedKey = useSelector((state) => state.list.selectedKey)
+export function SetItem(props: { value: string }) {
+  const selectedKey = useSelector((state) => state.set.selectedKey)
   const dispatch = useDispatch()
   const item = props.value
   const handleSelect = useCallback(
     (isSelected: boolean) => {
-      dispatch(actions.list.setSelectedKey(isSelected ? item : undefined))
+      dispatch(actions.set.setSelectedKey(isSelected ? item : undefined))
     },
     [dispatch, item],
   )

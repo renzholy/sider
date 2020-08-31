@@ -11,7 +11,7 @@ import { useScanSize } from '@/hooks/useScanSize'
 import { ZsetMatchInput } from './ZsetMatchInput'
 import { InfiniteList } from '../pure/InfiniteList'
 import { InfiniteListItems } from '../pure/InfiniteListItems'
-import { ZsetKeyItem } from './ZsetKeyItem'
+import { ZsetItem } from './ZsetItem'
 import { Footer } from '../pure/Footer'
 import { ReloadButton } from '../pure/ReloadButton'
 import { TTLButton } from '../TTLButton'
@@ -52,7 +52,7 @@ export function ZsetPanel(props: { value: string }) {
   const renderItems = useCallback(
     (p: ListChildComponentProps) => (
       // eslint-disable-next-line react/jsx-props-no-spreading
-      <InfiniteListItems {...p}>{ZsetKeyItem}</InfiniteListItems>
+      <InfiniteListItems {...p}>{ZsetItem}</InfiniteListItems>
     ),
     [],
   )

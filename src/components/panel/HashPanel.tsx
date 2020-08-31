@@ -8,7 +8,7 @@ import { hscan } from '@/utils/scanner'
 import { HashMatchInput } from './HashMatchInput'
 import { InfiniteList } from '../pure/InfiniteList'
 import { InfiniteListItems } from '../pure/InfiniteListItems'
-import { HashKeyItem } from './HashKeyItem'
+import { HashItem } from './HashItem'
 import { Editor } from '../pure/Editor'
 
 export function HashPanel(props: { value: string }) {
@@ -43,7 +43,7 @@ export function HashPanel(props: { value: string }) {
   const renderItems = useCallback(
     (p: ListChildComponentProps) => (
       // eslint-disable-next-line react/jsx-props-no-spreading
-      <InfiniteListItems {...p}>{HashKeyItem}</InfiniteListItems>
+      <InfiniteListItems {...p}>{HashItem}</InfiniteListItems>
     ),
     [],
   )

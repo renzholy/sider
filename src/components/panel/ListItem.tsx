@@ -5,13 +5,13 @@ import { isEqual } from 'lodash'
 import { actions } from '@/stores'
 import { InfiniteListItem } from '../pure/InfiniteListItem'
 
-export function ZsetKeyItem(props: { value: { key: string; score: number } }) {
-  const selectedKey = useSelector((state) => state.zset.selectedKey)
+export function ListItem(props: { value: string }) {
+  const selectedKey = useSelector((state) => state.list.selectedKey)
   const dispatch = useDispatch()
   const item = props.value
   const handleSelect = useCallback(
     (isSelected: boolean) => {
-      dispatch(actions.zset.setSelectedKey(isSelected ? item : undefined))
+      dispatch(actions.list.setSelectedKey(isSelected ? item : undefined))
     },
     [dispatch, item],
   )
@@ -20,15 +20,7 @@ export function ZsetKeyItem(props: { value: { key: string; score: number } }) {
     <InfiniteListItem
       isSelected={isEqual(selectedKey, item)}
       onSelect={handleSelect}>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          marginRight: 8,
-        }}>
-        <span title={item.key}>{item.key}</span>
-        <span title={item.score.toString()}>{item.score}</span>
-      </div>
+      <span title={item}>{item}</span>
     </InfiniteListItem>
   )
 }

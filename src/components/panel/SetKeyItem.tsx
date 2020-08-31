@@ -1,42 +1,24 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { isEqual } from 'lodash'
-import { Colors } from '@blueprintjs/core'
 
 import { actions } from '@/stores'
-import styles from './SetKeyItem.less'
+import { ListItem } from '../pure/ListItem'
 
 export function SetKeyItem(props: { value: string }) {
   const selectedKey = useSelector((state) => state.set.selectedKey)
   const dispatch = useDispatch()
   const item = props.value
-  const handleClick = useCallback(() => {
-    if (!item) {
-      return
-    }
-    dispatch(
-      actions.set.setSelectedKey(selectedKey === item ? undefined : item),
-    )
-  }, [dispatch, item, selectedKey])
-  const backgroundColor = useMemo(
-    () => (isEqual(selectedKey, item) ? Colors.LIGHT_GRAY3 : undefined),
-    [item, selectedKey],
+  const handleSelect = useCallback(
+    (isSelected: boolean) => {
+      dispatch(actions.set.setSelectedKey(isSelected ? item : undefined))
+    },
+    [dispatch, item],
   )
 
   return (
-    <div
-      key={item}
-      className={styles.setKeyItem}
-      style={{
-        backgroundColor,
-      }}
-      onClick={handleClick}>
-      <span className={styles.setKeyItemText} title={item}>
-        {item}
-      </span>
-    </div>
+    <ListItem isSelected={isEqual(selectedKey, item)} onSelect={handleSelect}>
+      <span title={item}>{item}</span>
+    </ListItem>
   )
 }

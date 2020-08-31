@@ -7,7 +7,7 @@ import { Unpacked } from '@/utils'
 import { hscan } from '@/utils/scanner'
 import { HashMatchInput } from './HashMatchInput'
 import { InfiniteList } from '../pure/InfiniteList'
-import { ListItems } from '../pure/ListItems'
+import { InfiniteListItems } from '../pure/InfiniteListItems'
 import { HashKeyItem } from './HashKeyItem'
 import { Editor } from '../pure/Editor'
 
@@ -41,8 +41,10 @@ export function HashPanel(props: { value: string }) {
     await setSize((_size) => _size + 1)
   }, [setSize])
   const renderItems = useCallback(
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    (p: ListChildComponentProps) => <ListItems {...p}>{HashKeyItem}</ListItems>,
+    (p: ListChildComponentProps) => (
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      <InfiniteListItems {...p}>{HashKeyItem}</InfiniteListItems>
+    ),
     [],
   )
   const selectedKey = useSelector((state) => state.hash.selectedKey)

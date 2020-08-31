@@ -11,7 +11,7 @@ import { ConnectionSelector } from '@/components/ConnectionSelector'
 import { KeysMatchInput } from '@/components/KeysMatchInput'
 import { Panel } from '@/components/panel/Panel'
 import { InfiniteList } from '@/components/pure/InfiniteList'
-import { ListItems } from '@/components/pure/ListItems'
+import { InfiniteListItems } from '@/components/pure/InfiniteListItems'
 import { KeyItem } from '@/components/KeyItem'
 import { Footer } from '@/components/pure/Footer'
 import { ReloadButton } from '@/components/pure/ReloadButton'
@@ -63,7 +63,9 @@ export default () => {
   }, [setSize, revalidate, revalidateDbSize])
   const renderItems = useCallback(
     // eslint-disable-next-line react/jsx-props-no-spreading
-    (p: ListChildComponentProps) => <ListItems {...p}>{KeyItem}</ListItems>,
+    (p: ListChildComponentProps) => (
+      <InfiniteListItems {...p}>{KeyItem}</InfiniteListItems>
+    ),
     [],
   )
 

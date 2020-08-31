@@ -10,7 +10,7 @@ import { runCommand } from '@/utils/fetcher'
 import { useScanSize } from '@/hooks/useScanSize'
 import { ZsetMatchInput } from './ZsetMatchInput'
 import { InfiniteList } from '../pure/InfiniteList'
-import { ListItems } from '../pure/ListItems'
+import { InfiniteListItems } from '../pure/InfiniteListItems'
 import { ZsetKeyItem } from './ZsetKeyItem'
 import { Footer } from '../pure/Footer'
 import { ReloadButton } from '../pure/ReloadButton'
@@ -50,8 +50,10 @@ export function ZsetPanel(props: { value: string }) {
     await setSize((_size) => _size + 1)
   }, [setSize])
   const renderItems = useCallback(
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    (p: ListChildComponentProps) => <ListItems {...p}>{ZsetKeyItem}</ListItems>,
+    (p: ListChildComponentProps) => (
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      <InfiniteListItems {...p}>{ZsetKeyItem}</InfiniteListItems>
+    ),
     [],
   )
   const scanSize = useScanSize(data)

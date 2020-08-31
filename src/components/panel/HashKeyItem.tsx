@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { isEqual } from 'lodash'
 
 import { actions } from '@/stores'
-import { ListItem } from '../pure/ListItem'
+import { InfiniteListItem } from '../pure/InfiniteListItem'
 
 export function HashKeyItem(props: { value: { hash: string; value: string } }) {
   const selectedKey = useSelector((state) => state.hash.selectedKey)
@@ -17,8 +17,10 @@ export function HashKeyItem(props: { value: { hash: string; value: string } }) {
   )
 
   return (
-    <ListItem isSelected={isEqual(selectedKey, item)} onSelect={handleSelect}>
+    <InfiniteListItem
+      isSelected={isEqual(selectedKey, item)}
+      onSelect={handleSelect}>
       <span title={item.hash}>{item.hash}</span>
-    </ListItem>
+    </InfiniteListItem>
   )
 }

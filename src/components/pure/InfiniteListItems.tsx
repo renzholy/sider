@@ -1,7 +1,7 @@
 import React, { ComponentType } from 'react'
 import type { ListChildComponentProps } from 'react-window'
 
-export function ListItems<T>(
+export function InfiniteListItems<T>(
   props: ListChildComponentProps & {
     children: ComponentType<{ value: T }>
   },

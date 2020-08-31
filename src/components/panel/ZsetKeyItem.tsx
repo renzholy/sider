@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { isEqual } from 'lodash'
 
 import { actions } from '@/stores'
-import { ListItem } from '../pure/ListItem'
+import { InfiniteListItem } from '../pure/InfiniteListItem'
 
 export function ZsetKeyItem(props: { value: { key: string; score: number } }) {
   const selectedKey = useSelector((state) => state.zset.selectedKey)
@@ -17,7 +17,9 @@ export function ZsetKeyItem(props: { value: { key: string; score: number } }) {
   )
 
   return (
-    <ListItem isSelected={isEqual(selectedKey, item)} onSelect={handleSelect}>
+    <InfiniteListItem
+      isSelected={isEqual(selectedKey, item)}
+      onSelect={handleSelect}>
       <div
         style={{
           display: 'flex',
@@ -27,6 +29,6 @@ export function ZsetKeyItem(props: { value: { key: string; score: number } }) {
         <span title={item.key}>{item.key}</span>
         <span title={item.score.toString()}>{item.score}</span>
       </div>
-    </ListItem>
+    </InfiniteListItem>
   )
 }

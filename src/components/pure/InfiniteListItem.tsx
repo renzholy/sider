@@ -4,9 +4,9 @@
 import React, { useCallback } from 'react'
 import { Colors } from '@blueprintjs/core'
 
-import styles from './ListItem.less'
+import styles from './InfiniteListItem.less'
 
-export function ListItem(props: {
+export function InfiniteListItem(props: {
   isSelected: boolean
   onSelect(isSelected: boolean): void
   children: React.ReactNode

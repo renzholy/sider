@@ -5,7 +5,7 @@ import { isEqual } from 'lodash'
 import { KeyType } from '@/types'
 import { actions } from '@/stores'
 import { KeyTag } from './KeyTag'
-import { ListItem } from './pure/ListItem'
+import { InfiniteListItem } from './pure/InfiniteListItem'
 
 export function KeyItem(props: { value: { key: string; type: KeyType } }) {
   const selectedKey = useSelector((state) => state.keys.selectedKey)
@@ -19,10 +19,12 @@ export function KeyItem(props: { value: { key: string; type: KeyType } }) {
   )
 
   return (
-    <ListItem isSelected={isEqual(selectedKey, item)} onSelect={handleSelect}>
+    <InfiniteListItem
+      isSelected={isEqual(selectedKey, item)}
+      onSelect={handleSelect}>
       <KeyTag type={item.type} />
       &nbsp;
       <span title={item.key}>{item.key}</span>
-    </ListItem>
+    </InfiniteListItem>
   )
 }

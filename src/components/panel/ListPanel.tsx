@@ -6,7 +6,7 @@ import { ListChildComponentProps } from 'react-window'
 import { Unpacked } from '@/utils'
 import { lrange } from '@/utils/scanner'
 import { InfiniteList } from '../pure/InfiniteList'
-import { ListItems } from '../pure/ListItems'
+import { InfiniteListItems } from '../pure/InfiniteListItems'
 import { ListKeyItem } from './ListKeyItem'
 
 export function ListPanel(props: { value: string }) {
@@ -32,8 +32,10 @@ export function ListPanel(props: { value: string }) {
     await setSize((_size) => _size + 1)
   }, [setSize])
   const renderItems = useCallback(
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    (p: ListChildComponentProps) => <ListItems {...p}>{ListKeyItem}</ListItems>,
+    (p: ListChildComponentProps) => (
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      <InfiniteListItems {...p}>{ListKeyItem}</InfiniteListItems>
+    ),
     [],
   )
 

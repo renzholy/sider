@@ -4,6 +4,7 @@
 import React, { useCallback } from 'react'
 import { Colors } from '@blueprintjs/core'
 
+import { useIsDarkMode } from '@/hooks/useIsDarkMode'
 import styles from './InfiniteListItem.less'
 
 export function InfiniteListItem(props: {
@@ -15,7 +16,12 @@ export function InfiniteListItem(props: {
     props.onSelect(true)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.onSelect])
-  const backgroundColor = props.isSelected ? Colors.LIGHT_GRAY3 : undefined
+  const isDarkMode = useIsDarkMode()
+  const backgroundColor = props.isSelected
+    ? isDarkMode
+      ? Colors.DARK_GRAY3
+      : Colors.LIGHT_GRAY3
+    : undefined
 
   return (
     <div

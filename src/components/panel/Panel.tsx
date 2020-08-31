@@ -4,6 +4,7 @@ import { Colors } from '@blueprintjs/core'
 
 import { KeyType } from '@/types'
 import { actions } from '@/stores'
+import { useIsDarkMode } from '@/hooks/useIsDarkMode'
 import { KeyTag } from '../KeyTag'
 import { SetPanel } from './SetPanel'
 import { StringPanel } from './StringPanel'
@@ -45,6 +46,7 @@ export function Panel() {
     dispatch(actions.zset.setIsPrefix(true))
     dispatch(actions.zset.setMatch(''))
   }, [selectedKey, dispatch])
+  const isDarkMode = useIsDarkMode()
 
   if (!selectedKey) {
     return null
@@ -57,7 +59,7 @@ export function Panel() {
           height: 40,
           display: 'flex',
           alignItems: 'center',
-          backgroundColor: Colors.LIGHT_GRAY4,
+          backgroundColor: isDarkMode ? Colors.DARK_GRAY4 : Colors.LIGHT_GRAY4,
           borderRadius: 4,
           padding: 5,
         }}>

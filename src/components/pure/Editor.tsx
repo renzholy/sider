@@ -1,6 +1,8 @@
 import React, { CSSProperties, useState, useEffect } from 'react'
 import { Colors } from '@blueprintjs/core'
 
+import { useIsDarkMode } from '@/hooks/useIsDarkMode'
+
 export function Editor(props: { style?: CSSProperties; value?: string }) {
   const [str, setStr] = useState<string>()
   useEffect(() => {
@@ -16,6 +18,7 @@ export function Editor(props: { style?: CSSProperties; value?: string }) {
       setStr(props.value)
     }
   }, [props.value])
+  const isDarkMode = useIsDarkMode()
 
   return str === undefined ? null : (
     <div
@@ -23,7 +26,7 @@ export function Editor(props: { style?: CSSProperties; value?: string }) {
         ...props.style,
         borderRadius: 4,
         padding: 8,
-        backgroundColor: Colors.LIGHT_GRAY5,
+        backgroundColor: isDarkMode ? Colors.BLACK : Colors.WHITE,
       }}>
       <code style={{ wordBreak: 'break-all', whiteSpace: 'pre-wrap' }}>
         {str}

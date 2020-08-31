@@ -1,7 +1,11 @@
 import React from 'react'
 import { Colors } from '@blueprintjs/core'
 
+import { useIsDarkMode } from '@/hooks/useIsDarkMode'
+
 export function Footer(props: { children: React.ReactNode }) {
+  const isDarkMode = useIsDarkMode()
+
   return (
     <div
       style={{
@@ -9,7 +13,7 @@ export function Footer(props: { children: React.ReactNode }) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor: Colors.LIGHT_GRAY4,
+        backgroundColor: isDarkMode ? Colors.DARK_GRAY4 : Colors.LIGHT_GRAY4,
         marginTop: 8,
         borderRadius: 4,
         padding: 5,

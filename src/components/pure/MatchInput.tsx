@@ -1,6 +1,8 @@
 import React, { useCallback, CSSProperties } from 'react'
 import { InputGroup, Colors } from '@blueprintjs/core'
 
+import { useIsDarkMode } from '@/hooks/useIsDarkMode'
+
 export function MatchInput(props: {
   leftElement?: JSX.Element
   rightElement?: JSX.Element
@@ -15,6 +17,7 @@ export function MatchInput(props: {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [props.onChange],
   )
+  const isDarkMode = useIsDarkMode()
 
   return (
     <InputGroup
@@ -25,7 +28,7 @@ export function MatchInput(props: {
       large={true}
       style={{
         ...props.style,
-        backgroundColor: Colors.LIGHT_GRAY4,
+        backgroundColor: isDarkMode ? Colors.DARK_GRAY4 : Colors.LIGHT_GRAY4,
         boxShadow: 'none',
         outline: 'none',
       }}

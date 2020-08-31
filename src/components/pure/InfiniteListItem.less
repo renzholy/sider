@@ -17,6 +17,14 @@
   white-space: nowrap;
 }
 
-.listItem:hover {
-  background-color: @light-gray5;
+@media (prefers-color-scheme: light) {
+  .listItem:hover {
+    background-color: @light-gray5;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .listItem:hover {
+    background-color: @dark-gray5;
+  }
 }

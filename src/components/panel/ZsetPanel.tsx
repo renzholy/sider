@@ -10,6 +10,7 @@ import { formatNumber } from '@/utils/formatter'
 import { runCommand } from '@/utils/fetcher'
 import { useScanSize } from '@/hooks/useScanSize'
 import { actions } from '@/stores'
+import { useIsDarkMode } from '@/hooks/useIsDarkMode'
 import { ZsetMatchInput } from './ZsetMatchInput'
 import { InfiniteList } from '../pure/InfiniteList'
 import { InfiniteListItems } from '../pure/InfiniteListItems'
@@ -75,6 +76,7 @@ export function ZsetPanel(props: { value: string }) {
   useEffect(() => {
     dispatch(actions.zset.setSelectedKey(undefined))
   }, [props.value, dispatch])
+  const isDarkMode = useIsDarkMode()
 
   return (
     <div
@@ -121,7 +123,9 @@ export function ZsetPanel(props: { value: string }) {
                 marginLeft: 8,
                 marginBottom: 8,
                 height: 40,
-                backgroundColor: Colors.LIGHT_GRAY4,
+                backgroundColor: isDarkMode
+                  ? Colors.DARK_GRAY4
+                  : Colors.LIGHT_GRAY4,
                 borderRadius: 4,
                 padding: 8,
                 display: 'flex',

@@ -1,3 +1,5 @@
+import { chunk } from 'lodash'
+
 import { Connection, KeyType } from '@/types'
 import { runCommand } from './fetcher'
 
@@ -49,5 +51,27 @@ export async function sscan(
   return {
     next,
     keys,
+  }
+}
+
+export async function hscan(
+  connection: Connection,
+  key: string,
+  match: string,
+  cursor: string,
+): Promise<{
+  next: string
+  keys: { hash: string; value: string }[]
+}> {
+  const [next, keys] = await runCommand<[string, string[]]>(connection, [
+    'hscan',
+    key,
+    cursor,
+    'match',
+    match,
+  ])
+  return {
+    next,
+    keys: chunk(keys, 2).map(([hash, value]) => ({ hash, value })),
   }
 }

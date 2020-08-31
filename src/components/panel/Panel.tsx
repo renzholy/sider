@@ -3,9 +3,10 @@ import { useSelector } from 'react-redux'
 import { Colors } from '@blueprintjs/core'
 
 import { KeyType } from '@/types'
+import { KeyTag } from '../KeyTag'
 import { SetPanel } from './SetPanel'
 import { StringPanel } from './StringPanel'
-import { KeyTag } from '../KeyTag'
+import { HashPanel } from './HashPanel'
 
 function PanelInner(props: { value: { type: KeyType; key: string } }) {
   switch (props.value.type) {
@@ -14,6 +15,9 @@ function PanelInner(props: { value: { type: KeyType; key: string } }) {
     }
     case KeyType.SET: {
       return <SetPanel value={props.value.key} />
+    }
+    case KeyType.HASH: {
+      return <HashPanel value={props.value.key} />
     }
     default: {
       return null

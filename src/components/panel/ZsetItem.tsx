@@ -24,7 +24,6 @@ export function ZsetItem(props: { value: { key: string; score: number } }) {
         style={{
           display: 'flex',
           justifyContent: 'space-between',
-          marginRight: 8,
         }}>
         <span
           title={item.key}
@@ -36,7 +35,9 @@ export function ZsetItem(props: { value: { key: string; score: number } }) {
           }}>
           {item.key}
         </span>
-        <span title={item.score.toString()} style={{ flexShrink: 0 }}>
+        <span
+          title={item.score.toString()}
+          style={{ flexShrink: 0, marginLeft: 8 }}>
           {item.score}
         </span>
       </div>

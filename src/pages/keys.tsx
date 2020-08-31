@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback } from 'react'
-import { Colors, Button, Spinner, Tooltip } from '@blueprintjs/core'
+import { Button, Spinner, Tooltip } from '@blueprintjs/core'
 import useSWR, { useSWRInfinite } from 'swr'
 import { flatMap } from 'lodash'
 import { useSelector } from 'react-redux'
@@ -15,6 +15,7 @@ import { Panel } from '@/components/panel/Panel'
 import { InfiniteList } from '@/components/pure/InfiniteList'
 import { ListItems } from '@/components/pure/ListItems'
 import { KeyItem } from '@/components/KeyItem'
+import { Footer } from '@/components/pure/Footer'
 
 export default () => {
   const connection = useSelector((state) => state.keys.connection)
@@ -93,23 +94,7 @@ export default () => {
             </InfiniteList>
           ) : null}
         </div>
-        <div
-          style={{
-            height: 40,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            backgroundColor: Colors.LIGHT_GRAY4,
-            marginTop: 8,
-            borderRadius: 4,
-            padding: 5,
-            userSelect: 'none',
-          }}>
-          <ConnectionSelector />
-          <span>
-            {formatNumber(length)}&nbsp;of&nbsp;
-            {formatNumber(dbSize || 0)}
-          </span>
+        <Footer>
           {isValidating ? (
             <div style={{ width: 30, cursor: 'not-allowed' }}>
               <Spinner size={16} />
@@ -119,7 +104,12 @@ export default () => {
               <Button icon="refresh" minimal={true} onClick={handleReload} />
             </Tooltip>
           )}
-        </div>
+          <span>
+            {formatNumber(length)}&nbsp;of&nbsp;
+            {formatNumber(dbSize || 0)}
+          </span>
+          <ConnectionSelector />
+        </Footer>
       </div>
       <Panel />
     </>

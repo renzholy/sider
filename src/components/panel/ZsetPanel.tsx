@@ -9,6 +9,7 @@ import { ZsetMatchInput } from './ZsetMatchInput'
 import { InfiniteList } from '../pure/InfiniteList'
 import { ListItems } from '../pure/ListItems'
 import { ZsetKeyItem } from './ZsetKeyItem'
+import { Footer } from '../pure/Footer'
 
 export function ZsetPanel(props: { value: string }) {
   const connection = useSelector((state) => state.keys.connection)
@@ -53,14 +54,15 @@ export function ZsetPanel(props: { value: string }) {
         flexDirection: 'column',
         height: '100%',
       }}>
+      <ZsetMatchInput />
       <div style={{ flex: 1 }}>
-        <ZsetMatchInput />
         {data ? (
           <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
             {renderItems}
           </InfiniteList>
         ) : null}
       </div>
+      <Footer>123</Footer>
     </div>
   )
 }

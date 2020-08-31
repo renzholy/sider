@@ -38,7 +38,7 @@ export function ConnectionSelector() {
           {data?.map((c) => (
             <MenuItem
               key={c.addrs.join(',')}
-              text={c.addrs.join(',')}
+              text={c.name || c.addrs.join(',')}
               active={isEqual(c.addrs, connection?.addrs)}
               onClick={() => {
                 dispatch(actions.keys.setConnection(c))

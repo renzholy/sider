@@ -2,6 +2,7 @@
  * @see https://pkg.go.dev/github.com/go-redis/redis/v8?tab=doc#UniversalOptions
  */
 export type Connection = {
+  name?: string
   addrs: string[]
   db: number
   username?: string

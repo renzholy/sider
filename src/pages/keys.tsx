@@ -33,9 +33,11 @@ export default () => {
       return connection
         ? [
             connection,
-            isPrefix ? `${match}*` : match || '*',
+            match,
+            isPrefix,
             previousPageData?.next || '0',
             keyType,
+            previousPageData?.getKey,
           ]
         : null
     },

@@ -34,8 +34,10 @@ export function SetPanel(props: { value: string }) {
         ? [
             connection,
             props.value,
-            isPrefix ? `${match}*` : match || '*',
+            match,
+            isPrefix,
             previousPageData?.next || '0',
+            previousPageData?.getKey,
           ]
         : null
     },

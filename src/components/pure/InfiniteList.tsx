@@ -5,10 +5,9 @@ import InfiniteLoader from 'react-window-infinite-loader'
 import mergeRefs from 'react-merge-refs'
 
 export function InfiniteList<T>(props: {
-  items: T[]
+  items: { next: string; keys: T[] }[]
   children: ComponentType<ListChildComponentProps>
   onLoadMoreItems: () => Promise<any> | null
-  onItemSize: (index: number) => number
 }) {
   const handleIsItemLoaded = useCallback(
     (index: number) => !!props.items[index],
@@ -19,6 +18,12 @@ export function InfiniteList<T>(props: {
     variableSizeListRef.current?.resetAfterIndex(props.items.length - 1)
   }, [props.items.length])
   const itemCount = props.items.length + 1
+  const handleItemSize = useCallback(
+    (index: number) => {
+      return props.items[index] ? props.items[index].keys.length * 36 : 0
+    },
+    [props.items],
+  )
 
   return (
     <AutoSizer>
@@ -32,7 +37,7 @@ export function InfiniteList<T>(props: {
               ref={mergeRefs([ref, variableSizeListRef])}
               width={width}
               height={height}
-              itemSize={props.onItemSize}
+              itemSize={handleItemSize}
               itemCount={itemCount}
               itemData={props.items}
               onItemsRendered={onItemsRendered}>

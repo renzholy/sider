@@ -1,7 +1,7 @@
 import React, { ComponentType } from 'react'
 import type { ListChildComponentProps } from 'react-window'
 
-export function ScanListItems<T>(
+export function ListItems<T>(
   props: ListChildComponentProps & {
     children: ComponentType<{ value: T }>
   },

@@ -1,11 +1,14 @@
 import React, { useCallback } from 'react'
 import { useSWRInfinite } from 'swr'
 import { useSelector } from 'react-redux'
+import { ListChildComponentProps } from 'react-window'
 
 import { Unpacked } from '@/utils'
 import { sscan } from '@/utils/scanner'
 import { SetMatchInput } from './SetMatchInput'
-import { SetList } from './SetList'
+import { InfiniteList } from '../pure/InfiniteList'
+import { ListItems } from '../pure/ListItems'
+import { SetKeyItem } from './SetKeyItem'
 
 export function SetPanel(props: { value: string }) {
   const connection = useSelector((state) => state.keys.connection)
@@ -36,6 +39,11 @@ export function SetPanel(props: { value: string }) {
   const handleLoadMoreItems = useCallback(async () => {
     await setSize((_size) => _size + 1)
   }, [setSize])
+  const renderItems = useCallback(
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    (p: ListChildComponentProps) => <ListItems {...p}>{SetKeyItem}</ListItems>,
+    [],
+  )
 
   return (
     <div
@@ -48,7 +56,9 @@ export function SetPanel(props: { value: string }) {
       <SetMatchInput />
       {data ? (
         <div style={{ flex: 1 }}>
-          <SetList items={data} onLoadMoreItems={handleLoadMoreItems} />
+          <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
+            {renderItems}
+          </InfiniteList>
         </div>
       ) : null}
     </div>

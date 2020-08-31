@@ -3,15 +3,18 @@ import { Colors, Button, Spinner, Tooltip } from '@blueprintjs/core'
 import useSWR, { useSWRInfinite } from 'swr'
 import { flatMap } from 'lodash'
 import { useSelector } from 'react-redux'
+import { ListChildComponentProps } from 'react-window'
 
 import { runCommand } from '@/utils/fetcher'
 import { scan } from '@/utils/scanner'
-import { KeysList } from '@/components/KeysList'
 import { Unpacked } from '@/utils/index'
 import { formatNumber } from '@/utils/formatter'
 import { ConnectionSelector } from '@/components/ConnectionSelector'
 import { KeysMatchInput } from '@/components/KeysMatchInput'
 import { Panel } from '@/components/panel/Panel'
+import { InfiniteList } from '@/components/pure/InfiniteList'
+import { ListItems } from '@/components/pure/ListItems'
+import { KeyItem } from '@/components/KeyItem'
 
 export default () => {
   const connection = useSelector((state) => state.keys.connection)
@@ -60,6 +63,11 @@ export default () => {
     await revalidate()
     await revalidateDbSize()
   }, [setSize, revalidate, revalidateDbSize])
+  const renderItems = useCallback(
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    (p: ListChildComponentProps) => <ListItems {...p}>{KeyItem}</ListItems>,
+    [],
+  )
 
   return (
     <>
@@ -80,7 +88,9 @@ export default () => {
             overflow: 'hidden',
           }}>
           {data ? (
-            <KeysList items={data} onLoadMoreItems={handleLoadMoreItems} />
+            <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
+              {renderItems}
+            </InfiniteList>
           ) : null}
         </div>
         <div

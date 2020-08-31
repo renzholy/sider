@@ -1,8 +1,23 @@
-import React, { CSSProperties } from 'react'
+import React, { CSSProperties, useState, useEffect } from 'react'
 import { Colors } from '@blueprintjs/core'
 
 export function Editor(props: { style?: CSSProperties; value?: string }) {
-  return (
+  const [str, setStr] = useState<string>()
+  useEffect(() => {
+    if (props.value === undefined) {
+      setStr(undefined)
+    } else if (props.value.startsWith('{') || props.value.startsWith('[')) {
+      try {
+        setStr(JSON.stringify(JSON.parse(props.value), null, 2))
+      } catch {
+        setStr(props.value)
+      }
+    } else {
+      setStr(props.value)
+    }
+  }, [props.value])
+
+  return str === undefined ? null : (
     <div
       style={{
         ...props.style,
@@ -10,7 +25,9 @@ export function Editor(props: { style?: CSSProperties; value?: string }) {
         padding: 5,
         backgroundColor: Colors.LIGHT_GRAY4,
       }}>
-      <code style={{ wordBreak: 'break-all' }}>{props.value}</code>
+      <code style={{ wordBreak: 'break-all', whiteSpace: 'pre-wrap' }}>
+        {str}
+      </code>
     </div>
   )
 }

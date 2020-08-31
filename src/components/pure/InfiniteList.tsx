@@ -20,7 +20,7 @@ export function InfiniteList<T>(props: {
   const itemCount = props.items.length + 1
   const handleItemSize = useCallback(
     (index: number) => {
-      return props.items[index] ? props.items[index].keys.length * 36 : 0
+      return props.items[index] ? props.items[index].keys.length * 36 : 36
     },
     [props.items],
   )

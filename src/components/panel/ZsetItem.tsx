@@ -26,8 +26,19 @@ export function ZsetItem(props: { value: { key: string; score: number } }) {
           justifyContent: 'space-between',
           marginRight: 8,
         }}>
-        <span title={item.key}>{item.key}</span>
-        <span title={item.score.toString()}>{item.score}</span>
+        <span
+          title={item.key}
+          style={{
+            display: 'block',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}>
+          {item.key}
+        </span>
+        <span title={item.score.toString()} style={{ flexShrink: 0 }}>
+          {item.score}
+        </span>
       </div>
     </InfiniteListItem>
   )

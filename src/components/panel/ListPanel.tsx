@@ -14,6 +14,7 @@ import { ListItem } from './ListItem'
 import { Footer } from '../pure/Footer'
 import { TTLButton } from '../TTLButton'
 import { ReloadButton } from '../pure/ReloadButton'
+import { Editor } from '../pure/Editor'
 
 export function ListPanel(props: { value: string }) {
   const connection = useSelector((state) => state.keys.connection)
@@ -58,6 +59,7 @@ export function ListPanel(props: { value: string }) {
     await revalidateLlen()
   }, [setSize, revalidate, revalidateLlen])
   const scanSize = useScanSize(data)
+  const selectedKey = useSelector((state) => state.list.selectedKey)
 
   return (
     <div
@@ -67,21 +69,45 @@ export function ListPanel(props: { value: string }) {
         flexDirection: 'column',
         height: '100%',
       }}>
-      <div style={{ flex: 1 }}>
-        {data ? (
-          <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
-            {renderItems}
-          </InfiniteList>
+      <div style={{ flex: 1, display: 'flex' }}>
+        <div style={{ width: 440, display: 'flex', flexDirection: 'column' }}>
+          <div style={{ flex: 1 }}>
+            {data ? (
+              <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
+                {renderItems}
+              </InfiniteList>
+            ) : null}
+          </div>
+          <Footer>
+            <ReloadButton
+              style={{ flexBasis: 100 }}
+              isLoading={isValidating}
+              onReload={handleReload}
+            />
+            <span>
+              {formatNumber(scanSize)}&nbsp;of&nbsp;
+              {formatNumber(llen || 0)}
+            </span>
+            <TTLButton
+              style={{
+                flexBasis: 100,
+                display: 'flex',
+                justifyContent: 'flex-end',
+              }}
+              value={props.value}
+            />
+          </Footer>
+        </div>
+        {selectedKey ? (
+          <Editor
+            style={{
+              flex: 1,
+              marginLeft: 8,
+            }}
+            value={selectedKey}
+          />
         ) : null}
       </div>
-      <Footer>
-        <ReloadButton isLoading={isValidating} onReload={handleReload} />
-        <span>
-          {formatNumber(scanSize)}&nbsp;of&nbsp;
-          {formatNumber(llen || 0)}
-        </span>
-        <TTLButton value={props.value} />
-      </Footer>
     </div>
   )
 }

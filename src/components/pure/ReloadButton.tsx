@@ -7,7 +7,15 @@ export function ReloadButton(props: {
   onReload(): void
 }) {
   return props.isLoading ? (
-    <div style={{ ...props.style, width: 30, cursor: 'not-allowed' }}>
+    <div
+      style={{
+        ...props.style,
+        width: 30,
+        cursor: 'not-allowed',
+        display: 'flex',
+        justifyContent: 'flex-start',
+        paddingLeft: 8,
+      }}>
       <Spinner size={16} />
     </div>
   ) : (

@@ -15,6 +15,7 @@ import { ZsetItem } from './ZsetItem'
 import { Footer } from '../pure/Footer'
 import { ReloadButton } from '../pure/ReloadButton'
 import { TTLButton } from '../TTLButton'
+import { Editor } from '../pure/Editor'
 
 export function ZsetPanel(props: { value: string }) {
   const connection = useSelector((state) => state.keys.connection)
@@ -67,6 +68,7 @@ export function ZsetPanel(props: { value: string }) {
     await revalidate()
     await revalidateCount()
   }, [setSize, revalidate, revalidateCount])
+  const selectedKey = useSelector((state) => state.zset.selectedKey)
 
   return (
     <div
@@ -76,22 +78,55 @@ export function ZsetPanel(props: { value: string }) {
         flexDirection: 'column',
         height: '100%',
       }}>
-      <ZsetMatchInput />
-      <div style={{ flex: 1 }}>
-        {data ? (
-          <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
-            {renderItems}
-          </InfiniteList>
+      <div style={{ flex: 1, display: 'flex' }}>
+        <div style={{ width: 440, display: 'flex', flexDirection: 'column' }}>
+          <ZsetMatchInput />
+          <div style={{ flex: 1 }}>
+            {data ? (
+              <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
+                {renderItems}
+              </InfiniteList>
+            ) : null}
+          </div>
+          <Footer>
+            <ReloadButton
+              style={{ flexBasis: 100 }}
+              isLoading={isValidating}
+              onReload={handleReload}
+            />
+            <span>
+              {formatNumber(scanSize)}&nbsp;of&nbsp;
+              {formatNumber(count || 0)}
+            </span>
+            <TTLButton
+              style={{
+                flexBasis: 100,
+                display: 'flex',
+                justifyContent: 'flex-end',
+              }}
+              value={props.value}
+            />
+          </Footer>
+        </div>
+        {selectedKey ? (
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+            <Editor
+              style={{
+                marginLeft: 8,
+                marginBottom: 8,
+              }}
+              value={selectedKey.score.toString()}
+            />
+            <Editor
+              style={{
+                flex: 1,
+                marginLeft: 8,
+              }}
+              value={selectedKey.key}
+            />
+          </div>
         ) : null}
       </div>
-      <Footer>
-        <ReloadButton isLoading={isValidating} onReload={handleReload} />
-        <span>
-          {formatNumber(scanSize)}&nbsp;of&nbsp;
-          {formatNumber(count || 0)}
-        </span>
-        <TTLButton value={props.value} />
-      </Footer>
     </div>
   )
 }

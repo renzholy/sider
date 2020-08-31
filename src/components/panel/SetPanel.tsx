@@ -15,6 +15,7 @@ import { SetItem } from './SetItem'
 import { Footer } from '../pure/Footer'
 import { TTLButton } from '../TTLButton'
 import { ReloadButton } from '../pure/ReloadButton'
+import { Editor } from '../pure/Editor'
 
 export function SetPanel(props: { value: string }) {
   const connection = useSelector((state) => state.keys.connection)
@@ -60,12 +61,13 @@ export function SetPanel(props: { value: string }) {
     connection ? `scard/${connection}/${props.value}` : null,
     () => runCommand<number>(connection!, ['scard', props.value]),
   )
-  const scanSize = useScanSize()
+  const scanSize = useScanSize(data)
   const handleReload = useCallback(async () => {
     await setSize(0)
     await revalidate()
     await revalidateScard()
   }, [setSize, revalidate, revalidateScard])
+  const selectedKey = useSelector((state) => state.set.selectedKey)
 
   return (
     <div
@@ -76,21 +78,34 @@ export function SetPanel(props: { value: string }) {
         height: '100%',
       }}>
       <SetMatchInput />
-      <div style={{ flex: 1 }}>
-        {data ? (
-          <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
-            {renderItems}
-          </InfiniteList>
+      <div style={{ flex: 1, display: 'flex' }}>
+        <div style={{ width: 320, display: 'flex', flexDirection: 'column' }}>
+          <div style={{ flex: 1 }}>
+            {data ? (
+              <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
+                {renderItems}
+              </InfiniteList>
+            ) : null}
+          </div>
+          <Footer>
+            <ReloadButton isLoading={isValidating} onReload={handleReload} />
+            <span>
+              {formatNumber(scanSize)}&nbsp;of&nbsp;
+              {formatNumber(scard || 0)}
+            </span>
+            <TTLButton value={props.value} />
+          </Footer>
+        </div>
+        {selectedKey ? (
+          <Editor
+            style={{
+              flex: 1,
+              marginLeft: 8,
+            }}
+            value={selectedKey}
+          />
         ) : null}
       </div>
-      <Footer>
-        <ReloadButton isLoading={isValidating} onReload={handleReload} />
-        <span>
-          {formatNumber(scanSize)}&nbsp;of&nbsp;
-          {formatNumber(scard || 0)}
-        </span>
-        <TTLButton value={props.value} />
-      </Footer>
     </div>
   )
 }

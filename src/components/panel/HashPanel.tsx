@@ -78,7 +78,7 @@ export function HashPanel(props: { value: string }) {
         height: '100%',
       }}>
       <div style={{ flex: 1, display: 'flex' }}>
-        <div style={{ width: 320, display: 'flex', flexDirection: 'column' }}>
+        <div style={{ width: 360, display: 'flex', flexDirection: 'column' }}>
           <HashMatchInput />
           <div style={{ flex: 1 }}>
             {data ? (

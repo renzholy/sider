@@ -23,7 +23,7 @@ export function HashMatchInput() {
       style={{
         marginBottom: 8,
       }}
-      leftElement={<Icon icon="search" />}
+      leftElement={<Icon icon="filter" />}
       rightElement={
         <Tooltip content="Prefix match">
           <Button

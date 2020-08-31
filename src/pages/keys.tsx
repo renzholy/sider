@@ -62,8 +62,8 @@ export default () => {
     await revalidateDbSize()
   }, [setSize, revalidate, revalidateDbSize])
   const renderItems = useCallback(
-    // eslint-disable-next-line react/jsx-props-no-spreading
     (p: ListChildComponentProps) => (
+      // eslint-disable-next-line react/jsx-props-no-spreading
       <InfiniteListItems {...p}>{KeyItem}</InfiniteListItems>
     ),
     [],
@@ -73,7 +73,7 @@ export default () => {
     <>
       <div
         style={{
-          width: 320,
+          width: 360,
           padding: 8,
           height: '100%',
           display: 'flex',

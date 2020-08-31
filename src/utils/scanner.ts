@@ -75,3 +75,28 @@ export async function hscan(
     keys: chunk(keys, 2).map(([hash, value]) => ({ hash, value })),
   }
 }
+
+export async function zscan(
+  connection: Connection,
+  key: string,
+  match: string,
+  cursor: string,
+): Promise<{
+  next: string
+  keys: { score: number; value: string }[]
+}> {
+  const [next, keys] = await runCommand<[string, string[]]>(connection, [
+    'zscan',
+    key,
+    cursor,
+    'match',
+    match,
+  ])
+  return {
+    next,
+    keys: chunk(keys, 2).map(([value, score]) => ({
+      score: parseInt(score, 10),
+      value,
+    })),
+  }
+}

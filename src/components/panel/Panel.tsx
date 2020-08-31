@@ -7,6 +7,7 @@ import { KeyTag } from '../KeyTag'
 import { SetPanel } from './SetPanel'
 import { StringPanel } from './StringPanel'
 import { HashPanel } from './HashPanel'
+import { ZsetPanel } from './ZsetPanel'
 
 function PanelInner(props: { value: { type: KeyType; key: string } }) {
   switch (props.value.type) {
@@ -18,6 +19,9 @@ function PanelInner(props: { value: { type: KeyType; key: string } }) {
     }
     case KeyType.HASH: {
       return <HashPanel value={props.value.key} />
+    }
+    case KeyType.ZSET: {
+      return <ZsetPanel value={props.value.key} />
     }
     default: {
       return null

@@ -9,6 +9,7 @@ import { HashMatchInput } from './HashMatchInput'
 import { InfiniteList } from '../pure/InfiniteList'
 import { ListItems } from '../pure/ListItems'
 import { HashKeyItem } from './HashKeyItem'
+import { Editor } from '../pure/Editor'
 
 export function HashPanel(props: { value: string }) {
   const connection = useSelector((state) => state.keys.connection)
@@ -63,7 +64,15 @@ export function HashPanel(props: { value: string }) {
             </InfiniteList>
           ) : null}
         </div>
-        <div style={{ flex: 1 }}>{selectedKey?.value}</div>
+        {selectedKey ? (
+          <Editor
+            style={{
+              flex: 1,
+              marginLeft: 8,
+            }}
+            value={selectedKey.value}
+          />
+        ) : null}
       </div>
     </div>
   )

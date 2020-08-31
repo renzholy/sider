@@ -2,6 +2,7 @@ import React, { useCallback, useEffect } from 'react'
 import useSWR, { useSWRInfinite } from 'swr'
 import { useSelector, useDispatch } from 'react-redux'
 import { ListChildComponentProps } from 'react-window'
+import { Colors } from '@blueprintjs/core'
 
 import { Unpacked } from '@/utils'
 import { zscan } from '@/utils/scanner'
@@ -115,13 +116,20 @@ export function ZsetPanel(props: { value: string }) {
         </div>
         {selectedKey ? (
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-            <Editor
+            <div
               style={{
                 marginLeft: 8,
                 marginBottom: 8,
-              }}
-              value={selectedKey.score.toString()}
-            />
+                height: 40,
+                fontFamily: 'monospace',
+                backgroundColor: Colors.LIGHT_GRAY4,
+                borderRadius: 4,
+                padding: 8,
+                display: 'flex',
+                alignItems: 'center',
+              }}>
+              {selectedKey.score}
+            </div>
             <Editor
               style={{
                 flex: 1,

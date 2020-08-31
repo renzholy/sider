@@ -22,7 +22,7 @@ export function Editor(props: { style?: CSSProperties; value?: string }) {
       style={{
         ...props.style,
         borderRadius: 4,
-        padding: 5,
+        padding: 8,
         backgroundColor: Colors.LIGHT_GRAY5,
       }}>
       <code style={{ wordBreak: 'break-all', whiteSpace: 'pre-wrap' }}>

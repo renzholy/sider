@@ -1,6 +1,5 @@
-import React, { useMemo, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import useSWR, { useSWRInfinite } from 'swr'
-import { flatMap } from 'lodash'
 import { useSelector } from 'react-redux'
 import { ListChildComponentProps } from 'react-window'
 
@@ -16,6 +15,7 @@ import { ListItems } from '@/components/pure/ListItems'
 import { KeyItem } from '@/components/KeyItem'
 import { Footer } from '@/components/pure/Footer'
 import { ReloadButton } from '@/components/pure/ReloadButton'
+import { useScanSize } from '@/hooks/useScanSize'
 
 export default () => {
   const connection = useSelector((state) => state.keys.connection)
@@ -48,10 +48,7 @@ export default () => {
       revalidateOnFocus: false,
     },
   )
-  const length = useMemo(
-    () => (data ? flatMap(data, (item) => item.keys).length : 0),
-    [data],
-  )
+  const scanSize = useScanSize(data)
   const handleLoadMoreItems = useCallback(async () => {
     await setSize((_size) => _size + 1)
   }, [setSize])
@@ -97,7 +94,7 @@ export default () => {
         <Footer>
           <ReloadButton isLoading={isValidating} onReload={handleReload} />
           <span>
-            {formatNumber(length)}&nbsp;of&nbsp;
+            {formatNumber(scanSize)}&nbsp;of&nbsp;
             {formatNumber(dbSize || 0)}
           </span>
           <ConnectionSelector />

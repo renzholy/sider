@@ -1,10 +1,13 @@
 import React, { useCallback } from 'react'
-import { useSWRInfinite } from 'swr'
+import useSWR, { useSWRInfinite } from 'swr'
 import { useSelector } from 'react-redux'
 import { ListChildComponentProps } from 'react-window'
 
 import { Unpacked } from '@/utils'
 import { zscan } from '@/utils/scanner'
+import { formatNumber } from '@/utils/formatter'
+import { runCommand } from '@/utils/fetcher'
+import { useScanSize } from '@/hooks/useScanSize'
 import { ZsetMatchInput } from './ZsetMatchInput'
 import { InfiniteList } from '../pure/InfiniteList'
 import { ListItems } from '../pure/ListItems'
@@ -51,10 +54,17 @@ export function ZsetPanel(props: { value: string }) {
     (p: ListChildComponentProps) => <ListItems {...p}>{ZsetKeyItem}</ListItems>,
     [],
   )
+  const scanSize = useScanSize(data)
+  const { data: count, revalidate: revalidateCount } = useSWR(
+    connection ? `zcount/${connection}/${props.value}` : null,
+    () =>
+      runCommand<number>(connection!, ['zcount', props.value, '-inf', '+inf']),
+  )
   const handleReload = useCallback(async () => {
     await setSize(0)
     await revalidate()
-  }, [setSize, revalidate])
+    await revalidateCount()
+  }, [setSize, revalidate, revalidateCount])
 
   return (
     <div
@@ -74,6 +84,10 @@ export function ZsetPanel(props: { value: string }) {
       </div>
       <Footer>
         <ReloadButton isLoading={isValidating} onReload={handleReload} />
+        <span>
+          {formatNumber(scanSize)}&nbsp;of&nbsp;
+          {formatNumber(count || 0)}
+        </span>
         <TTLButton value={props.value} />
       </Footer>
     </div>

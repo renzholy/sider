@@ -12,8 +12,9 @@ export function InfiniteListItem(props: {
   children: React.ReactNode
 }) {
   const handleClick = useCallback(() => {
-    props.onSelect(!props.isSelected)
-  }, [props])
+    props.onSelect(true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.onSelect])
   const backgroundColor = props.isSelected ? Colors.LIGHT_GRAY3 : undefined
 
   return (

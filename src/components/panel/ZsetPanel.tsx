@@ -10,6 +10,7 @@ import { InfiniteList } from '../pure/InfiniteList'
 import { ListItems } from '../pure/ListItems'
 import { ZsetKeyItem } from './ZsetKeyItem'
 import { Footer } from '../pure/Footer'
+import { ReloadButton } from '../pure/ReloadButton'
 
 export function ZsetPanel(props: { value: string }) {
   const connection = useSelector((state) => state.keys.connection)
@@ -34,9 +35,13 @@ export function ZsetPanel(props: { value: string }) {
     },
     [connection, props.value, match, isPrefix],
   )
-  const { data, setSize } = useSWRInfinite(handleGetKey, zscan, {
-    revalidateOnFocus: false,
-  })
+  const { data, setSize, isValidating, revalidate } = useSWRInfinite(
+    handleGetKey,
+    zscan,
+    {
+      revalidateOnFocus: false,
+    },
+  )
   const handleLoadMoreItems = useCallback(async () => {
     await setSize((_size) => _size + 1)
   }, [setSize])
@@ -45,6 +50,10 @@ export function ZsetPanel(props: { value: string }) {
     (p: ListChildComponentProps) => <ListItems {...p}>{ZsetKeyItem}</ListItems>,
     [],
   )
+  const handleReload = useCallback(async () => {
+    await setSize(0)
+    await revalidate()
+  }, [setSize, revalidate])
 
   return (
     <div
@@ -62,7 +71,9 @@ export function ZsetPanel(props: { value: string }) {
           </InfiniteList>
         ) : null}
       </div>
-      <Footer>123</Footer>
+      <Footer>
+        <ReloadButton isLoading={isValidating} onReload={handleReload} />
+      </Footer>
     </div>
   )
 }

@@ -1,5 +1,4 @@
 import React, { useMemo, useCallback } from 'react'
-import { Button, Spinner, Tooltip } from '@blueprintjs/core'
 import useSWR, { useSWRInfinite } from 'swr'
 import { flatMap } from 'lodash'
 import { useSelector } from 'react-redux'
@@ -16,6 +15,7 @@ import { InfiniteList } from '@/components/pure/InfiniteList'
 import { ListItems } from '@/components/pure/ListItems'
 import { KeyItem } from '@/components/KeyItem'
 import { Footer } from '@/components/pure/Footer'
+import { ReloadButton } from '@/components/pure/ReloadButton'
 
 export default () => {
   const connection = useSelector((state) => state.keys.connection)
@@ -95,15 +95,7 @@ export default () => {
           ) : null}
         </div>
         <Footer>
-          {isValidating ? (
-            <div style={{ width: 30, cursor: 'not-allowed' }}>
-              <Spinner size={16} />
-            </div>
-          ) : (
-            <Tooltip content="Refresh">
-              <Button icon="refresh" minimal={true} onClick={handleReload} />
-            </Tooltip>
-          )}
+          <ReloadButton isLoading={isValidating} onReload={handleReload} />
           <span>
             {formatNumber(length)}&nbsp;of&nbsp;
             {formatNumber(dbSize || 0)}

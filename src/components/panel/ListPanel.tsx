@@ -75,7 +75,7 @@ export function ListPanel(props: { value: string }) {
         height: '100%',
       }}>
       <div style={{ flex: 1, display: 'flex' }}>
-        <div style={{ width: 440, display: 'flex', flexDirection: 'column' }}>
+        <div style={{ width: 320, display: 'flex', flexDirection: 'column' }}>
           <div style={{ flex: 1 }}>
             {data ? (
               <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
@@ -85,7 +85,7 @@ export function ListPanel(props: { value: string }) {
           </div>
           <Footer>
             <ReloadButton
-              style={{ flexBasis: 100 }}
+              style={{ flexBasis: 80 }}
               isLoading={isValidating}
               onReload={handleReload}
             />
@@ -95,7 +95,7 @@ export function ListPanel(props: { value: string }) {
             </span>
             <TTLButton
               style={{
-                flexBasis: 100,
+                flexBasis: 80,
                 display: 'flex',
                 justifyContent: 'flex-end',
               }}

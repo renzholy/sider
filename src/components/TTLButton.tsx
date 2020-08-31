@@ -21,14 +21,14 @@ export function TTLButton(props: { style?: CSSProperties; value: string }) {
   return (
     <div style={props.style}>
       <Tooltip
-        disabled={data < 0}
-        content={data < 0 ? 'TTL' : `TTL ${formatNumber(data)}s`}>
+        content={
+          data < 0 ? 'Persisted' : `Expire after ${formatNumber(data)} seconds`
+        }>
         <Button
-          disabled={data < 0}
-          text={data < 0 ? 'Forever' : ms(data * 1000)}
+          text={data < 0 ? undefined : ms(data * 1000)}
           minimal={true}
           rightIcon="time"
-          style={{ paddingRight: 5 }}
+          style={data < 0 ? undefined : { paddingRight: 7 }}
         />
       </Tooltip>
     </div>

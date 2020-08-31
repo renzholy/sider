@@ -1,17 +1,35 @@
-import React, { CSSProperties } from 'react'
-import { Spinner, Tooltip, Button } from '@blueprintjs/core'
+import React, {
+  CSSProperties,
+  useCallback,
+  useState,
+  useEffect,
+  useMemo,
+} from 'react'
+import { Spinner, Button } from '@blueprintjs/core'
+import { throttle } from 'lodash'
 
 export function ReloadButton(props: {
   style?: CSSProperties
   isLoading: boolean
   onReload(): void
 }) {
-  return props.isLoading ? (
+  const [isLoading, setisLoading] = useState(false)
+  const handleIsLoading = useCallback((_isLoading: boolean) => {
+    setisLoading(_isLoading)
+  }, [])
+  const handleThrottledIsLoading = useMemo(
+    () => throttle(handleIsLoading, 500, { leading: true }),
+    [handleIsLoading],
+  )
+  useEffect(() => {
+    handleThrottledIsLoading(props.isLoading)
+  }, [handleThrottledIsLoading, props.isLoading])
+
+  return isLoading ? (
     <div
       style={{
         ...props.style,
         width: 30,
-        cursor: 'not-allowed',
         display: 'flex',
         justifyContent: 'flex-start',
         paddingLeft: 8,
@@ -20,9 +38,12 @@ export function ReloadButton(props: {
     </div>
   ) : (
     <div style={props.style}>
-      <Tooltip content="Refresh">
-        <Button icon="refresh" minimal={true} onClick={props.onReload} />
-      </Tooltip>
+      <Button
+        style={props.style}
+        icon="refresh"
+        minimal={true}
+        onClick={props.onReload}
+      />
     </div>
   )
 }

@@ -96,7 +96,7 @@ export function ZsetPanel(props: { value: string }) {
           </div>
           <Footer>
             <ReloadButton
-              style={{ flexBasis: 100 }}
+              style={{ flexBasis: 80 }}
               isLoading={isValidating}
               onReload={handleReload}
             />
@@ -106,7 +106,7 @@ export function ZsetPanel(props: { value: string }) {
             </span>
             <TTLButton
               style={{
-                flexBasis: 100,
+                flexBasis: 80,
                 display: 'flex',
                 justifyContent: 'flex-end',
               }}
@@ -121,7 +121,6 @@ export function ZsetPanel(props: { value: string }) {
                 marginLeft: 8,
                 marginBottom: 8,
                 height: 40,
-                fontFamily: 'monospace',
                 backgroundColor: Colors.LIGHT_GRAY4,
                 borderRadius: 4,
                 padding: 8,

@@ -30,7 +30,7 @@ export function Editor(props: { style?: CSSProperties; value?: string }) {
         ...props.style,
         borderRadius: 4,
         padding: 8,
-        backgroundColor: isDarkMode ? Colors.BLACK : Colors.WHITE,
+        backgroundColor: isDarkMode ? Colors.DARK_GRAY1 : Colors.WHITE,
         overflow: 'scroll',
       }}>
       {str ? <div dangerouslySetInnerHTML={{ __html: html }} /> : props.value}

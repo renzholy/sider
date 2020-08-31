@@ -4,7 +4,7 @@ export async function runCommand<T>(
   connection: Connection,
   command: string[],
 ): Promise<T> {
-  const response = await fetch('/api/runCommand', {
+  const response = await fetch(`/api/runCommand?command=${command[0]}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -11,6 +11,7 @@ import { ListItems } from '../pure/ListItems'
 import { ZsetKeyItem } from './ZsetKeyItem'
 import { Footer } from '../pure/Footer'
 import { ReloadButton } from '../pure/ReloadButton'
+import { TTLButton } from '../TTLButton'
 
 export function ZsetPanel(props: { value: string }) {
   const connection = useSelector((state) => state.keys.connection)
@@ -73,6 +74,7 @@ export function ZsetPanel(props: { value: string }) {
       </div>
       <Footer>
         <ReloadButton isLoading={isValidating} onReload={handleReload} />
+        <TTLButton value={props.value} />
       </Footer>
     </div>
   )

@@ -20,8 +20,10 @@ export function ConnectionSelector() {
   const dispatch = useDispatch()
   const connection = useSelector((state) => state.keys.connection)
   useEffect(() => {
-    dispatch(actions.keys.setConnection(data?.[0]))
-  }, [data, dispatch])
+    if (!connection) {
+      dispatch(actions.keys.setConnection(data?.[0]))
+    }
+  }, [data, dispatch, connection])
   useEffect(() => {
     dispatch(actions.keys.setKeyType(undefined))
     dispatch(actions.keys.setIsPrefix(true))

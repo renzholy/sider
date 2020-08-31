@@ -2,11 +2,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { KeyType, Connection } from '@/types'
 
+const siderConnection = localStorage.getItem('sider.connection')
+
 export default createSlice({
   name: 'keys',
   initialState: {
     connections: [],
-    connection: undefined,
+    connection: siderConnection ? JSON.parse(siderConnection) : undefined,
     selectedKey: undefined,
     match: '',
     keyType: undefined,
@@ -27,10 +29,13 @@ export default createSlice({
     setConnection: (
       state,
       { payload }: PayloadAction<Connection | undefined>,
-    ) => ({
-      ...state,
-      connection: payload,
-    }),
+    ) => {
+      localStorage.setItem('sider.connection', JSON.stringify(payload))
+      return {
+        ...state,
+        connection: payload,
+      }
+    },
     setSelectedKey: (
       state,
       { payload }: PayloadAction<{ type: KeyType; key: string } | undefined>,

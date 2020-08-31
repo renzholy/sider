@@ -100,3 +100,23 @@ export async function zscan(
     })),
   }
 }
+
+export async function lrange(
+  connection: Connection,
+  key: string,
+  startIndex: string,
+): Promise<{
+  next: string
+  keys: string[]
+}> {
+  const keys = await runCommand<string[]>(connection, [
+    'lrange',
+    key,
+    startIndex,
+    (parseInt(startIndex, 10) + 10).toString(),
+  ])
+  return {
+    next: (parseInt(startIndex, 10) + keys.length).toString(),
+    keys,
+  }
+}

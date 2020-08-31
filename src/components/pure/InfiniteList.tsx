@@ -7,7 +7,10 @@ import mergeRefs from 'react-merge-refs'
 export function InfiniteList<T>(props: {
   items: { next: string; keys: T[] }[]
   children: ComponentType<ListChildComponentProps>
-  onLoadMoreItems: () => Promise<any> | null
+  onLoadMoreItems: (
+    startIndex: number,
+    stopIndex: number,
+  ) => Promise<any> | null
 }) {
   const handleIsItemLoaded = useCallback(
     (index: number) => !!props.items[index],

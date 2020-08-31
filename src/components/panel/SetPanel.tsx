@@ -82,9 +82,9 @@ export function SetPanel(props: { value: string }) {
         flexDirection: 'column',
         height: '100%',
       }}>
-      <SetMatchInput />
       <div style={{ flex: 1, display: 'flex' }}>
         <div style={{ width: 320, display: 'flex', flexDirection: 'column' }}>
+          <SetMatchInput />
           <div style={{ flex: 1 }}>
             {data ? (
               <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>

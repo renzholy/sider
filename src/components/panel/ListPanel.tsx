@@ -75,7 +75,7 @@ export function ListPanel(props: { value: string }) {
         height: '100%',
       }}>
       <div style={{ flex: 1, display: 'flex' }}>
-        <div style={{ width: 440, display: 'flex', flexDirection: 'column' }}>
+        <div style={{ width: 320, display: 'flex', flexDirection: 'column' }}>
           <div style={{ flex: 1 }}>
             {data ? (
               <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>

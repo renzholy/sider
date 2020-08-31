@@ -4,7 +4,7 @@
 import React, { useCallback } from 'react'
 import { Colors } from '@blueprintjs/core'
 
-import { useIsDarkMode } from '@/hooks/useIsDarkMode'
+import { useIsDarkMode } from '@/hooks/use-is-dark-mode'
 import styles from './InfiniteListItem.less'
 
 export function InfiniteListItem(props: {

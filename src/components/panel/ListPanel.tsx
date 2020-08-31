@@ -6,7 +6,7 @@ import { ListChildComponentProps } from 'react-window'
 import { Unpacked } from '@/utils'
 import { lrange } from '@/utils/scanner'
 import { formatNumber } from '@/utils/formatter'
-import { useScanSize } from '@/hooks/useScanSize'
+import { useScanSize } from '@/hooks/use-scan-size'
 import { runCommand } from '@/utils/fetcher'
 import { actions } from '@/stores'
 import { InfiniteList } from '../pure/InfiniteList'
@@ -103,15 +103,13 @@ export function ListPanel(props: { value: string }) {
             />
           </Footer>
         </div>
-        {selectedKey ? (
-          <Editor
-            style={{
-              flex: 1,
-              marginLeft: 8,
-            }}
-            value={selectedKey}
-          />
-        ) : null}
+        <Editor
+          style={{
+            flex: 1,
+            marginLeft: 8,
+          }}
+          value={selectedKey}
+        />
       </div>
     </div>
   )

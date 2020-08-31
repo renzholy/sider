@@ -32,9 +32,7 @@ export function StringPanel(props: { value: string }) {
         flexDirection: 'column',
         marginTop: 8,
       }}>
-      <div style={{ flex: 1 }}>
-        <Editor style={{ height: '100%' }} value={data} />
-      </div>
+      <Editor style={{ flex: 1 }} value={data} />
       <Footer>
         <ReloadButton
           style={{ flexBasis: 80 }}

@@ -15,7 +15,7 @@ import { InfiniteListItems } from '@/components/pure/InfiniteListItems'
 import { KeyItem } from '@/components/KeyItem'
 import { Footer } from '@/components/pure/Footer'
 import { ReloadButton } from '@/components/pure/ReloadButton'
-import { useScanSize } from '@/hooks/useScanSize'
+import { useScanSize } from '@/hooks/use-scan-size'
 
 export default () => {
   const connection = useSelector((state) => state.keys.connection)

@@ -22,9 +22,6 @@ export function TTLButton(props: { style?: CSSProperties; value: string }) {
     setRefreshInterval(0)
   }, [])
 
-  if (data === undefined) {
-    return null
-  }
   return (
     <div style={props.style}>
       <Tooltip
@@ -32,13 +29,15 @@ export function TTLButton(props: { style?: CSSProperties; value: string }) {
         onClosed={handleClosed}
         boundary="window"
         content={
-          data < 0 ? 'Persisted' : `Expire after ${formatNumber(data)} seconds`
+          !data || data < 0
+            ? 'Persisted'
+            : `Expire after ${formatNumber(data)} seconds`
         }>
         <Button
-          text={data < 0 ? undefined : ms(data * 1000)}
+          text={!data || data < 0 ? undefined : ms(data * 1000)}
           minimal={true}
           rightIcon="time"
-          style={data < 0 ? undefined : { paddingRight: 7 }}
+          style={!data || data < 0 ? undefined : { paddingRight: 7 }}
         />
       </Tooltip>
     </div>

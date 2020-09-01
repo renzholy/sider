@@ -30,7 +30,7 @@ export function StringPanel(props: { value: string }) {
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        marginTop: 8,
+        width: '100%',
       }}>
       <Editor style={{ flex: 1 }} value={data} />
       <Footer>

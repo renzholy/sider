@@ -47,7 +47,7 @@ export function Editor(props: { style?: CSSProperties; value?: string }) {
         borderRadius: 4,
         padding: 8,
         backgroundColor: isDarkMode ? Colors.DARK_GRAY1 : Colors.WHITE,
-        height: '100%',
+        overflow: 'hidden',
         position: 'relative',
       }}>
       {valueType === ValueType.JSON ? (
@@ -56,7 +56,15 @@ export function Editor(props: { style?: CSSProperties; value?: string }) {
           dangerouslySetInnerHTML={{ __html: html }}
         />
       ) : (
-        str
+        <div
+          style={{
+            overflow: 'scroll',
+            height: '100%',
+            wordBreak: 'break-all',
+            whiteSpace: 'pre-wrap',
+          }}>
+          {str}
+        </div>
       )}
       <div
         style={{

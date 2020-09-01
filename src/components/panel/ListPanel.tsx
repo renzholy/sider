@@ -67,49 +67,41 @@ export function ListPanel(props: { value: string }) {
   }, [props.value, dispatch, data])
 
   return (
-    <div
-      style={{
-        marginTop: 8,
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100%',
-      }}>
-      <div style={{ flex: 1, display: 'flex' }}>
-        <div style={{ width: 360, display: 'flex', flexDirection: 'column' }}>
-          <div style={{ flex: 1 }}>
-            {data ? (
-              <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
-                {renderItems}
-              </InfiniteList>
-            ) : null}
-          </div>
-          <Footer>
-            <TTLButton style={{ flexBasis: 80 }} value={props.value} />
-            <span>
-              {formatNumber(scanSize)}&nbsp;of&nbsp;
-              {formatNumber(llen || 0)}
-            </span>
-            <ReloadButton
-              style={{
-                flexBasis: 80,
-                display: 'flex',
-                justifyContent: 'flex-end',
-              }}
-              isLoading={isValidating}
-              onReload={handleReload}
-            />
-          </Footer>
+    <>
+      <div style={{ width: 360, display: 'flex', flexDirection: 'column' }}>
+        <div style={{ flex: 1 }}>
+          {data ? (
+            <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
+              {renderItems}
+            </InfiniteList>
+          ) : null}
         </div>
-        {selectedKey ? (
-          <Editor
+        <Footer>
+          <TTLButton style={{ flexBasis: 80 }} value={props.value} />
+          <span>
+            {formatNumber(scanSize)}&nbsp;of&nbsp;
+            {formatNumber(llen || 0)}
+          </span>
+          <ReloadButton
             style={{
-              flex: 1,
-              marginLeft: 8,
+              flexBasis: 80,
+              display: 'flex',
+              justifyContent: 'flex-end',
             }}
-            value={selectedKey}
+            isLoading={isValidating}
+            onReload={handleReload}
           />
-        ) : null}
+        </Footer>
       </div>
-    </div>
+      {selectedKey ? (
+        <Editor
+          style={{
+            flex: 1,
+            marginLeft: 8,
+          }}
+          value={selectedKey}
+        />
+      ) : null}
+    </>
   )
 }

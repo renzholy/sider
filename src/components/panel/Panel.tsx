@@ -75,7 +75,13 @@ export function Panel() {
           {selectedKey.key}
         </span>
       </div>
-      <div style={{ height: 'calc(100% - 48px)', width: '100%' }}>
+      <div
+        style={{
+          height: 'calc(100% - 48px)',
+          marginTop: 8,
+          width: '100%',
+          display: 'flex',
+        }}>
         <PanelInner value={selectedKey} />
       </div>
     </div>

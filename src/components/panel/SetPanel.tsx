@@ -78,42 +78,34 @@ export function SetPanel(props: { value: string }) {
   }, [props.value, dispatch, data])
 
   return (
-    <div
-      style={{
-        marginTop: 8,
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100%',
-      }}>
-      <div style={{ flex: 1, display: 'flex' }}>
-        <div style={{ width: 360, display: 'flex', flexDirection: 'column' }}>
-          <SetMatchInput />
-          <div style={{ flex: 1 }}>
-            {data ? (
-              <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
-                {renderItems}
-              </InfiniteList>
-            ) : null}
-          </div>
-          <Footer>
-            <TTLButton value={props.value} />
-            <span>
-              {formatNumber(scanSize)}&nbsp;of&nbsp;
-              {formatNumber(scard || 0)}
-            </span>
-            <ReloadButton isLoading={isValidating} onReload={handleReload} />
-          </Footer>
+    <>
+      <div style={{ width: 360, display: 'flex', flexDirection: 'column' }}>
+        <SetMatchInput />
+        <div style={{ flex: 1 }}>
+          {data ? (
+            <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
+              {renderItems}
+            </InfiniteList>
+          ) : null}
         </div>
-        {selectedKey ? (
-          <Editor
-            style={{
-              flex: 1,
-              marginLeft: 8,
-            }}
-            value={selectedKey}
-          />
-        ) : null}
+        <Footer>
+          <TTLButton value={props.value} />
+          <span>
+            {formatNumber(scanSize)}&nbsp;of&nbsp;
+            {formatNumber(scard || 0)}
+          </span>
+          <ReloadButton isLoading={isValidating} onReload={handleReload} />
+        </Footer>
       </div>
-    </div>
+      {selectedKey ? (
+        <Editor
+          style={{
+            flex: 1,
+            marginLeft: 8,
+          }}
+          value={selectedKey}
+        />
+      ) : null}
+    </>
   )
 }

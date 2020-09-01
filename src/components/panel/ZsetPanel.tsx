@@ -82,71 +82,63 @@ export function ZsetPanel(props: { value: string }) {
   const isDarkMode = useIsDarkMode()
 
   return (
-    <div
-      style={{
-        marginTop: 8,
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100%',
-      }}>
-      <div style={{ flex: 1, display: 'flex' }}>
-        <div style={{ width: 440, display: 'flex', flexDirection: 'column' }}>
-          <ZsetMatchInput />
-          <div style={{ flex: 1 }}>
-            {data ? (
-              <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
-                {renderItems}
-              </InfiniteList>
-            ) : null}
-          </div>
-          <Footer>
-            <TTLButton style={{ flexBasis: 80 }} value={props.value} />
-            <span>
-              {formatNumber(scanSize)}&nbsp;of&nbsp;
-              {formatNumber(count || 0)}
-            </span>
-            <ReloadButton
-              style={{
-                flexBasis: 80,
-                display: 'flex',
-                justifyContent: 'flex-end',
-              }}
-              isLoading={isValidating}
-              onReload={handleReload}
-            />
-          </Footer>
+    <>
+      <div style={{ width: 440, display: 'flex', flexDirection: 'column' }}>
+        <ZsetMatchInput />
+        <div style={{ flex: 1 }}>
+          {data ? (
+            <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
+              {renderItems}
+            </InfiniteList>
+          ) : null}
         </div>
-        {selectedKey ? (
+        <Footer>
+          <TTLButton style={{ flexBasis: 80 }} value={props.value} />
+          <span>
+            {formatNumber(scanSize)}&nbsp;of&nbsp;
+            {formatNumber(count || 0)}
+          </span>
+          <ReloadButton
+            style={{
+              flexBasis: 80,
+              display: 'flex',
+              justifyContent: 'flex-end',
+            }}
+            isLoading={isValidating}
+            onReload={handleReload}
+          />
+        </Footer>
+      </div>
+      {selectedKey ? (
+        <div
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            marginLeft: 8,
+          }}>
           <div
             style={{
-              flex: 1,
+              marginBottom: 8,
+              height: 40,
+              backgroundColor: isDarkMode
+                ? Colors.DARK_GRAY4
+                : Colors.LIGHT_GRAY4,
+              borderRadius: 4,
+              padding: 8,
               display: 'flex',
-              flexDirection: 'column',
-              marginLeft: 8,
+              alignItems: 'center',
             }}>
-            <div
-              style={{
-                marginBottom: 8,
-                height: 40,
-                backgroundColor: isDarkMode
-                  ? Colors.DARK_GRAY4
-                  : Colors.LIGHT_GRAY4,
-                borderRadius: 4,
-                padding: 8,
-                display: 'flex',
-                alignItems: 'center',
-              }}>
-              {selectedKey.score}
-            </div>
-            <Editor
-              style={{
-                flex: 1,
-              }}
-              value={selectedKey.key}
-            />
+            {selectedKey.score}
           </div>
-        ) : null}
-      </div>
-    </div>
+          <Editor
+            style={{
+              flex: 1,
+            }}
+            value={selectedKey.key}
+          />
+        </div>
+      ) : null}
+    </>
   )
 }

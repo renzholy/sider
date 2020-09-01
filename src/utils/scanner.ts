@@ -3,16 +3,22 @@ import { chunk, isEqual } from 'lodash'
 import { Connection, KeyType } from '@/types'
 import { runCommand, runPipeline } from './fetcher'
 
+function calcCount(zeroTimes: number): string {
+  return Math.max(16, Math.min(8192, 4 ** zeroTimes)).toString()
+}
+
 export async function scan(
   connection: Connection,
   match: string,
   isPrefix: boolean,
   cursor: string,
   keyType: KeyType | undefined,
+  zeroTimes: number,
   getKey?: { key: string; type: KeyType },
 ): Promise<{
   next: string
   keys: { key: string; type: KeyType }[]
+  zeroTimes: number
   getKey?: { key: string; type: KeyType }
 }> {
   if (!getKey && match) {
@@ -21,31 +27,34 @@ export async function scan(
       return {
         next: '',
         keys: [{ key: match, type }],
+        zeroTimes: 0,
         getKey: { key: match, type },
       }
     }
   }
-  const [next, keys] = await runCommand<[string, string[]]>(connection, [
+  const [next, ks] = await runCommand<[string, string[]]>(connection, [
     'scan',
     cursor,
     'match',
     isPrefix ? `${match}*` : match || '*',
     'count',
-    '1000',
+    calcCount(zeroTimes),
   ])
   const types = await runPipeline<KeyType[]>(
     connection,
-    keys.map((key) => ['type', key]),
+    ks.map((key) => ['type', key]),
   )
+  const keys = ks
+    .map((key, index) => ({
+      key,
+      type: types[index],
+    }))
+    .filter((item) => !isEqual(item, getKey))
+    .filter(({ type }) => !keyType || type === keyType)
   return {
     next,
-    keys: keys
-      .map((key, index) => ({
-        key,
-        type: types[index],
-      }))
-      .filter((item) => !isEqual(item, getKey))
-      .filter(({ type }) => !keyType || type === keyType),
+    keys,
+    zeroTimes: keys.length === 0 ? zeroTimes + 1 : 0,
     getKey,
   }
 }

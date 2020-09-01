@@ -38,6 +38,7 @@ export function InfiniteList<T>(props: {
           {({ onItemsRendered, ref }) => (
             <VariableSizeList
               ref={mergeRefs([ref, variableSizeListRef])}
+              overscanCount={0}
               width={width}
               height={height}
               itemSize={handleItemSize}

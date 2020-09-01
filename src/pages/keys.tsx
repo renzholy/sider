@@ -39,6 +39,7 @@ export default () => {
             isPrefix,
             previousPageData?.next || '0',
             keyType,
+            previousPageData?.zeroTimes || 0,
             previousPageData?.getKey,
           ]
         : null

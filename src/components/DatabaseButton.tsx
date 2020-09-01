@@ -20,7 +20,7 @@ export function DatabaseButton(props: {
       ? `dbsize/${JSON.stringify({ ...connection, db: props.db })}`
       : null,
     () => runCommand<number>({ ...connection!, db: props.db }, ['dbsize']),
-    { revalidateOnFocus: false },
+    { revalidateOnFocus: false, revalidateOnMount: false },
   )
 
   return (

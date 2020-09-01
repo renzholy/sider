@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react'
 import useSWR from 'swr'
 import { useSelector } from 'react-redux'
+import bytes from 'bytes'
 
 import { runCommand } from '@/utils/fetcher'
-import { formatNumber } from '@/utils/formatter'
 import { Editor } from '../pure/Editor'
 import { Footer } from '../pure/Footer'
 import { TTLButton } from '../TTLButton'
@@ -39,7 +39,7 @@ export function StringPanel(props: { value: string }) {
           isLoading={isValidating}
           onReload={handleReload}
         />
-        {formatNumber(strlen || 0)}
+        {bytes(strlen || 0, { unitSeparator: ' ' })}
         <TTLButton
           style={{
             flexBasis: 80,

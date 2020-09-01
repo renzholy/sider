@@ -27,6 +27,7 @@
     "@blueprintjs/icons": "3.20.1",
     "@monaco-editor/react": "3.6.2",
     "@reduxjs/toolkit": "1.4.0",
+    "bytes": "3.1.0",
     "lodash": "4.17.20",
     "ms": "2.1.2",
     "normalize.css": "8.0.1",
@@ -41,6 +42,7 @@
     "use-async-effect": "2.2.2"
   },
   "devDependencies": {
+    "@types/bytes": "3.1.0",
     "@types/lodash": "4.14.161",
     "@types/ms": "0.7.31",
     "@types/react": "16.9.48",

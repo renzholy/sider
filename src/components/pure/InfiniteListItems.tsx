@@ -1,5 +1,8 @@
 import React, { ComponentType } from 'react'
 import type { ListChildComponentProps } from 'react-window'
+import { Colors } from '@blueprintjs/core'
+
+import { useIsDarkMode } from '@/hooks/use-is-dark-mode'
 
 export function InfiniteListItems<T>(
   props: ListChildComponentProps & {
@@ -16,10 +19,25 @@ export function InfiniteListItems<T>(
         keys: T[]
       }
     | undefined
+  const isDarkMode = useIsDarkMode()
   const Children = props.children
 
   if (!items) {
-    return null
+    return (
+      <div
+        style={{
+          ...props.style,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: isDarkMode ? Colors.GRAY1 : Colors.GRAY5,
+          userSelect: 'none',
+          height: 36,
+          padding: 8,
+        }}>
+        ~
+      </div>
+    )
   }
   return (
     <div style={props.style}>

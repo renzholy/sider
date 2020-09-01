@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import useSWR, { useSWRInfinite } from 'swr'
 import { useSelector } from 'react-redux'
 import { ListChildComponentProps } from 'react-window'
@@ -16,6 +16,8 @@ import { KeyItem } from '@/components/KeyItem'
 import { Footer } from '@/components/pure/Footer'
 import { ReloadButton } from '@/components/pure/ReloadButton'
 import { useScanSize } from '@/hooks/use-scan-size'
+import { AppToaster } from '@/utils/toaster'
+import { Intent } from '@blueprintjs/core'
 
 export default () => {
   const connection = useSelector((state) => state.keys.connection)
@@ -43,11 +45,12 @@ export default () => {
     },
     [match, connection, keyType, isPrefix],
   )
-  const { data, setSize, isValidating, revalidate } = useSWRInfinite(
+  const { data, setSize, isValidating, revalidate, error } = useSWRInfinite(
     handleGetKey,
     scan,
     {
       revalidateOnFocus: false,
+      errorRetryCount: 0,
     },
   )
   const scanSize = useScanSize(data)
@@ -70,6 +73,11 @@ export default () => {
     ),
     [],
   )
+  useEffect(() => {
+    if (error) {
+      AppToaster.show({ message: error.message, intent: Intent.DANGER })
+    }
+  }, [error])
 
   return (
     <>

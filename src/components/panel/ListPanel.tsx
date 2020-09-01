@@ -51,7 +51,7 @@ export function ListPanel(props: { value: string }) {
     [],
   )
   const { data: llen, revalidate: revalidateLlen } = useSWR(
-    connection ? `llen/${connection}/${props.value}` : null,
+    connection ? `llen/${JSON.stringify(connection)}/${props.value}` : null,
     () => runCommand<number>(connection!, ['llen', props.value]),
   )
   const handleReload = useCallback(async () => {

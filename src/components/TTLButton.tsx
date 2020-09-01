@@ -11,7 +11,7 @@ export function TTLButton(props: { style?: CSSProperties; value: string }) {
   const connection = useSelector((state) => state.keys.connection)
   const [refreshInterval, setRefreshInterval] = useState(0)
   const { data } = useSWR(
-    connection ? `ttl/${connection}/${props.value}` : null,
+    connection ? `ttl/${JSON.stringify(connection)}/${props.value}` : null,
     () => runCommand<number>(connection!, ['ttl', props.value]),
     { refreshInterval, dedupingInterval: 1000 },
   )

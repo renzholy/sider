@@ -12,11 +12,11 @@ import { ReloadButton } from '../pure/ReloadButton'
 export function StringPanel(props: { value: string }) {
   const connection = useSelector((state) => state.keys.connection)
   const { data, revalidate, isValidating } = useSWR(
-    connection ? `get/${connection}/${props.value}` : null,
+    connection ? `get/${JSON.stringify(connection)}/${props.value}` : null,
     () => runCommand<string>(connection!, ['get', props.value]),
   )
   const { data: strlen, revalidate: revalidateStrlen } = useSWR(
-    connection ? `strlen/${connection}/${props.value}` : null,
+    connection ? `strlen/${JSON.stringify(connection)}/${props.value}` : null,
     () => runCommand<number>(connection!, ['strlen', props.value]),
   )
   const handleReload = useCallback(async () => {

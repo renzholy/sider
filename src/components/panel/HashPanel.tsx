@@ -51,7 +51,7 @@ export function HashPanel(props: { value: string }) {
     },
   )
   const { data: hlen, revalidate: revalidateHlen } = useSWR(
-    connection ? `hlen/${connection}/${props.value}` : null,
+    connection ? `hlen/${JSON.stringify(connection)}/${props.value}` : null,
     () => runCommand<number>(connection!, ['hlen', props.value]),
   )
   const handleLoadMoreItems = useCallback(async () => {

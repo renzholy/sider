@@ -1,7 +1,7 @@
 import { chunk, isEqual } from 'lodash'
 
 import { Connection, KeyType } from '@/types'
-import { runCommand } from './fetcher'
+import { runCommand, runPipeline } from './fetcher'
 
 export async function scan(
   connection: Connection,
@@ -30,9 +30,12 @@ export async function scan(
     cursor,
     'match',
     isPrefix ? `${match}*` : match || '*',
+    'count',
+    '1000',
   ])
-  const types = await Promise.all(
-    keys.map((key) => runCommand<KeyType>(connection, ['type', key])),
+  const types = await runPipeline<KeyType[]>(
+    connection,
+    keys.map((key) => ['type', key]),
   )
   return {
     next,
@@ -79,6 +82,8 @@ export async function sscan(
     cursor,
     'match',
     isPrefix ? `${match}*` : match || '*',
+    'count',
+    '1000',
   ])
   return {
     next,
@@ -119,6 +124,8 @@ export async function hscan(
     cursor,
     'match',
     isPrefix ? `${match}*` : match || '*',
+    'count',
+    '1000',
   ])
   return {
     next,
@@ -161,6 +168,8 @@ export async function zscan(
     cursor,
     'match',
     isPrefix ? `${match}*` : match || '*',
+    'count',
+    '1000',
   ])
   return {
     next,

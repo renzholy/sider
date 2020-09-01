@@ -27,14 +27,13 @@ type connection struct {
 	Password   string
 	MasterName string
 }
-type request struct {
+type requestCommand struct {
 	Connection connection
 	Command    []interface{}
 }
 
 func runCommand(w http.ResponseWriter, r *http.Request) {
-
-	request := request{}
+	request := requestCommand{}
 	err := json.NewDecoder(r.Body).Decode(&request)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -51,6 +50,53 @@ func runCommand(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
+	}
+	bytes, err := json.Marshal(raw)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write([]byte(bytes))
+}
+
+type requestPipeline struct {
+	Connection connection
+	Commands   [][]interface{}
+}
+
+func runPipeline(w http.ResponseWriter, r *http.Request) {
+	request := requestPipeline{}
+	err := json.NewDecoder(r.Body).Decode(&request)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	log.Println(request.Commands)
+
+	client, err := getClient(request.Connection)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	pipeline := client.Pipeline()
+	for _, command := range request.Commands {
+		pipeline.Do(ctx, command...)
+	}
+	cmders, err := pipeline.Exec(ctx)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	raw := make([]interface{}, len(cmders))
+	for index, cmder := range cmders {
+		cmd := cmder.(*redis.Cmd)
+		str, err := cmd.Result()
+		if err != nil {
+			raw[index] = nil
+		} else {
+			raw[index] = str
+		}
 	}
 	bytes, err := json.Marshal(raw)
 	if err != nil {
@@ -118,6 +164,9 @@ func main() {
 
 	// handle runCommand
 	mux.Handle("/api/runCommand", gziphandler.GzipHandler(http.HandlerFunc(runCommand)))
+
+	// handle runCommand
+	mux.Handle("/api/runPipeline", gziphandler.GzipHandler(http.HandlerFunc(runPipeline)))
 
 	// handle listConnections
 	mux.Handle("/api/listConnections", gziphandler.GzipHandler(http.HandlerFunc(listConnections)))

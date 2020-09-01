@@ -5,6 +5,7 @@ import { Colors } from '@blueprintjs/core'
 
 import { useIsDarkMode } from '@/hooks/use-is-dark-mode'
 import { useColorize } from '@/hooks/use-colorize'
+import { str2hex } from '@/utils/hex'
 
 enum ValueType {
   STRING = 'String',
@@ -30,7 +31,7 @@ export function Editor(props: { style?: CSSProperties; value?: string }) {
       }
     } else if (props.value.startsWith('HYLL')) {
       setValueType(ValueType.HYPERLOGLOG)
-      setStr(props.value)
+      setStr(str2hex(props.value))
     } else {
       setValueType(ValueType.STRING)
       setStr(props.value)

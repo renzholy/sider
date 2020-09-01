@@ -63,8 +63,8 @@ export function ListPanel(props: { value: string }) {
   const selectedKey = useSelector((state) => state.list.selectedKey)
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(actions.list.setSelectedKey(undefined))
-  }, [props.value, dispatch])
+    dispatch(actions.list.setSelectedKey(data?.[0].keys[0]))
+  }, [props.value, dispatch, data])
 
   return (
     <div
@@ -103,13 +103,15 @@ export function ListPanel(props: { value: string }) {
             />
           </Footer>
         </div>
-        <Editor
-          style={{
-            flex: 1,
-            marginLeft: 8,
-          }}
-          value={selectedKey}
-        />
+        {selectedKey ? (
+          <Editor
+            style={{
+              flex: 1,
+              marginLeft: 8,
+            }}
+            value={selectedKey}
+          />
+        ) : null}
       </div>
     </div>
   )

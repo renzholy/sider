@@ -76,8 +76,8 @@ export function ZsetPanel(props: { value: string }) {
   const selectedKey = useSelector((state) => state.zset.selectedKey)
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(actions.zset.setSelectedKey(undefined))
-  }, [props.value, dispatch])
+    dispatch(actions.zset.setSelectedKey(data?.[0].keys[0]))
+  }, [props.value, dispatch, data])
   const isDarkMode = useIsDarkMode()
 
   return (

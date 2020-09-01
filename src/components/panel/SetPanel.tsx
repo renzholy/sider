@@ -73,8 +73,8 @@ export function SetPanel(props: { value: string }) {
   const selectedKey = useSelector((state) => state.set.selectedKey)
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(actions.set.setSelectedKey(undefined))
-  }, [props.value, dispatch])
+    dispatch(actions.set.setSelectedKey(data?.[0].keys[0]))
+  }, [props.value, dispatch, data])
 
   return (
     <div
@@ -103,13 +103,15 @@ export function SetPanel(props: { value: string }) {
             <TTLButton value={props.value} />
           </Footer>
         </div>
-        <Editor
-          style={{
-            flex: 1,
-            marginLeft: 8,
-          }}
-          value={selectedKey}
-        />
+        {selectedKey ? (
+          <Editor
+            style={{
+              flex: 1,
+              marginLeft: 8,
+            }}
+            value={selectedKey}
+          />
+        ) : null}
       </div>
     </div>
   )

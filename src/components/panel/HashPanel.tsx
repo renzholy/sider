@@ -73,8 +73,8 @@ export function HashPanel(props: { value: string }) {
   const selectedKey = useSelector((state) => state.hash.selectedKey)
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(actions.hash.setSelectedKey(undefined))
-  }, [props.value, dispatch])
+    dispatch(actions.hash.setSelectedKey(data?.[0]?.keys[0]))
+  }, [props.value, dispatch, data])
 
   return (
     <div
@@ -114,13 +114,15 @@ export function HashPanel(props: { value: string }) {
             />
           </Footer>
         </div>
-        <Editor
-          style={{
-            flex: 1,
-            marginLeft: 8,
-          }}
-          value={selectedKey?.value}
-        />
+        {selectedKey ? (
+          <Editor
+            style={{
+              flex: 1,
+              marginLeft: 8,
+            }}
+            value={selectedKey.value}
+          />
+        ) : null}
       </div>
     </div>
   )

@@ -76,7 +76,7 @@ export function ZsetPanel(props: { value: string }) {
   const selectedKey = useSelector((state) => state.zset.selectedKey)
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(actions.zset.setSelectedKey(data?.[0].keys[0]))
+    dispatch(actions.zset.setSelectedKey(data?.[0]?.keys[0]))
   }, [props.value, dispatch, data])
   const isDarkMode = useIsDarkMode()
 
@@ -119,10 +119,15 @@ export function ZsetPanel(props: { value: string }) {
           </Footer>
         </div>
         {selectedKey ? (
-          <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+          <div
+            style={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              marginLeft: 8,
+            }}>
             <div
               style={{
-                marginLeft: 8,
                 marginBottom: 8,
                 height: 40,
                 backgroundColor: isDarkMode
@@ -138,7 +143,6 @@ export function ZsetPanel(props: { value: string }) {
             <Editor
               style={{
                 flex: 1,
-                marginLeft: 8,
               }}
               value={selectedKey.key}
             />

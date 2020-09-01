@@ -73,7 +73,7 @@ export function SetPanel(props: { value: string }) {
   const selectedKey = useSelector((state) => state.set.selectedKey)
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(actions.set.setSelectedKey(data?.[0].keys[0]))
+    dispatch(actions.set.setSelectedKey(data?.[0]?.keys[0]))
   }, [props.value, dispatch, data])
 
   return (

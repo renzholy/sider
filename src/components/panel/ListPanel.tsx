@@ -63,7 +63,7 @@ export function ListPanel(props: { value: string }) {
   const selectedKey = useSelector((state) => state.list.selectedKey)
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(actions.list.setSelectedKey(data?.[0].keys[0]))
+    dispatch(actions.list.setSelectedKey(data?.[0]?.keys[0]))
   }, [props.value, dispatch, data])
 
   return (

@@ -6,7 +6,7 @@ import React, {
   useMemo,
 } from 'react'
 import { Spinner, Button } from '@blueprintjs/core'
-import { throttle } from 'lodash'
+import { debounce } from 'lodash'
 
 export function ReloadButton(props: {
   style?: CSSProperties
@@ -17,13 +17,13 @@ export function ReloadButton(props: {
   const handleIsLoading = useCallback((_isLoading: boolean) => {
     setisLoading(_isLoading)
   }, [])
-  const handleThrottledIsLoading = useMemo(
-    () => throttle(handleIsLoading, 500, { leading: true }),
+  const handleDebounceIsLoading = useMemo(
+    () => debounce(handleIsLoading, 500, { leading: true }),
     [handleIsLoading],
   )
   useEffect(() => {
-    handleThrottledIsLoading(props.isLoading)
-  }, [handleThrottledIsLoading, props.isLoading])
+    handleDebounceIsLoading(props.isLoading)
+  }, [handleDebounceIsLoading, props.isLoading])
 
   return isLoading ? (
     <div

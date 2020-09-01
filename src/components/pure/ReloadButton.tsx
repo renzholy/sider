@@ -32,7 +32,7 @@ export function ReloadButton(props: {
         width: 30,
         display: 'flex',
         justifyContent: 'flex-start',
-        paddingLeft: 8,
+        paddingLeft: 7,
       }}>
       <Spinner size={16} />
     </div>

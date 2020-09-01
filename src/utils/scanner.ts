@@ -32,7 +32,7 @@ export async function scan(
       }
     }
   }
-  const [next, ks] = await runCommand<[string, string[]]>(connection, [
+  const [next, keys] = await runCommand<[string, string[]]>(connection, [
     'scan',
     cursor,
     'match',
@@ -42,18 +42,17 @@ export async function scan(
   ])
   const types = await runPipeline<KeyType[]>(
     connection,
-    ks.map((key) => ['type', key]),
+    keys.map((key) => ['type', key]),
   )
-  const keys = ks
-    .map((key, index) => ({
-      key,
-      type: types[index],
-    }))
-    .filter((item) => !isEqual(item, getKey))
-    .filter(({ type }) => !keyType || type === keyType)
   return {
     next,
-    keys,
+    keys: keys
+      .map((key, index) => ({
+        key,
+        type: types[index],
+      }))
+      .filter((item) => !isEqual(item, getKey))
+      .filter(({ type }) => !keyType || type === keyType),
     zeroTimes: keys.length === 0 ? zeroTimes + 1 : 0,
     getKey,
   }

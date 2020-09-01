@@ -28,7 +28,7 @@ export default () => {
     (
       _index: number,
       previousPageData: Unpacked<ReturnType<typeof scan>> | null,
-    ) => {
+    ): Parameters<typeof scan> | null => {
       if (previousPageData?.next === '0') {
         return null
       }
@@ -37,8 +37,8 @@ export default () => {
             connection,
             match,
             isPrefix,
-            previousPageData?.next || '0',
             keyType,
+            previousPageData?.next || '0',
             previousPageData?.zeroTimes || 0,
             previousPageData?.getKey,
           ]

@@ -11,8 +11,8 @@ export async function scan(
   connection: Connection,
   match: string,
   isPrefix: boolean,
-  cursor: string,
   keyType: KeyType | undefined,
+  cursor: string,
   zeroTimes: number,
   getKey?: { key: string; type: KeyType },
 ): Promise<{
@@ -65,10 +65,12 @@ export async function sscan(
   match: string,
   isPrefix: boolean,
   cursor: string,
+  zeroTimes: number,
   getKey?: string,
 ): Promise<{
   next: string
   keys: string[]
+  zeroTimes: number
   getKey?: string
 }> {
   if (!getKey && match) {
@@ -81,6 +83,7 @@ export async function sscan(
       return {
         next: '',
         keys: [match],
+        zeroTimes: 0,
         getKey: match,
       }
     }
@@ -92,11 +95,12 @@ export async function sscan(
     'match',
     isPrefix ? `${match}*` : match || '*',
     'count',
-    '1000',
+    calcCount(zeroTimes),
   ])
   return {
     next,
     keys: keys.filter((item) => !isEqual(item, getKey)),
+    zeroTimes: keys.length === 0 ? zeroTimes + 1 : 0,
     getKey,
   }
 }
@@ -107,10 +111,12 @@ export async function hscan(
   match: string,
   isPrefix: boolean,
   cursor: string,
+  zeroTimes: number,
   getKey?: { hash: string; value: string },
 ): Promise<{
   next: string
   keys: { hash: string; value: string }[]
+  zeroTimes: number
   getKey?: { hash: string; value: string }
 }> {
   if (!getKey && match) {
@@ -120,6 +126,7 @@ export async function hscan(
         return {
           next: '',
           keys: [{ hash: match, value }],
+          zeroTimes: 0,
           getKey: { hash: match, value },
         }
       }
@@ -134,13 +141,14 @@ export async function hscan(
     'match',
     isPrefix ? `${match}*` : match || '*',
     'count',
-    '1000',
+    calcCount(zeroTimes),
   ])
   return {
     next,
     keys: chunk(keys, 2)
       .map(([hash, value]) => ({ hash, value }))
       .filter((item) => !isEqual(item, getKey)),
+    zeroTimes: keys.length === 0 ? zeroTimes + 1 : 0,
     getKey,
   }
 }
@@ -151,10 +159,12 @@ export async function zscan(
   match: string,
   isPrefix: boolean,
   cursor: string,
+  zeroTimes: number,
   getKey?: { key: string; score: number },
 ): Promise<{
   next: string
   keys: { key: string; score: number }[]
+  zeroTimes: number
   getKey?: { key: string; score: number }
 }> {
   if (!getKey && match) {
@@ -164,6 +174,7 @@ export async function zscan(
         return {
           next: '',
           keys: [{ key: match, score: parseInt(score, 10) }],
+          zeroTimes: 0,
           getKey: { key: match, score: parseInt(score, 10) },
         }
       }
@@ -178,7 +189,7 @@ export async function zscan(
     'match',
     isPrefix ? `${match}*` : match || '*',
     'count',
-    '1000',
+    calcCount(zeroTimes),
   ])
   return {
     next,
@@ -188,6 +199,7 @@ export async function zscan(
         score: parseInt(score, 10),
       }))
       .filter((item) => !isEqual(item, getKey)),
+    zeroTimes: keys.length === 0 ? zeroTimes + 1 : 0,
     getKey,
   }
 }

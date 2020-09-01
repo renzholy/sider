@@ -26,7 +26,7 @@ export function HashPanel(props: { value: string }) {
     (
       _index: number,
       previousPageData: Unpacked<ReturnType<typeof hscan>> | null,
-    ) => {
+    ): Parameters<typeof hscan> | null => {
       if (previousPageData?.next === '0') {
         return null
       }
@@ -37,6 +37,7 @@ export function HashPanel(props: { value: string }) {
             match,
             isPrefix,
             previousPageData?.next || '0',
+            previousPageData?.zeroTimes || 0,
             previousPageData?.getKey,
           ]
         : null

@@ -26,7 +26,7 @@ export function SetPanel(props: { value: string }) {
     (
       _index: number,
       previousPageData: Unpacked<ReturnType<typeof sscan>> | null,
-    ) => {
+    ): Parameters<typeof sscan> | null => {
       if (previousPageData?.next === '0') {
         return null
       }
@@ -37,6 +37,7 @@ export function SetPanel(props: { value: string }) {
             match,
             isPrefix,
             previousPageData?.next || '0',
+            previousPageData?.zeroTimes || 0,
             previousPageData?.getKey,
           ]
         : null

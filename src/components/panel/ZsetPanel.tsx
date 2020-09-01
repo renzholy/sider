@@ -28,7 +28,7 @@ export function ZsetPanel(props: { value: string }) {
     (
       _index: number,
       previousPageData: Unpacked<ReturnType<typeof zscan>> | null,
-    ) => {
+    ): Parameters<typeof zscan> | null => {
       if (previousPageData?.next === '0') {
         return null
       }
@@ -39,6 +39,7 @@ export function ZsetPanel(props: { value: string }) {
             match,
             isPrefix,
             previousPageData?.next || '0',
+            previousPageData?.zeroTimes || 0,
             previousPageData?.getKey,
           ]
         : null

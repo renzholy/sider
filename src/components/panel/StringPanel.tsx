@@ -34,19 +34,12 @@ export function StringPanel(props: { value: string }) {
       }}>
       <Editor style={{ flex: 1 }} value={data} />
       <Footer>
+        <TTLButton style={{ flexBasis: 80 }} value={props.value} />
+        {bytes(strlen || 0, { unitSeparator: ' ' })}
         <ReloadButton
-          style={{ flexBasis: 80 }}
+          style={{ flexBasis: 80, display: 'flex', justifyContent: 'flex-end' }}
           isLoading={isValidating}
           onReload={handleReload}
-        />
-        {bytes(strlen || 0, { unitSeparator: ' ' })}
-        <TTLButton
-          style={{
-            flexBasis: 80,
-            display: 'flex',
-            justifyContent: 'flex-end',
-          }}
-          value={props.value}
         />
       </Footer>
     </div>

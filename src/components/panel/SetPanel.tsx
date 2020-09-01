@@ -95,12 +95,12 @@ export function SetPanel(props: { value: string }) {
             ) : null}
           </div>
           <Footer>
-            <ReloadButton isLoading={isValidating} onReload={handleReload} />
+            <TTLButton value={props.value} />
             <span>
               {formatNumber(scanSize)}&nbsp;of&nbsp;
               {formatNumber(scard || 0)}
             </span>
-            <TTLButton value={props.value} />
+            <ReloadButton isLoading={isValidating} onReload={handleReload} />
           </Footer>
         </div>
         {selectedKey ? (

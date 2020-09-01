@@ -30,20 +30,13 @@ export function ReloadButton(props: {
       style={{
         ...props.style,
         width: 30,
-        display: 'flex',
-        justifyContent: 'flex-start',
-        paddingLeft: 7,
+        paddingRight: 7,
       }}>
       <Spinner size={16} />
     </div>
   ) : (
     <div style={props.style}>
-      <Button
-        style={props.style}
-        icon="refresh"
-        minimal={true}
-        onClick={props.onReload}
-      />
+      <Button icon="refresh" minimal={true} onClick={props.onReload} />
     </div>
   )
 }

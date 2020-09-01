@@ -36,8 +36,8 @@ export function TTLButton(props: { style?: CSSProperties; value: string }) {
         <Button
           text={!data || data < 0 ? undefined : ms(data * 1000)}
           minimal={true}
-          rightIcon="time"
-          style={!data || data < 0 ? undefined : { paddingRight: 7 }}
+          icon="time"
+          style={!data || data < 0 ? undefined : { paddingLeft: 7 }}
         />
       </Tooltip>
     </div>

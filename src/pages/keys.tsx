@@ -104,12 +104,16 @@ export default () => {
           ) : null}
         </div>
         <Footer>
-          <ReloadButton isLoading={isValidating} onReload={handleReload} />
+          <ConnectionSelector />
           <span>
             {formatNumber(scanSize)}&nbsp;of&nbsp;
             {formatNumber(dbSize || 0)}
           </span>
-          <ConnectionSelector />
+          <ReloadButton
+            style={{ display: 'flex', justifyContent: 'flex-end' }}
+            isLoading={isValidating}
+            onReload={handleReload}
+          />
         </Footer>
       </div>
       <Panel />

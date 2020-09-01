@@ -4,7 +4,6 @@ import {
   Popover,
   Menu,
   MenuItem,
-  Classes,
   Intent,
   Divider,
 } from '@blueprintjs/core'
@@ -14,6 +13,7 @@ import { range, isEqual } from 'lodash'
 
 import { listConnections } from '@/utils/fetcher'
 import { actions } from '@/stores'
+import { DatabaseButton } from './DatabaseButton'
 
 export function ConnectionSelector() {
   const { data } = useSWR('connections', () => listConnections())
@@ -56,18 +56,11 @@ export function ConnectionSelector() {
                 {range(0, 4).map((num2) => {
                   const num = num1 + num2 * 4
                   return (
-                    <Button
+                    <DatabaseButton
                       key={num}
-                      minimal={true}
-                      text={num}
+                      db={num}
                       intent={num === db ? Intent.PRIMARY : Intent.NONE}
                       active={num === db}
-                      className={Classes.POPOVER_DISMISS}
-                      style={{
-                        width: 16,
-                        display: 'flex',
-                        justifyContent: 'center',
-                      }}
                       onClick={() => {
                         dispatch(
                           actions.keys.setConnection(

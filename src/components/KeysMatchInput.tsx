@@ -26,7 +26,7 @@ export function KeysMatchInput() {
       }}
       leftElement={<KeyTypeSelector />}
       rightElement={
-        <Tooltip content="Prefix match">
+        <Tooltip content="Prefix match" boundary="window">
           <Button
             icon="asterisk"
             minimal={true}

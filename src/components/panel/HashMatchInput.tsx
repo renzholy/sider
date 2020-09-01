@@ -24,7 +24,7 @@ export function HashMatchInput() {
         marginBottom: 8,
       }}
       rightElement={
-        <Tooltip content="Prefix match">
+        <Tooltip boundary="window" content="Prefix match">
           <Button
             icon="asterisk"
             minimal={true}

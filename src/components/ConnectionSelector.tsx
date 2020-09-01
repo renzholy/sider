@@ -33,7 +33,7 @@ export function ConnectionSelector() {
   const db = connection?.db || 0
 
   return (
-    <Popover>
+    <Popover boundary="window" hasBackdrop={true}>
       <Button icon="database" minimal={true} />
       <div style={{ display: 'flex', padding: 4 }}>
         <Menu>

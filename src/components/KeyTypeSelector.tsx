@@ -12,7 +12,7 @@ export function KeyTypeSelector() {
   const dispatch = useDispatch()
 
   return (
-    <Popover>
+    <Popover boundary="window" hasBackdrop={true}>
       {keyType ? (
         <KeyTag type={keyType} style={{ cursor: 'pointer' }} />
       ) : (

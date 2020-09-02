@@ -63,9 +63,10 @@ export default () => {
     () => runCommand<number>(connection!, ['dbsize']),
   )
   const handleReload = useCallback(async () => {
+    await setSize(0)
     await revalidate()
     await revalidateDbSize()
-  }, [revalidate, revalidateDbSize])
+  }, [setSize, revalidate, revalidateDbSize])
   const renderItems = useCallback(
     (p: ListChildComponentProps) => (
       // eslint-disable-next-line react/jsx-props-no-spreading

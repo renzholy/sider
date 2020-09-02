@@ -71,9 +71,10 @@ export function ZsetPanel(props: { value: string }) {
       runCommand<number>(connection!, ['zcount', props.value, '-inf', '+inf']),
   )
   const handleReload = useCallback(async () => {
+    await setSize(0)
     await revalidate()
     await revalidateCount()
-  }, [revalidate, revalidateCount])
+  }, [setSize, revalidate, revalidateCount])
   const selectedKey = useSelector((state) => state.zset.selectedKey)
   const dispatch = useDispatch()
   useEffect(() => {

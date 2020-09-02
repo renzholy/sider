@@ -50,7 +50,6 @@ export default () => {
     handleGetKey,
     scan,
     {
-      revalidateAll: true,
       revalidateOnFocus: false,
     },
   )

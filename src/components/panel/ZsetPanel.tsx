@@ -50,7 +50,6 @@ export function ZsetPanel(props: { value: string }) {
     handleGetKey,
     zscan,
     {
-      revalidateAll: true,
       revalidateOnFocus: false,
     },
   )

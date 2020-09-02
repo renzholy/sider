@@ -48,7 +48,6 @@ export function SetPanel(props: { value: string }) {
     handleGetKey,
     sscan,
     {
-      revalidateAll: true,
       revalidateOnFocus: false,
     },
   )

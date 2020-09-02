@@ -37,7 +37,6 @@ export function ListPanel(props: { value: string }) {
     handleGetKey,
     lrange,
     {
-      revalidateAll: true,
       revalidateOnFocus: false,
     },
   )

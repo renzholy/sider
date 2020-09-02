@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useMemo,
 } from 'react'
-import { Button } from '@blueprintjs/core'
+import { Spinner, Button } from '@blueprintjs/core'
 import { debounce } from 'lodash'
 
 export function ReloadButton(props: {
@@ -25,14 +25,18 @@ export function ReloadButton(props: {
     handleDebounceIsLoading(props.isLoading)
   }, [handleDebounceIsLoading, props.isLoading])
 
-  return (
+  return isLoading ? (
+    <div
+      style={{
+        ...props.style,
+        width: 30,
+        paddingRight: 7,
+      }}>
+      <Spinner size={16} />
+    </div>
+  ) : (
     <div style={props.style}>
-      <Button
-        icon="refresh"
-        minimal={true}
-        disabled={isLoading}
-        onClick={props.onReload}
-      />
+      <Button icon="refresh" minimal={true} onClick={props.onReload} />
     </div>
   )
 }

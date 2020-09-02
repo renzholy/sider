@@ -227,18 +227,25 @@ export async function lrange(
   connection: Connection,
   key: string,
   cursor: string,
+  zeroTimes: number,
+  totalScanned: number,
 ): Promise<{
   next: string
   keys: string[]
+  zeroTimes: number
+  totalScanned: number
 }> {
+  const count = calcCount(zeroTimes)
   const keys = await runCommand<string[]>(connection, [
     'lrange',
     key,
     cursor,
-    (parseInt(cursor, 10) + 10).toString(),
+    (parseInt(cursor, 10) + count).toString(),
   ])
   return {
     next: keys.length ? (parseInt(cursor, 10) + keys.length).toString() : '0',
     keys,
+    zeroTimes: keys.length === 0 ? zeroTimes + 1 : 0,
+    totalScanned: totalScanned + count,
   }
 }

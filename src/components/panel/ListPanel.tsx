@@ -23,12 +23,18 @@ export function ListPanel(props: { value: string }) {
     (
       _index: number,
       previousPageData: Unpacked<ReturnType<typeof lrange>> | null,
-    ) => {
+    ): Parameters<typeof lrange> | null => {
       if (previousPageData?.keys.length === 0) {
         return null
       }
       return connection
-        ? [connection, props.value, previousPageData?.next || '0']
+        ? [
+            connection,
+            props.value,
+            previousPageData?.next || '0',
+            previousPageData?.zeroTimes || 0,
+            previousPageData?.totalScanned || 0,
+          ]
         : null
     },
     [connection, props.value],

@@ -14,7 +14,7 @@ import { last } from 'lodash'
 import { ProgressBar } from '@blueprintjs/core'
 
 export function InfiniteList<T>(props: {
-  items?: { next: string; keys: T[]; totalScanned?: number }[]
+  items?: { next: string; keys: T[]; totalScanned: number }[]
   total?: number
   children: ComponentType<ListChildComponentProps>
   onLoadMoreItems: (

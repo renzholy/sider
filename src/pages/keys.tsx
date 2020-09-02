@@ -2,6 +2,7 @@ import React, { useCallback, useEffect } from 'react'
 import useSWR, { useSWRInfinite } from 'swr'
 import { useSelector } from 'react-redux'
 import { ListChildComponentProps } from 'react-window'
+import { Intent } from '@blueprintjs/core'
 
 import { runCommand } from '@/utils/fetcher'
 import { scan } from '@/utils/scanner'
@@ -17,7 +18,6 @@ import { Footer } from '@/components/pure/Footer'
 import { ReloadButton } from '@/components/pure/ReloadButton'
 import { useScanSize } from '@/hooks/use-scan-size'
 import { AppToaster } from '@/utils/toaster'
-import { Intent } from '@blueprintjs/core'
 
 export default () => {
   const connection = useSelector((state) => state.keys.connection)
@@ -50,7 +50,6 @@ export default () => {
     handleGetKey,
     scan,
     {
-      revalidateAll: true,
       revalidateOnFocus: false,
     },
   )
@@ -98,11 +97,9 @@ export default () => {
             borderRadius: 4,
             overflow: 'hidden',
           }}>
-          {data ? (
-            <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
-              {renderItems}
-            </InfiniteList>
-          ) : null}
+          <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
+            {renderItems}
+          </InfiniteList>
         </div>
         <Footer>
           <ConnectionSelector />

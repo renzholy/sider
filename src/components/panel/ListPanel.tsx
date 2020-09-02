@@ -23,12 +23,18 @@ export function ListPanel(props: { value: string }) {
     (
       _index: number,
       previousPageData: Unpacked<ReturnType<typeof lrange>> | null,
-    ) => {
+    ): Parameters<typeof lrange> | null => {
       if (previousPageData?.keys.length === 0) {
         return null
       }
       return connection
-        ? [connection, props.value, previousPageData?.next || '0']
+        ? [
+            connection,
+            props.value,
+            previousPageData?.next || '0',
+            previousPageData?.zeroTimes || 0,
+            previousPageData?.totalScanned || 0,
+          ]
         : null
     },
     [connection, props.value],
@@ -55,10 +61,9 @@ export function ListPanel(props: { value: string }) {
     () => runCommand<number>(connection!, ['llen', props.value]),
   )
   const handleReload = useCallback(async () => {
-    await setSize(0)
     await revalidate()
     await revalidateLlen()
-  }, [setSize, revalidate, revalidateLlen])
+  }, [revalidate, revalidateLlen])
   const scanSize = useScanSize(data)
   const selectedKey = useSelector((state) => state.list.selectedKey)
   const dispatch = useDispatch()
@@ -70,7 +75,10 @@ export function ListPanel(props: { value: string }) {
     <>
       <div style={{ width: 360, display: 'flex', flexDirection: 'column' }}>
         <div style={{ flex: 1 }}>
-          <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
+          <InfiniteList
+            items={data}
+            total={llen}
+            onLoadMoreItems={handleLoadMoreItems}>
             {renderItems}
           </InfiniteList>
         </div>

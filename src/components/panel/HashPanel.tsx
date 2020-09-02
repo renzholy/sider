@@ -38,6 +38,7 @@ export function HashPanel(props: { value: string }) {
             isPrefix,
             previousPageData?.next || '0',
             previousPageData?.zeroTimes || 0,
+            previousPageData?.totalScanned || 0,
             previousPageData?.getKey,
           ]
         : null
@@ -66,10 +67,9 @@ export function HashPanel(props: { value: string }) {
     [],
   )
   const handleReload = useCallback(async () => {
-    await setSize(0)
     await revalidate()
     await revalidateHlen()
-  }, [setSize, revalidate, revalidateHlen])
+  }, [revalidate, revalidateHlen])
   const scanSize = useScanSize(data)
   const selectedKey = useSelector((state) => state.hash.selectedKey)
   const dispatch = useDispatch()
@@ -82,7 +82,10 @@ export function HashPanel(props: { value: string }) {
       <div style={{ width: 360, display: 'flex', flexDirection: 'column' }}>
         <HashMatchInput />
         <div style={{ flex: 1 }}>
-          <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
+          <InfiniteList
+            items={data}
+            total={hlen}
+            onLoadMoreItems={handleLoadMoreItems}>
             {renderItems}
           </InfiniteList>
         </div>

@@ -3,8 +3,8 @@ import { chunk, isEqual } from 'lodash'
 import { Connection, KeyType } from '@/types'
 import { runCommand, runPipeline } from './fetcher'
 
-function calcCount(zeroTimes: number): string {
-  return Math.max(16, Math.min(8192, 4 ** zeroTimes)).toString()
+function calcCount(zeroTimes: number): number {
+  return Math.max(16, Math.min(8192, 4 ** zeroTimes))
 }
 
 export async function scan(
@@ -14,11 +14,13 @@ export async function scan(
   keyType: KeyType | undefined,
   cursor: string,
   zeroTimes: number,
+  totalScanned: number,
   getKey?: { key: string; type: KeyType },
 ): Promise<{
   next: string
   keys: { key: string; type: KeyType }[]
   zeroTimes: number
+  totalScanned: number
   getKey?: { key: string; type: KeyType }
 }> {
   if (!getKey && match) {
@@ -28,17 +30,19 @@ export async function scan(
         next: '',
         keys: [{ key: match, type }],
         zeroTimes: 0,
+        totalScanned: 1,
         getKey: { key: match, type },
       }
     }
   }
+  const count = calcCount(zeroTimes)
   const [next, keys] = await runCommand<[string, string[]]>(connection, [
     'scan',
     cursor,
     'match',
     isPrefix ? `${match}*` : match || '*',
     'count',
-    calcCount(zeroTimes),
+    count.toString(),
   ])
   const types = await runPipeline<KeyType[]>(
     connection,
@@ -54,6 +58,7 @@ export async function scan(
       .filter((item) => !isEqual(item, getKey))
       .filter(({ type }) => !keyType || type === keyType),
     zeroTimes: keys.length === 0 ? zeroTimes + 1 : 0,
+    totalScanned: totalScanned + count,
     getKey,
   }
 }
@@ -65,11 +70,13 @@ export async function sscan(
   isPrefix: boolean,
   cursor: string,
   zeroTimes: number,
+  totalScanned: number,
   getKey?: string,
 ): Promise<{
   next: string
   keys: string[]
   zeroTimes: number
+  totalScanned: number
   getKey?: string
 }> {
   if (!getKey && match) {
@@ -83,10 +90,12 @@ export async function sscan(
         next: '',
         keys: [match],
         zeroTimes: 0,
+        totalScanned: 1,
         getKey: match,
       }
     }
   }
+  const count = calcCount(zeroTimes)
   const [next, keys] = await runCommand<[string, string[]]>(connection, [
     'sscan',
     key,
@@ -94,12 +103,13 @@ export async function sscan(
     'match',
     isPrefix ? `${match}*` : match || '*',
     'count',
-    calcCount(zeroTimes),
+    count.toString(),
   ])
   return {
     next,
     keys: keys.filter((item) => !isEqual(item, getKey)),
     zeroTimes: keys.length === 0 ? zeroTimes + 1 : 0,
+    totalScanned: totalScanned + count,
     getKey,
   }
 }
@@ -111,11 +121,13 @@ export async function hscan(
   isPrefix: boolean,
   cursor: string,
   zeroTimes: number,
+  totalScanned: number,
   getKey?: { hash: string; value: string },
 ): Promise<{
   next: string
   keys: { hash: string; value: string }[]
   zeroTimes: number
+  totalScanned: number
   getKey?: { hash: string; value: string }
 }> {
   if (!getKey && match) {
@@ -126,6 +138,7 @@ export async function hscan(
           next: '',
           keys: [{ hash: match, value }],
           zeroTimes: 0,
+          totalScanned: 1,
           getKey: { hash: match, value },
         }
       }
@@ -133,6 +146,7 @@ export async function hscan(
       // do nothing
     }
   }
+  const count = calcCount(zeroTimes)
   const [next, keys] = await runCommand<[string, string[]]>(connection, [
     'hscan',
     key,
@@ -140,7 +154,7 @@ export async function hscan(
     'match',
     isPrefix ? `${match}*` : match || '*',
     'count',
-    calcCount(zeroTimes),
+    count.toString(),
   ])
   return {
     next,
@@ -148,6 +162,7 @@ export async function hscan(
       .map(([hash, value]) => ({ hash, value }))
       .filter((item) => !isEqual(item, getKey)),
     zeroTimes: keys.length === 0 ? zeroTimes + 1 : 0,
+    totalScanned: totalScanned + count,
     getKey,
   }
 }
@@ -159,11 +174,13 @@ export async function zscan(
   isPrefix: boolean,
   cursor: string,
   zeroTimes: number,
+  totalScanned: number,
   getKey?: { key: string; score: number },
 ): Promise<{
   next: string
   keys: { key: string; score: number }[]
   zeroTimes: number
+  totalScanned: number
   getKey?: { key: string; score: number }
 }> {
   if (!getKey && match) {
@@ -174,6 +191,7 @@ export async function zscan(
           next: '',
           keys: [{ key: match, score: parseInt(score, 10) }],
           zeroTimes: 0,
+          totalScanned: 1,
           getKey: { key: match, score: parseInt(score, 10) },
         }
       }
@@ -181,6 +199,7 @@ export async function zscan(
       // do nothing
     }
   }
+  const count = calcCount(zeroTimes)
   const [next, keys] = await runCommand<[string, string[]]>(connection, [
     'zscan',
     key,
@@ -188,7 +207,7 @@ export async function zscan(
     'match',
     isPrefix ? `${match}*` : match || '*',
     'count',
-    calcCount(zeroTimes),
+    count.toString(),
   ])
   return {
     next,
@@ -199,6 +218,7 @@ export async function zscan(
       }))
       .filter((item) => !isEqual(item, getKey)),
     zeroTimes: keys.length === 0 ? zeroTimes + 1 : 0,
+    totalScanned: totalScanned + count,
     getKey,
   }
 }
@@ -207,18 +227,25 @@ export async function lrange(
   connection: Connection,
   key: string,
   cursor: string,
+  zeroTimes: number,
+  totalScanned: number,
 ): Promise<{
   next: string
   keys: string[]
+  zeroTimes: number
+  totalScanned: number
 }> {
+  const count = calcCount(zeroTimes)
   const keys = await runCommand<string[]>(connection, [
     'lrange',
     key,
     cursor,
-    (parseInt(cursor, 10) + 10).toString(),
+    (parseInt(cursor, 10) + count).toString(),
   ])
   return {
     next: keys.length ? (parseInt(cursor, 10) + keys.length).toString() : '0',
     keys,
+    zeroTimes: keys.length === 0 ? zeroTimes + 1 : 0,
+    totalScanned: totalScanned + count,
   }
 }

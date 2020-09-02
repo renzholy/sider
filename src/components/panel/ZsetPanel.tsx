@@ -40,6 +40,7 @@ export function ZsetPanel(props: { value: string }) {
             isPrefix,
             previousPageData?.next || '0',
             previousPageData?.zeroTimes || 0,
+            previousPageData?.totalScanned || 0,
             previousPageData?.getKey,
           ]
         : null
@@ -70,10 +71,9 @@ export function ZsetPanel(props: { value: string }) {
       runCommand<number>(connection!, ['zcount', props.value, '-inf', '+inf']),
   )
   const handleReload = useCallback(async () => {
-    await setSize(0)
     await revalidate()
     await revalidateCount()
-  }, [setSize, revalidate, revalidateCount])
+  }, [revalidate, revalidateCount])
   const selectedKey = useSelector((state) => state.zset.selectedKey)
   const dispatch = useDispatch()
   useEffect(() => {
@@ -86,7 +86,10 @@ export function ZsetPanel(props: { value: string }) {
       <div style={{ width: 440, display: 'flex', flexDirection: 'column' }}>
         <ZsetMatchInput />
         <div style={{ flex: 1 }}>
-          <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
+          <InfiniteList
+            items={data}
+            total={count}
+            onLoadMoreItems={handleLoadMoreItems}>
             {renderItems}
           </InfiniteList>
         </div>

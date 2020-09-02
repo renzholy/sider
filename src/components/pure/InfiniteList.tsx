@@ -9,12 +9,13 @@ import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
 import { VariableSizeList, ListChildComponentProps } from 'react-window'
 import InfiniteLoader from 'react-window-infinite-loader'
 import mergeRefs from 'react-merge-refs'
+import { last } from 'lodash'
 
-import { useHasNextPage } from '@/hooks/use-has-next-page'
 import { ProgressBar } from '@blueprintjs/core'
 
 export function InfiniteList<T>(props: {
-  items?: { next: string; keys: T[] }[]
+  items?: { next: string; keys: T[]; totalScanned?: number }[]
+  total?: number
   children: ComponentType<ListChildComponentProps>
   onLoadMoreItems: (
     startIndex: number,
@@ -38,10 +39,29 @@ export function InfiniteList<T>(props: {
     },
     [props.items],
   )
-  const hasNextPage = useHasNextPage(props.items)
-  const progress = useMemo(() => (hasNextPage ? <ProgressBar /> : null), [
-    hasNextPage,
+  const hasNextPage = useMemo(() => last(props.items)?.next !== '0', [
+    props.items,
   ])
+  const progressValue = useMemo(
+    () =>
+      props.total
+        ? (last(props.items)?.totalScanned || 0) / props.total
+        : undefined,
+    [props.items, props.total],
+  )
+  const progress = useMemo(
+    () =>
+      hasNextPage ? (
+        <ProgressBar
+          value={
+            progressValue === undefined
+              ? undefined
+              : Math.max(0, Math.min(1, progressValue))
+          }
+        />
+      ) : null,
+    [hasNextPage, progressValue],
+  )
 
   if (!props.items) {
     return null

@@ -69,7 +69,10 @@ export function ListPanel(props: { value: string }) {
     <>
       <div style={{ width: 360, display: 'flex', flexDirection: 'column' }}>
         <div style={{ flex: 1 }}>
-          <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
+          <InfiniteList
+            items={data}
+            total={llen}
+            onLoadMoreItems={handleLoadMoreItems}>
             {renderItems}
           </InfiniteList>
         </div>

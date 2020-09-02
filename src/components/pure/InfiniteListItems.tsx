@@ -31,7 +31,6 @@ export function InfiniteListItems<T>(
         style={{
           ...props.style,
           display: 'flex',
-          alignItems: 'center',
           justifyContent: 'center',
           color: isDarkMode ? Colors.GRAY1 : Colors.GRAY5,
           userSelect: 'none',

@@ -40,6 +40,7 @@ export default () => {
             keyType,
             previousPageData?.next || '0',
             previousPageData?.zeroTimes || 0,
+            previousPageData?.totalScanned || 0,
             previousPageData?.getKey,
           ]
         : null
@@ -96,7 +97,10 @@ export default () => {
             borderRadius: 4,
             overflow: 'hidden',
           }}>
-          <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
+          <InfiniteList
+            items={data}
+            total={dbSize}
+            onLoadMoreItems={handleLoadMoreItems}>
             {renderItems}
           </InfiniteList>
         </div>

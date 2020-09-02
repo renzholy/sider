@@ -38,6 +38,7 @@ export function SetPanel(props: { value: string }) {
             isPrefix,
             previousPageData?.next || '0',
             previousPageData?.zeroTimes || 0,
+            previousPageData?.totalScanned || 0,
             previousPageData?.getKey,
           ]
         : null
@@ -81,7 +82,10 @@ export function SetPanel(props: { value: string }) {
       <div style={{ width: 360, display: 'flex', flexDirection: 'column' }}>
         <SetMatchInput />
         <div style={{ flex: 1 }}>
-          <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
+          <InfiniteList
+            items={data}
+            total={scard}
+            onLoadMoreItems={handleLoadMoreItems}>
             {renderItems}
           </InfiniteList>
         </div>

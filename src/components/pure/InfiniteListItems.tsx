@@ -1,6 +1,6 @@
 import React, { ComponentType } from 'react'
 import type { ListChildComponentProps } from 'react-window'
-import { Colors } from '@blueprintjs/core'
+import { Colors, ProgressBar } from '@blueprintjs/core'
 
 import { useIsDarkMode } from '@/hooks/use-is-dark-mode'
 
@@ -10,20 +10,30 @@ export function InfiniteListItems<T>(
   },
 ) {
   const data = props.data as {
-    cursor: string
+    next: string
     keys: T[]
   }[]
   const items = data[props.index] as
     | {
-        cursor: string
+        next: string
         keys: T[]
       }
     | undefined
   const isDarkMode = useIsDarkMode()
   const Children = props.children
+  const hasNextPage = items?.next !== '0'
 
   if (!items) {
-    return (
+    return hasNextPage ? (
+      <div
+        style={{
+          ...props.style,
+          height: 36,
+          padding: 8,
+        }}>
+        <ProgressBar />
+      </div>
+    ) : (
       <div
         style={{
           ...props.style,

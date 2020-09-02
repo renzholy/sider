@@ -47,7 +47,7 @@ export function InfiniteListItems<T>(
           height: 36,
           padding: 8,
         }}>
-        no more
+        end
       </div>
     )
   }

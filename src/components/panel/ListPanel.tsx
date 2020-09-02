@@ -55,10 +55,9 @@ export function ListPanel(props: { value: string }) {
     () => runCommand<number>(connection!, ['llen', props.value]),
   )
   const handleReload = useCallback(async () => {
-    await setSize(0)
     await revalidate()
     await revalidateLlen()
-  }, [setSize, revalidate, revalidateLlen])
+  }, [revalidate, revalidateLlen])
   const scanSize = useScanSize(data)
   const selectedKey = useSelector((state) => state.list.selectedKey)
   const dispatch = useDispatch()

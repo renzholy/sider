@@ -10,12 +10,12 @@ export function InfiniteListItems<T>(
   },
 ) {
   const data = props.data as {
-    cursor: string
+    next: string
     keys: T[]
   }[]
   const items = data[props.index] as
     | {
-        cursor: string
+        next: string
         keys: T[]
       }
     | undefined

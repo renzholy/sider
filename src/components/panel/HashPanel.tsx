@@ -48,6 +48,7 @@ export function HashPanel(props: { value: string }) {
     handleGetKey,
     hscan,
     {
+      revalidateAll: true,
       revalidateOnFocus: false,
     },
   )

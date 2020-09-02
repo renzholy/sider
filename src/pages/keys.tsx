@@ -50,8 +50,8 @@ export default () => {
     handleGetKey,
     scan,
     {
+      revalidateAll: true,
       revalidateOnFocus: false,
-      errorRetryCount: 0,
     },
   )
   const scanSize = useScanSize(data)

@@ -83,11 +83,9 @@ export function HashPanel(props: { value: string }) {
       <div style={{ width: 360, display: 'flex', flexDirection: 'column' }}>
         <HashMatchInput />
         <div style={{ flex: 1 }}>
-          {data ? (
-            <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
-              {renderItems}
-            </InfiniteList>
-          ) : null}
+          <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
+            {renderItems}
+          </InfiniteList>
         </div>
         <Footer>
           <TTLButton style={{ flexBasis: 80 }} value={props.value} />

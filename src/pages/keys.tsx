@@ -98,11 +98,9 @@ export default () => {
             borderRadius: 4,
             overflow: 'hidden',
           }}>
-          {data ? (
-            <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
-              {renderItems}
-            </InfiniteList>
-          ) : null}
+          <InfiniteList items={data} onLoadMoreItems={handleLoadMoreItems}>
+            {renderItems}
+          </InfiniteList>
         </div>
         <Footer>
           <ConnectionSelector />

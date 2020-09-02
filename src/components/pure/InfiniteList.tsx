@@ -7,7 +7,7 @@ import mergeRefs from 'react-merge-refs'
 import { useHasNextPage } from '@/hooks/use-has-next-page'
 
 export function InfiniteList<T>(props: {
-  items: { next: string; keys: T[] }[]
+  items?: { next: string; keys: T[] }[]
   children: ComponentType<ListChildComponentProps>
   onLoadMoreItems: (
     startIndex: number,
@@ -15,24 +15,27 @@ export function InfiniteList<T>(props: {
   ) => Promise<any> | null
 }) {
   const handleIsItemLoaded = useCallback(
-    (index: number) => !!props.items[index],
+    (index: number) => !!props.items?.[index],
     [props.items],
   )
   const variableSizeListRef = useRef<VariableSizeList>(null)
   useEffect(() => {
     variableSizeListRef.current?.resetAfterIndex(
-      Math.max(0, props.items.length - 2),
+      props.items ? props.items.length - 1 : 0,
     )
-  }, [props.items.length])
-  const itemCount = props.items.length + 1
+  }, [props.items])
+  const itemCount = (props.items?.length || 0) + 1
   const handleItemSize = useCallback(
     (index: number) => {
-      return props.items[index] ? props.items[index].keys.length * 36 : 36
+      return props.items?.[index] ? props.items[index].keys.length * 36 : 36
     },
     [props.items],
   )
   const hasNextPage = useHasNextPage(props.items)
 
+  if (!props.items) {
+    return null
+  }
   return (
     <AutoSizer>
       {({ height, width }: Size) => (

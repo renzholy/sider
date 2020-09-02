@@ -1,10 +1,17 @@
-import React, { useCallback, useRef, useEffect, ComponentType } from 'react'
+import React, {
+  useCallback,
+  useRef,
+  useEffect,
+  ComponentType,
+  useMemo,
+} from 'react'
 import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
 import { VariableSizeList, ListChildComponentProps } from 'react-window'
 import InfiniteLoader from 'react-window-infinite-loader'
 import mergeRefs from 'react-merge-refs'
 
 import { useHasNextPage } from '@/hooks/use-has-next-page'
+import { ProgressBar } from '@blueprintjs/core'
 
 export function InfiniteList<T>(props: {
   items?: { next: string; keys: T[] }[]
@@ -32,6 +39,9 @@ export function InfiniteList<T>(props: {
     [props.items],
   )
   const hasNextPage = useHasNextPage(props.items)
+  const progress = useMemo(() => (hasNextPage ? <ProgressBar /> : null), [
+    hasNextPage,
+  ])
 
   if (!props.items) {
     return null
@@ -53,7 +63,7 @@ export function InfiniteList<T>(props: {
               itemCount={itemCount}
               itemData={{
                 items: props.items,
-                hasNextPage,
+                progress,
               }}
               onItemsRendered={onItemsRendered}>
               {props.children}

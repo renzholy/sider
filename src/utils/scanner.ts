@@ -218,7 +218,7 @@ export async function lrange(
     (parseInt(cursor, 10) + 10).toString(),
   ])
   return {
-    next: (parseInt(cursor, 10) + keys.length).toString(),
+    next: keys.length ? (parseInt(cursor, 10) + keys.length).toString() : '0',
     keys,
   }
 }

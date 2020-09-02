@@ -4,6 +4,8 @@ import { VariableSizeList, ListChildComponentProps } from 'react-window'
 import InfiniteLoader from 'react-window-infinite-loader'
 import mergeRefs from 'react-merge-refs'
 
+import { useHasNextPage } from '@/hooks/use-has-next-page'
+
 export function InfiniteList<T>(props: {
   items: { next: string; keys: T[] }[]
   children: ComponentType<ListChildComponentProps>
@@ -29,6 +31,7 @@ export function InfiniteList<T>(props: {
     },
     [props.items],
   )
+  const hasNextPage = useHasNextPage(props.items)
 
   return (
     <AutoSizer>
@@ -47,6 +50,7 @@ export function InfiniteList<T>(props: {
               itemCount={itemCount}
               itemData={{
                 items: props.items,
+                hasNextPage,
               }}
               onItemsRendered={onItemsRendered}>
               {props.children}

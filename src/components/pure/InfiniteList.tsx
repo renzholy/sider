@@ -18,7 +18,9 @@ export function InfiniteList<T>(props: {
   )
   const variableSizeListRef = useRef<VariableSizeList>(null)
   useEffect(() => {
-    variableSizeListRef.current?.resetAfterIndex(props.items.length - 2)
+    variableSizeListRef.current?.resetAfterIndex(
+      Math.max(0, props.items.length - 2),
+    )
   }, [props.items.length])
   const itemCount = props.items.length + 1
   const handleItemSize = useCallback(
@@ -43,7 +45,9 @@ export function InfiniteList<T>(props: {
               height={height}
               itemSize={handleItemSize}
               itemCount={itemCount}
-              itemData={props.items}
+              itemData={{
+                items: props.items,
+              }}
               onItemsRendered={onItemsRendered}>
               {props.children}
             </VariableSizeList>

@@ -2,6 +2,7 @@ import React, { CSSProperties } from 'react'
 import { Tag, Intent } from '@blueprintjs/core'
 
 import { KeyType } from '@/types'
+import styles from './KeyTag.less'
 
 const intentMap = {
   [KeyType.STRING]: Intent.NONE,
@@ -40,6 +41,7 @@ export function KeyTag(props: {
 }) {
   return (
     <Tag
+      className={styles.keyTag}
       large={props.large}
       style={props.style}
       title={props.type}

@@ -41,11 +41,11 @@ export function InfiniteListItems<T>(
       </div>
     )
   }
-  return (
+  return items.keys.length ? (
     <div style={props.style}>
       {items.keys.map((item, index) => (
         <Children key={index.toString()} value={item} />
       ))}
     </div>
-  )
+  ) : null
 }

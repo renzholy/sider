@@ -91,12 +91,20 @@ export function SetPanel(props: { value: string }) {
           </InfiniteList>
         </div>
         <Footer>
-          <TTLButton value={props.value} />
+          <TTLButton style={{ flexBasis: 80 }} value={props.value} />
           <span>
             {formatNumber(scanSize)}&nbsp;of&nbsp;
             {formatNumber(scard || 0)}
           </span>
-          <ReloadButton isLoading={isValidating} onReload={handleReload} />
+          <ReloadButton
+            style={{
+              flexBasis: 80,
+              display: 'flex',
+              justifyContent: 'flex-end',
+            }}
+            isLoading={isValidating}
+            onReload={handleReload}
+          />
         </Footer>
       </div>
       {selectedKey ? (

@@ -28,7 +28,7 @@ export function SetItem(props: { value: string }) {
       isSelected={isEqual(selectedKey, item)}
       onSelect={handleSelect}>
       <span title={item}>
-        {isPrefix && match ? <em style={{ opacity: 0.5 }}>_</em> : null}
+        {isPrefix && match ? <em style={{ opacity: 0.5 }}>*</em> : null}
         {str}
       </span>
     </InfiniteListItem>

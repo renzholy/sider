@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback } from 'react'
 import useSWR, { useSWRInfinite } from 'swr'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { ListChildComponentProps } from 'react-window'
 
 import { Unpacked } from '@/utils'
@@ -8,7 +8,6 @@ import { sscan } from '@/utils/scanner'
 import { useScanSize } from '@/hooks/use-scan-size'
 import { formatNumber } from '@/utils/formatter'
 import { runCommand } from '@/utils/fetcher'
-import { actions } from '@/stores'
 import { SetMatchInput } from './SetMatchInput'
 import { InfiniteList } from '../pure/InfiniteList'
 import { InfiniteListItems } from '../pure/InfiniteListItems'
@@ -73,10 +72,6 @@ export function SetPanel(props: { value: string }) {
     await revalidateScard()
   }, [setSize, revalidate, revalidateScard])
   const selectedKey = useSelector((state) => state.set.selectedKey)
-  const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch(actions.set.setSelectedKey(data?.[0]?.keys[0]))
-  }, [props.value, dispatch, data])
 
   return (
     <>

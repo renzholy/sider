@@ -67,8 +67,8 @@ export function HashPanel(props: { value: string }) {
     [],
   )
   const handleReload = useCallback(async () => {
-    await setSize(0)
     await revalidate()
+    await setSize(1)
     await revalidateHlen()
   }, [setSize, revalidate, revalidateHlen])
   const scanSize = useScanSize(data)

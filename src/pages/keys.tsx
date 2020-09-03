@@ -63,8 +63,8 @@ export default () => {
     () => runCommand<number>(connection!, ['dbsize']),
   )
   const handleReload = useCallback(async () => {
-    await setSize(0)
     await revalidate()
+    await setSize(1)
     await revalidateDbSize()
   }, [setSize, revalidate, revalidateDbSize])
   const renderItems = useCallback(

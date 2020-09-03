@@ -68,8 +68,8 @@ export function SetPanel(props: { value: string }) {
   )
   const scanSize = useScanSize(data)
   const handleReload = useCallback(async () => {
-    await setSize(0)
     await revalidate()
+    await setSize(1)
     await revalidateScard()
   }, [setSize, revalidate, revalidateScard])
   const selectedKey = useSelector((state) => state.set.selectedKey)

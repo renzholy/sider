@@ -24,7 +24,9 @@ export function SetMatchInput() {
         marginBottom: 8,
       }}
       rightElement={
-        <Tooltip boundary="window" content="Prefix match">
+        <Tooltip
+          boundary="window"
+          content={`Prefix match: ${isPrefix ? 'ON' : 'OFF'}`}>
           <Button
             icon="asterisk"
             minimal={true}

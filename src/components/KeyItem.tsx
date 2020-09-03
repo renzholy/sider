@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { isEqual } from 'lodash'
 
@@ -9,6 +9,8 @@ import { InfiniteListItem } from './pure/InfiniteListItem'
 
 export function KeyItem(props: { value: { key: string; type: KeyType } }) {
   const selectedKey = useSelector((state) => state.keys.selectedKey)
+  const match = useSelector((state) => state.keys.match)
+  const isPrefix = useSelector((state) => state.keys.isPrefix)
   const dispatch = useDispatch()
   const item = props.value
   const handleSelect = useCallback(
@@ -17,6 +19,13 @@ export function KeyItem(props: { value: { key: string; type: KeyType } }) {
     },
     [dispatch, item],
   )
+  const str = useMemo(
+    () =>
+      isPrefix && match
+        ? item.key.replace(new RegExp(`^${match}`), '')
+        : item.key,
+    [isPrefix, item.key, match],
+  )
 
   return (
     <InfiniteListItem
@@ -24,7 +33,10 @@ export function KeyItem(props: { value: { key: string; type: KeyType } }) {
       onSelect={handleSelect}>
       <KeyTag type={item.type} />
       &nbsp;
-      <span title={item.key}>{item.key}</span>
+      <span title={item.key}>
+        {isPrefix && match ? <em style={{ opacity: 0.5 }}>_</em> : null}
+        {str}
+      </span>
     </InfiniteListItem>
   )
 }

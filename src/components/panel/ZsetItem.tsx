@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { isEqual } from 'lodash'
 
@@ -7,6 +7,8 @@ import { InfiniteListItem } from '../pure/InfiniteListItem'
 
 export function ZsetItem(props: { value: { key: string; score: number } }) {
   const selectedKey = useSelector((state) => state.zset.selectedKey)
+  const match = useSelector((state) => state.zset.match)
+  const isPrefix = useSelector((state) => state.zset.isPrefix)
   const dispatch = useDispatch()
   const item = props.value
   const handleSelect = useCallback(
@@ -14,6 +16,13 @@ export function ZsetItem(props: { value: { key: string; score: number } }) {
       dispatch(actions.zset.setSelectedKey(isSelected ? item : undefined))
     },
     [dispatch, item],
+  )
+  const str = useMemo(
+    () =>
+      isPrefix && match
+        ? item.key.replace(new RegExp(`^${match}`), '')
+        : item.key,
+    [isPrefix, item.key, match],
   )
 
   return (
@@ -33,7 +42,8 @@ export function ZsetItem(props: { value: { key: string; score: number } }) {
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
           }}>
-          {item.key}
+          {isPrefix && match ? <em style={{ opacity: 0.5 }}>_</em> : null}
+          {str}
         </span>
         <span
           title={item.score.toString()}

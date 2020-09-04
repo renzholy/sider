@@ -34,7 +34,7 @@ export function KeyItem(props: { value: { key: string; type: KeyType } }) {
       <KeyTag type={item.type} />
       &nbsp;
       <span title={item.key}>
-        {isPrefix && match ? <em style={{ opacity: 0.5 }}>*</em> : null}
+        {isPrefix && match ? <span style={{ opacity: 0.5 }}>*</span> : null}
         {str}
       </span>
     </InfiniteListItem>

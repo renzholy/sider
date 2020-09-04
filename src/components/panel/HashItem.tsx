@@ -30,7 +30,7 @@ export function HashItem(props: { value: { hash: string; value: string } }) {
       isSelected={isEqual(selectedKey, item)}
       onSelect={handleSelect}>
       <span title={item.hash}>
-        {isPrefix && match ? <em style={{ opacity: 0.5 }}>*</em> : null}
+        {isPrefix && match ? <span style={{ opacity: 0.5 }}>*</span> : null}
         {str}
       </span>
     </InfiniteListItem>

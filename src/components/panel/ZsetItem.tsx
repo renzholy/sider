@@ -42,7 +42,7 @@ export function ZsetItem(props: { value: { key: string; score: number } }) {
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
           }}>
-          {isPrefix && match ? <em style={{ opacity: 0.5 }}>*</em> : null}
+          {isPrefix && match ? <span style={{ opacity: 0.5 }}>*</span> : null}
           {str}
         </span>
         <span

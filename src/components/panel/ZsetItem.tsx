@@ -17,13 +17,15 @@ export function ZsetItem(props: { value: { key: string; score: number } }) {
     },
     [dispatch, item],
   )
-  const str = useMemo(
-    () =>
-      isPrefix && match
+  const str = useMemo(() => {
+    try {
+      return isPrefix && match
         ? item.key.replace(new RegExp(`^${match}`), '')
-        : item.key,
-    [isPrefix, item.key, match],
-  )
+        : item.key
+    } catch {
+      return item.key
+    }
+  }, [isPrefix, item.key, match])
 
   return (
     <InfiniteListItem
@@ -42,7 +44,7 @@ export function ZsetItem(props: { value: { key: string; score: number } }) {
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
           }}>
-          {isPrefix && match ? <span style={{ opacity: 0.5 }}>*</span> : null}
+          {item.key !== str ? <span style={{ opacity: 0.5 }}>*</span> : null}
           {str}
         </span>
         <span

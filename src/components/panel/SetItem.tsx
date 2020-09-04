@@ -17,18 +17,22 @@ export function SetItem(props: { value: string }) {
     },
     [dispatch, item],
   )
-  const str = useMemo(
-    () =>
-      isPrefix && match ? item.replace(new RegExp(`^${match}`), '') : item,
-    [isPrefix, item, match],
-  )
+  const str = useMemo(() => {
+    try {
+      return isPrefix && match
+        ? item.replace(new RegExp(`^${match}`), '')
+        : item
+    } catch {
+      return item
+    }
+  }, [isPrefix, item, match])
 
   return (
     <InfiniteListItem
       isSelected={isEqual(selectedKey, item)}
       onSelect={handleSelect}>
       <span title={item}>
-        {isPrefix && match ? <span style={{ opacity: 0.5 }}>*</span> : null}
+        {item !== str ? <span style={{ opacity: 0.5 }}>*</span> : null}
         {str}
       </span>
     </InfiniteListItem>

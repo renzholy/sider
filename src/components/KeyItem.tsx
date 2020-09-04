@@ -19,13 +19,15 @@ export function KeyItem(props: { value: { key: string; type: KeyType } }) {
     },
     [dispatch, item],
   )
-  const str = useMemo(
-    () =>
-      isPrefix && match
+  const str = useMemo(() => {
+    try {
+      return isPrefix && match
         ? item.key.replace(new RegExp(`^${match}`), '')
-        : item.key,
-    [isPrefix, item.key, match],
-  )
+        : item.key
+    } catch {
+      return item.key
+    }
+  }, [isPrefix, item.key, match])
 
   return (
     <InfiniteListItem
@@ -34,7 +36,7 @@ export function KeyItem(props: { value: { key: string; type: KeyType } }) {
       <KeyTag type={item.type} />
       &nbsp;
       <span title={item.key}>
-        {isPrefix && match ? <span style={{ opacity: 0.5 }}>*</span> : null}
+        {item.key !== str ? <span style={{ opacity: 0.5 }}>*</span> : null}
         {str}
       </span>
     </InfiniteListItem>

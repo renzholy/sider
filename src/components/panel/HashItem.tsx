@@ -17,20 +17,22 @@ export function HashItem(props: { value: { hash: string; value: string } }) {
     },
     [dispatch, item],
   )
-  const str = useMemo(
-    () =>
-      isPrefix && match
+  const str = useMemo(() => {
+    try {
+      return isPrefix && match
         ? item.hash.replace(new RegExp(`^${match}`), '')
-        : item.hash,
-    [isPrefix, item.hash, match],
-  )
+        : item.hash
+    } catch {
+      return item.hash
+    }
+  }, [isPrefix, item.hash, match])
 
   return (
     <InfiniteListItem
       isSelected={isEqual(selectedKey, item)}
       onSelect={handleSelect}>
       <span title={item.hash}>
-        {isPrefix && match ? <span style={{ opacity: 0.5 }}>*</span> : null}
+        {item.hash !== str ? <span style={{ opacity: 0.5 }}>*</span> : null}
         {str}
       </span>
     </InfiniteListItem>

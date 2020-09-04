@@ -60,7 +60,7 @@ export function Editor(props: { style?: CSSProperties; value?: string }) {
           style={{
             overflow: 'scroll',
             height: '100%',
-            wordBreak: 'break-all',
+            wordBreak: 'break-word',
             whiteSpace: 'pre-wrap',
           }}>
           {str}

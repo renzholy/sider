@@ -32,7 +32,7 @@ export function SetItem(props: { value: string }) {
       isSelected={isEqual(selectedKey, item)}
       onSelect={handleSelect}>
       <span title={item}>
-        {item !== str ? <span style={{ opacity: 0.5 }}>*</span> : null}
+        {item !== str ? <span style={{ opacity: 0.5 }}>…</span> : null}
         {str}
       </span>
     </InfiniteListItem>

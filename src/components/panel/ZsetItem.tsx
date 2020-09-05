@@ -44,7 +44,7 @@ export function ZsetItem(props: { value: { key: string; score: number } }) {
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
           }}>
-          {item.key !== str ? <span style={{ opacity: 0.5 }}>*</span> : null}
+          {item.key !== str ? <span style={{ opacity: 0.5 }}>…</span> : null}
           {str}
         </span>
         <span

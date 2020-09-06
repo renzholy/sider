@@ -1,6 +1,6 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import useSWR, { useSWRInfinite } from 'swr'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { ListChildComponentProps } from 'react-window'
 import { Colors } from '@blueprintjs/core'
 
@@ -9,6 +9,7 @@ import { zscan } from '@/utils/scanner'
 import { formatNumber } from '@/utils/formatter'
 import { runCommand } from '@/utils/fetcher'
 import { useScanSize } from '@/hooks/use-scan-size'
+import { actions } from '@/stores'
 import { useIsDarkMode } from '@/hooks/use-is-dark-mode'
 import { ZsetMatchInput } from './ZsetMatchInput'
 import { InfiniteList } from '../pure/InfiniteList'
@@ -75,6 +76,10 @@ export function ZsetPanel(props: { value: string }) {
     await revalidateCount()
   }, [setSize, revalidate, revalidateCount])
   const selectedKey = useSelector((state) => state.zset.selectedKey)
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(actions.zset.setSelectedKey(data?.[0]?.keys[0]))
+  }, [props.value, dispatch, data])
   const isDarkMode = useIsDarkMode()
 
   return (

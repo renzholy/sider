@@ -1,6 +1,6 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import useSWR, { useSWRInfinite } from 'swr'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { ListChildComponentProps } from 'react-window'
 
 import { Unpacked } from '@/utils'
@@ -8,6 +8,7 @@ import { hscan } from '@/utils/scanner'
 import { runCommand } from '@/utils/fetcher'
 import { useScanSize } from '@/hooks/use-scan-size'
 import { formatNumber } from '@/utils/formatter'
+import { actions } from '@/stores'
 import { HashMatchInput } from './HashMatchInput'
 import { InfiniteList } from '../pure/InfiniteList'
 import { InfiniteListItems } from '../pure/InfiniteListItems'
@@ -72,6 +73,10 @@ export function HashPanel(props: { value: string }) {
   }, [setSize, revalidate, revalidateHlen])
   const scanSize = useScanSize(data)
   const selectedKey = useSelector((state) => state.hash.selectedKey)
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(actions.hash.setSelectedKey(data?.[0]?.keys[0]))
+  }, [props.value, dispatch, data])
 
   return (
     <>

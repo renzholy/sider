@@ -19,7 +19,7 @@ import { useScanSize } from '@/hooks/use-scan-size'
 import { AppToaster } from '@/utils/toaster'
 
 export default () => {
-  const connection = useSelector((state) => state.keys.connection)
+  const connection = useSelector((state) => state.root.connection)
   const match = useSelector((state) => state.keys.match)
   const keyType = useSelector((state) => state.keys.keyType)
   const isPrefix = useSelector((state) => state.keys.isPrefix)

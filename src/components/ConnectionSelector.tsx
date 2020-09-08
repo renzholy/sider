@@ -18,10 +18,10 @@ import { DatabaseButton } from './DatabaseButton'
 export function ConnectionSelector() {
   const { data } = useSWR('connections', () => listConnections())
   const dispatch = useDispatch()
-  const connection = useSelector((state) => state.keys.connection)
+  const connection = useSelector((state) => state.root.connection)
   useEffect(() => {
     if (!connection) {
-      dispatch(actions.keys.setConnection(data?.[0]))
+      dispatch(actions.root.setConnection(data?.[0]))
     }
   }, [data, dispatch, connection])
   useEffect(() => {
@@ -43,7 +43,7 @@ export function ConnectionSelector() {
               text={c.name || c.addrs.join(',')}
               active={isEqual(c.addrs, connection?.addrs)}
               onClick={() => {
-                dispatch(actions.keys.setConnection(c))
+                dispatch(actions.root.setConnection(c))
               }}
             />
           ))}
@@ -63,7 +63,7 @@ export function ConnectionSelector() {
                       active={num === db}
                       onClick={() => {
                         dispatch(
-                          actions.keys.setConnection(
+                          actions.root.setConnection(
                             connection ? { ...connection, db: num } : undefined,
                           ),
                         )

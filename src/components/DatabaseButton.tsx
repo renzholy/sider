@@ -14,7 +14,7 @@ export function DatabaseButton(props: {
   onClick(): void
 }) {
   const num = props.db
-  const connection = useSelector((state) => state.keys.connection)
+  const connection = useSelector((state) => state.root.connection)
   const { data, revalidate } = useSWR(
     connection
       ? `dbsize/${JSON.stringify({ ...connection, db: props.db })}`

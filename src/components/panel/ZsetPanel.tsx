@@ -21,7 +21,7 @@ import { TTLButton } from '../TTLButton'
 import { Editor } from '../pure/Editor'
 
 export function ZsetPanel(props: { value: string }) {
-  const connection = useSelector((state) => state.keys.connection)
+  const connection = useSelector((state) => state.root.connection)
   const match = useSelector((state) => state.zset.match)
   const isPrefix = useSelector((state) => state.zset.isPrefix)
   const handleGetKey = useCallback(

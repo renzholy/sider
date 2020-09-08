@@ -8,7 +8,7 @@ import { runCommand } from '@/utils/fetcher'
 import { formatNumber } from '@/utils/formatter'
 
 export function TTLButton(props: { style?: CSSProperties; value: string }) {
-  const connection = useSelector((state) => state.keys.connection)
+  const connection = useSelector((state) => state.root.connection)
   const [refreshInterval, setRefreshInterval] = useState(0)
   const { data } = useSWR(
     connection ? `ttl/${JSON.stringify(connection)}/${props.value}` : null,

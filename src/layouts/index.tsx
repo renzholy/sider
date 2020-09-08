@@ -1,6 +1,7 @@
 import React from 'react'
 import { Provider } from 'react-redux'
 import { Classes, Colors, Button } from '@blueprintjs/core'
+import { useHistory } from 'umi'
 
 import { store } from '@/stores/index'
 import { useIsDarkMode } from '@/hooks/use-is-dark-mode'
@@ -9,6 +10,7 @@ import { ConnectionSelector } from '@/components/ConnectionSelector'
 
 export default (props: { children: React.ReactNode }) => {
   const isDarkMode = useIsDarkMode()
+  const history = useHistory()
 
   return (
     <Provider store={store}>
@@ -37,12 +39,26 @@ export default (props: { children: React.ReactNode }) => {
             flexDirection: 'column',
             justifyContent: 'space-between',
           }}>
-          <Button
-            icon="list-detail-view"
-            minimal={true}
-            large={true}
-            active={true}
-          />
+          <div>
+            <Button
+              icon="list-detail-view"
+              minimal={true}
+              large={true}
+              active={history.location.pathname === '/keys'}
+              onClick={() => {
+                history.push('/keys')
+              }}
+            />
+            <Button
+              icon="info-sign"
+              minimal={true}
+              large={true}
+              active={history.location.pathname === '/info'}
+              onClick={() => {
+                history.push('/info')
+              }}
+            />
+          </div>
           <ConnectionSelector />
         </div>
         {props.children}

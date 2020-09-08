@@ -19,7 +19,7 @@ import { ReloadButton } from '../pure/ReloadButton'
 import { Editor } from '../pure/Editor'
 
 export function SetPanel(props: { value: string }) {
-  const connection = useSelector((state) => state.keys.connection)
+  const connection = useSelector((state) => state.root.connection)
   const match = useSelector((state) => state.set.match)
   const isPrefix = useSelector((state) => state.set.isPrefix)
   const handleGetKey = useCallback(

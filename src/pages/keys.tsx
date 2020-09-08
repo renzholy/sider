@@ -2,13 +2,12 @@ import React, { useCallback, useEffect } from 'react'
 import useSWR, { useSWRInfinite } from 'swr'
 import { useSelector } from 'react-redux'
 import { ListChildComponentProps } from 'react-window'
-import { Intent } from '@blueprintjs/core'
+import { Intent, Button } from '@blueprintjs/core'
 
 import { runCommand } from '@/utils/fetcher'
 import { scan } from '@/utils/scanner'
 import { Unpacked } from '@/utils/index'
 import { formatNumber } from '@/utils/formatter'
-import { ConnectionSelector } from '@/components/ConnectionSelector'
 import { KeysMatchInput } from '@/components/KeysMatchInput'
 import { Panel } from '@/components/panel/Panel'
 import { InfiniteList } from '@/components/pure/InfiniteList'
@@ -20,7 +19,7 @@ import { useScanSize } from '@/hooks/use-scan-size'
 import { AppToaster } from '@/utils/toaster'
 
 export default () => {
-  const connection = useSelector((state) => state.keys.connection)
+  const connection = useSelector((state) => state.root.connection)
   const match = useSelector((state) => state.keys.match)
   const keyType = useSelector((state) => state.keys.keyType)
   const isPrefix = useSelector((state) => state.keys.isPrefix)
@@ -106,7 +105,7 @@ export default () => {
           </InfiniteList>
         </div>
         <Footer>
-          <ConnectionSelector />
+          <Button icon="plus" minimal={true} />
           <span>
             {formatNumber(scanSize)}&nbsp;of&nbsp;
             {formatNumber(dbSize || 0)}

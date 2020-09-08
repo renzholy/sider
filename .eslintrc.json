@@ -6,9 +6,8 @@
     "prettier/@typescript-eslint"
   ],
   "plugins": ["prettier", "react", "import"],
-  "globals": {
-    "Atomics": "readonly",
-    "SharedArrayBuffer": "readonly"
+  "env": {
+    "browser": true
   },
   "parserOptions": {
     "ecmaVersion": 2018,

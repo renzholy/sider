@@ -18,7 +18,7 @@ import { ReloadButton } from '../pure/ReloadButton'
 import { Editor } from '../pure/Editor'
 
 export function ListPanel(props: { value: string }) {
-  const connection = useSelector((state) => state.keys.connection)
+  const connection = useSelector((state) => state.root.connection)
   const handleGetKey = useCallback(
     (
       _index: number,

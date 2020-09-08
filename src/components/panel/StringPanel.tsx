@@ -10,7 +10,7 @@ import { TTLButton } from '../TTLButton'
 import { ReloadButton } from '../pure/ReloadButton'
 
 export function StringPanel(props: { value: string }) {
-  const connection = useSelector((state) => state.keys.connection)
+  const connection = useSelector((state) => state.root.connection)
   const { data, revalidate, isValidating } = useSWR(
     connection ? `get/${JSON.stringify(connection)}/${props.value}` : null,
     () => runCommand<string>(connection!, ['get', props.value]),

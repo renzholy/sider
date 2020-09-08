@@ -19,7 +19,7 @@ import { ReloadButton } from '../pure/ReloadButton'
 import { TTLButton } from '../TTLButton'
 
 export function HashPanel(props: { value: string }) {
-  const connection = useSelector((state) => state.keys.connection)
+  const connection = useSelector((state) => state.root.connection)
   const match = useSelector((state) => state.hash.match)
   const isPrefix = useSelector((state) => state.hash.isPrefix)
   const handleGetKey = useCallback(

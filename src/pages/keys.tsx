@@ -2,13 +2,12 @@ import React, { useCallback, useEffect } from 'react'
 import useSWR, { useSWRInfinite } from 'swr'
 import { useSelector } from 'react-redux'
 import { ListChildComponentProps } from 'react-window'
-import { Intent } from '@blueprintjs/core'
+import { Intent, Button } from '@blueprintjs/core'
 
 import { runCommand } from '@/utils/fetcher'
 import { scan } from '@/utils/scanner'
 import { Unpacked } from '@/utils/index'
 import { formatNumber } from '@/utils/formatter'
-import { ConnectionSelector } from '@/components/ConnectionSelector'
 import { KeysMatchInput } from '@/components/KeysMatchInput'
 import { Panel } from '@/components/panel/Panel'
 import { InfiniteList } from '@/components/pure/InfiniteList'
@@ -106,7 +105,7 @@ export default () => {
           </InfiniteList>
         </div>
         <Footer>
-          <ConnectionSelector />
+          <Button icon="plus" minimal={true} />
           <span>
             {formatNumber(scanSize)}&nbsp;of&nbsp;
             {formatNumber(dbSize || 0)}

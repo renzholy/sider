@@ -34,7 +34,7 @@ export function ConnectionSelector() {
 
   return (
     <Popover boundary="window" hasBackdrop={true}>
-      <Button icon="database" minimal={true} />
+      <Button icon="database" minimal={true} large={true} />
       <div style={{ display: 'flex', padding: 4 }}>
         <Menu>
           {data?.map((c) => (

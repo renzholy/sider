@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react'
 import useSWR, { useSWRInfinite } from 'swr'
 import { useSelector } from 'react-redux'
 import { ListChildComponentProps } from 'react-window'
-import { Intent, Button } from '@blueprintjs/core'
+import { Intent, Button, Tooltip } from '@blueprintjs/core'
 
 import { runCommand } from '@/utils/fetcher'
 import { scan } from '@/utils/scanner'
@@ -105,7 +105,9 @@ export default () => {
           </InfiniteList>
         </div>
         <Footer>
-          <Button icon="plus" minimal={true} />
+          <Tooltip content="Comming soon.">
+            <Button icon="plus" minimal={true} />
+          </Tooltip>
           <span>
             {formatNumber(scanSize)}&nbsp;of&nbsp;
             {formatNumber(dbSize || 0)}

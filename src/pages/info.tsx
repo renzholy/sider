@@ -23,7 +23,7 @@ export default () => {
         padding: 8,
         margin: 8,
         width: '100%',
-        backgroundColor: isDarkMode ? Colors.DARK_GRAY4 : Colors.LIGHT_GRAY4,
+        backgroundColor: isDarkMode ? Colors.DARK_GRAY1 : Colors.WHITE,
       }}>
       {data}
     </div>

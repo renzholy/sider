@@ -3,6 +3,7 @@ import { Connection } from '@/types'
 export async function runCommand<T>(
   connection: Connection,
   command: string[],
+  raw = false,
 ): Promise<T> {
   const response = await fetch(`/api/runCommand?c=${command.join('_')}`, {
     method: 'POST',
@@ -12,10 +13,11 @@ export async function runCommand<T>(
     body: JSON.stringify({
       connection,
       command,
+      raw,
     }),
   })
   if (response.ok) {
-    return response.json()
+    return raw ? response.arrayBuffer() : response.json()
   }
   throw new Error(await response.text())
 }

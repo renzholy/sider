@@ -30,6 +30,7 @@ type connection struct {
 type requestCommand struct {
 	Connection connection
 	Command    []interface{}
+	Raw        bool
 }
 
 func runCommand(w http.ResponseWriter, r *http.Request) {
@@ -51,13 +52,22 @@ func runCommand(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	bytes, err := json.Marshal(raw)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+	if request.Raw {
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "application/octet-stream")
+		w.Write([]byte(raw.(string)))
+	} else {
+		bytes, err := json.Marshal(raw)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte(bytes))
 	}
-	w.Header().Set("Content-Type", "application/json")
-	w.Write([]byte(bytes))
 }
 
 type requestPipeline struct {

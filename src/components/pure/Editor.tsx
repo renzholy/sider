@@ -2,6 +2,7 @@
 
 import React, { CSSProperties, useState, useEffect } from 'react'
 import { Colors } from '@blueprintjs/core'
+import msgpack from 'msgpack-lite'
 
 import { useIsDarkMode } from '@/hooks/use-is-dark-mode'
 import { useColorize } from '@/hooks/use-colorize'
@@ -12,6 +13,27 @@ enum ValueType {
   MSGPACK = 'MsgPack',
 }
 
+function isJSONObjectOrArray(value: string): boolean {
+  try {
+    if (value.startsWith('{') || value.startsWith('[')) {
+      JSON.parse(value)
+      return true
+    }
+    return false
+  } catch {
+    return false
+  }
+}
+
+function isMsgPack(value: string): boolean {
+  try {
+    msgpack.decode(Buffer.from(value, 'binary'))
+    return true
+  } catch {
+    return false
+  }
+}
+
 export function Editor(props: { style?: CSSProperties; value?: string }) {
   const [str, setStr] = useState('')
   const [valueType, setValueType] = useState(ValueType.STRING)
@@ -19,14 +41,18 @@ export function Editor(props: { style?: CSSProperties; value?: string }) {
     if (props.value === undefined) {
       setValueType(ValueType.STRING)
       setStr('')
-    } else if (props.value.startsWith('{') || props.value.startsWith('[')) {
-      try {
-        setValueType(ValueType.JSON)
-        setStr(JSON.stringify(JSON.parse(props.value), null, 2))
-      } catch {
-        setValueType(ValueType.STRING)
-        setStr(props.value)
-      }
+    } else if (isJSONObjectOrArray(props.value)) {
+      setValueType(ValueType.JSON)
+      setStr(JSON.stringify(JSON.parse(props.value), null, 2))
+    } else if (isMsgPack(props.value)) {
+      setValueType(ValueType.MSGPACK)
+      setStr(
+        JSON.stringify(
+          msgpack.decode(Buffer.from(props.value, 'binary')),
+          null,
+          2,
+        ),
+      )
     } else {
       setValueType(ValueType.STRING)
       setStr(props.value)
@@ -45,7 +71,7 @@ export function Editor(props: { style?: CSSProperties; value?: string }) {
         overflow: 'hidden',
         position: 'relative',
       }}>
-      {valueType === ValueType.JSON ? (
+      {valueType === ValueType.JSON || valueType === ValueType.MSGPACK ? (
         <div
           style={{ overflow: 'scroll', height: '100%' }}
           dangerouslySetInnerHTML={{ __html: html }}

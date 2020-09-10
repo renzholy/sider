@@ -7,13 +7,18 @@
   ],
   "plugins": ["prettier", "react", "import"],
   "env": {
-    "browser": true,
-    "react": true
+    "browser": true
+  },
+  "globals": {
+    "JSX": true
   },
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module",
-    "project": "./tsconfig.json"
+    "project": "./tsconfig.json",
+    "ecmaFeatures": {
+      "jsx": true
+    }
   },
   "rules": {
     "import/prefer-default-export": "off",

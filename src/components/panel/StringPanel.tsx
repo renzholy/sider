@@ -8,7 +8,7 @@ import { Editor } from '../pure/Editor'
 import { Footer } from '../pure/Footer'
 import { TTLButton } from '../TTLButton'
 import { ReloadButton } from '../pure/ReloadButton'
-import { HyperLogLog } from '../pure/HyperLogLog'
+import { HyperLogLog } from './HyperLogLog'
 
 export function StringPanel(props: { value: string }) {
   const connection = useSelector((state) => state.root.connection)
@@ -25,10 +25,6 @@ export function StringPanel(props: { value: string }) {
     await revalidateStrlen()
   }, [revalidate, revalidateStrlen])
   const isHyperLogLog = data?.startsWith('HYLL')
-  const { data: pfCount } = useSWR(
-    connection && isHyperLogLog ? `pfcount/${connection}/${props.value}` : null,
-    () => runCommand<number>(connection!, ['pfcount', props.value]),
-  )
 
   return (
     <div
@@ -45,9 +41,7 @@ export function StringPanel(props: { value: string }) {
       )}
       <Footer>
         <TTLButton style={{ flexBasis: 80 }} value={props.value} />
-        {isHyperLogLog
-          ? `${pfCount} items`
-          : bytes(strlen || 0, { unitSeparator: ' ' })}
+        {bytes(strlen || 0, { unitSeparator: ' ' })}
         <ReloadButton
           style={{ flexBasis: 80, display: 'flex', justifyContent: 'flex-end' }}
           isLoading={isValidating}

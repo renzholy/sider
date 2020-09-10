@@ -8,6 +8,7 @@ import { Editor } from '../pure/Editor'
 import { Footer } from '../pure/Footer'
 import { TTLButton } from '../TTLButton'
 import { ReloadButton } from '../pure/ReloadButton'
+import { HyperLogLog } from '../pure/HyperLogLog'
 
 export function StringPanel(props: { value: string }) {
   const connection = useSelector((state) => state.root.connection)
@@ -23,6 +24,11 @@ export function StringPanel(props: { value: string }) {
     await revalidate()
     await revalidateStrlen()
   }, [revalidate, revalidateStrlen])
+  const isHyperLogLog = data?.startsWith('HYLL')
+  const { data: pfCount } = useSWR(
+    connection && isHyperLogLog ? `pfcount/${connection}/${props.value}` : null,
+    () => runCommand<number>(connection!, ['pfcount', props.value]),
+  )
 
   return (
     <div
@@ -32,10 +38,16 @@ export function StringPanel(props: { value: string }) {
         flexDirection: 'column',
         width: '100%',
       }}>
-      <Editor style={{ flex: 1 }} value={data} />
+      {isHyperLogLog ? (
+        <HyperLogLog value={props.value} />
+      ) : (
+        <Editor style={{ flex: 1 }} value={data} />
+      )}
       <Footer>
         <TTLButton style={{ flexBasis: 80 }} value={props.value} />
-        {bytes(strlen || 0, { unitSeparator: ' ' })}
+        {isHyperLogLog
+          ? `${pfCount} items`
+          : bytes(strlen || 0, { unitSeparator: ' ' })}
         <ReloadButton
           style={{ flexBasis: 80, display: 'flex', justifyContent: 'flex-end' }}
           isLoading={isValidating}

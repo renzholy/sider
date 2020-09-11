@@ -1,10 +1,9 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback } from 'react'
 import useSWR from 'swr'
 import { useSelector } from 'react-redux'
 import bytes from 'bytes'
 
 import { runCommand } from '@/utils/fetcher'
-import { ab2str } from '@/utils'
 import { Editor } from '../pure/Editor'
 import { Footer } from '../pure/Footer'
 import { TTLButton } from '../TTLButton'
@@ -15,7 +14,7 @@ export function StringPanel(props: { value: string }) {
   const connection = useSelector((state) => state.root.connection)
   const { data, revalidate, isValidating } = useSWR(
     connection ? `get/${JSON.stringify(connection)}/${props.value}` : null,
-    () => runCommand<ArrayBuffer>(connection!, ['get', props.value], true),
+    () => runCommand(connection!, ['get', props.value], true),
   )
   const { data: strlen, revalidate: revalidateStrlen } = useSWR(
     connection ? `strlen/${JSON.stringify(connection)}/${props.value}` : null,
@@ -25,10 +24,7 @@ export function StringPanel(props: { value: string }) {
     await revalidate()
     await revalidateStrlen()
   }, [revalidate, revalidateStrlen])
-  const value = useMemo(() => {
-    return data ? ab2str(data) : undefined
-  }, [data])
-  const isHyperLogLog = value?.startsWith('HYLL')
+  const isHyperLogLog = data?.startsWith('HYLL')
 
   return (
     <div
@@ -41,7 +37,7 @@ export function StringPanel(props: { value: string }) {
       {isHyperLogLog ? (
         <HyperLogLog value={props.value} />
       ) : (
-        <Editor style={{ flex: 1 }} value={value} />
+        <Editor style={{ flex: 1 }} value={data} />
       )}
       <Footer>
         <TTLButton style={{ flexBasis: 80 }} value={props.value} />

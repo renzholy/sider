@@ -1,10 +1,20 @@
 import { Connection } from '@/types'
+import { ab2str } from './index'
 
+export async function runCommand(
+  connection: Connection,
+  command: string[],
+  raw: true,
+): Promise<string>
 export async function runCommand<T>(
   connection: Connection,
   command: string[],
-  raw = false,
-): Promise<T> {
+): Promise<T>
+export async function runCommand(
+  connection: Connection,
+  command: string[],
+  raw?: boolean,
+) {
   const response = await fetch(`/api/runCommand?c=${command.join('_')}`, {
     method: 'POST',
     headers: {
@@ -17,7 +27,7 @@ export async function runCommand<T>(
     }),
   })
   if (response.ok) {
-    return raw ? response.arrayBuffer() : response.json()
+    return raw ? ab2str(await response.arrayBuffer()) : response.json()
   }
   throw new Error(await response.text())
 }

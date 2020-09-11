@@ -47,19 +47,20 @@ func runCommand(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	raw, err := client.Do(ctx, request.Command...).Result()
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
 	if request.Raw {
+		text, err := client.Do(ctx, request.Command...).Text()
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		w.Header().Set("Content-Type", "application/octet-stream")
-		w.Write([]byte(raw.(string)))
+		w.Write([]byte(text))
 	} else {
+		raw, err := client.Do(ctx, request.Command...).Result()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 		bytes, err := json.Marshal(raw)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)

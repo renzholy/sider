@@ -27,8 +27,8 @@ function isJSONObjectOrArray(value: string): boolean {
 
 function isMsgPack(value: string): boolean {
   try {
-    msgpack.decode(Buffer.from(value, 'binary'))
-    return true
+    const obj = msgpack.decode(Buffer.from(value, 'binary'))
+    return typeof obj === 'object'
   } catch {
     return false
   }

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-shadow */
+
 export type Unpacked<T> = T extends (infer U)[]
   ? U
   : T extends (...args: any[]) => infer U

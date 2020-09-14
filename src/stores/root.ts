@@ -1,14 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { Connection } from '@/types'
-
-const siderConnection = localStorage.getItem('sider.connection')
+import { storage } from '@/utils/storage'
 
 export default createSlice({
   name: 'root',
   initialState: {
     connections: [],
-    connection: siderConnection ? JSON.parse(siderConnection) : undefined,
+    connection: storage.connection.get,
   } as {
     connections: Connection[]
     connection?: Connection
@@ -22,7 +21,7 @@ export default createSlice({
       state,
       { payload }: PayloadAction<Connection | undefined>,
     ) => {
-      localStorage.setItem('sider.connection', JSON.stringify(payload))
+      storage.connection.set(payload)
       return {
         ...state,
         connection: payload,

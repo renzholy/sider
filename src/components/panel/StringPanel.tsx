@@ -8,6 +8,7 @@ import { Editor } from '../pure/Editor'
 import { Footer } from '../pure/Footer'
 import { TTLButton } from '../TTLButton'
 import { ReloadButton } from '../pure/ReloadButton'
+import { HyperLogLog } from './HyperLogLog'
 
 export function StringPanel(props: { value: string }) {
   const connection = useSelector((state) => state.root.connection)
@@ -23,6 +24,7 @@ export function StringPanel(props: { value: string }) {
     await revalidate()
     await revalidateStrlen()
   }, [revalidate, revalidateStrlen])
+  const isHyperLogLog = data?.startsWith('HYLL')
 
   return (
     <div
@@ -32,7 +34,11 @@ export function StringPanel(props: { value: string }) {
         flexDirection: 'column',
         width: '100%',
       }}>
-      <Editor style={{ flex: 1 }} value={data} />
+      {isHyperLogLog ? (
+        <HyperLogLog value={props.value} />
+      ) : (
+        <Editor style={{ flex: 1 }} value={data} />
+      )}
       <Footer>
         <TTLButton style={{ flexBasis: 80 }} value={props.value} />
         {bytes(strlen || 0, { unitSeparator: ' ' })}

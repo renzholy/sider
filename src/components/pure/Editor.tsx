@@ -5,13 +5,22 @@ import { Colors } from '@blueprintjs/core'
 
 import { useIsDarkMode } from '@/hooks/use-is-dark-mode'
 import { useColorize } from '@/hooks/use-colorize'
-import { str2hex } from '@/utils/hex'
 
 enum ValueType {
   STRING = 'String',
   JSON = 'Json',
-  MSGPACK = 'MsgPack',
-  HYPERLOGLOG = 'HyperLogLog',
+}
+
+function isJSONObjectOrArray(value: string): boolean {
+  try {
+    if (value.startsWith('{') || value.startsWith('[')) {
+      JSON.parse(value)
+      return true
+    }
+    return false
+  } catch {
+    return false
+  }
 }
 
 export function Editor(props: { style?: CSSProperties; value?: string }) {
@@ -21,17 +30,9 @@ export function Editor(props: { style?: CSSProperties; value?: string }) {
     if (props.value === undefined) {
       setValueType(ValueType.STRING)
       setStr('')
-    } else if (props.value.startsWith('{') || props.value.startsWith('[')) {
-      try {
-        setValueType(ValueType.JSON)
-        setStr(JSON.stringify(JSON.parse(props.value), null, 2))
-      } catch {
-        setValueType(ValueType.STRING)
-        setStr(props.value)
-      }
-    } else if (props.value.startsWith('HYLL')) {
-      setValueType(ValueType.HYPERLOGLOG)
-      setStr(str2hex(props.value))
+    } else if (isJSONObjectOrArray(props.value)) {
+      setValueType(ValueType.JSON)
+      setStr(JSON.stringify(JSON.parse(props.value), null, 2))
     } else {
       setValueType(ValueType.STRING)
       setStr(props.value)

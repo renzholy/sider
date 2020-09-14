@@ -2,7 +2,6 @@
 
 import React, { CSSProperties, useState, useEffect } from 'react'
 import { Colors } from '@blueprintjs/core'
-import msgpack from 'msgpack-lite'
 
 import { useIsDarkMode } from '@/hooks/use-is-dark-mode'
 import { useColorize } from '@/hooks/use-colorize'
@@ -10,7 +9,6 @@ import { useColorize } from '@/hooks/use-colorize'
 enum ValueType {
   STRING = 'String',
   JSON = 'Json',
-  MSGPACK = 'MsgPack',
 }
 
 function isJSONObjectOrArray(value: string): boolean {
@@ -20,15 +18,6 @@ function isJSONObjectOrArray(value: string): boolean {
       return true
     }
     return false
-  } catch {
-    return false
-  }
-}
-
-function isMsgPack(value: string): boolean {
-  try {
-    const obj = msgpack.decode(Buffer.from(value, 'binary'))
-    return typeof obj === 'object'
   } catch {
     return false
   }
@@ -44,15 +33,6 @@ export function Editor(props: { style?: CSSProperties; value?: string }) {
     } else if (isJSONObjectOrArray(props.value)) {
       setValueType(ValueType.JSON)
       setStr(JSON.stringify(JSON.parse(props.value), null, 2))
-    } else if (isMsgPack(props.value)) {
-      setValueType(ValueType.MSGPACK)
-      setStr(
-        JSON.stringify(
-          msgpack.decode(Buffer.from(props.value, 'binary')),
-          null,
-          2,
-        ),
-      )
     } else {
       setValueType(ValueType.STRING)
       setStr(props.value)
@@ -71,7 +51,7 @@ export function Editor(props: { style?: CSSProperties; value?: string }) {
         overflow: 'hidden',
         position: 'relative',
       }}>
-      {valueType === ValueType.JSON || valueType === ValueType.MSGPACK ? (
+      {valueType === ValueType.JSON ? (
         <div
           style={{ overflow: 'scroll', height: '100%' }}
           dangerouslySetInnerHTML={{ __html: html }}

@@ -7,7 +7,3 @@ export type Unpacked<T> = T extends (infer U)[]
   : T extends Promise<infer U>
   ? U
   : T
-
-export function ab2str(buf: ArrayBuffer): string {
-  return String.fromCharCode.apply(null, new Uint8Array(buf) as any)
-}

@@ -14,7 +14,7 @@ export function StringPanel(props: { value: string }) {
   const connection = useSelector((state) => state.root.connection)
   const { data, revalidate, isValidating } = useSWR(
     connection ? `get/${JSON.stringify(connection)}/${props.value}` : null,
-    () => runCommand<string>(connection!, ['get', props.value]),
+    () => runCommand<string>(connection!, ['get', props.value], true),
   )
   const { data: strlen, revalidate: revalidateStrlen } = useSWR(
     connection ? `strlen/${JSON.stringify(connection)}/${props.value}` : null,

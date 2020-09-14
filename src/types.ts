@@ -17,5 +17,4 @@ export enum KeyType {
   SET = 'set',
   ZSET = 'zset',
   HASH = 'hash',
-  STREAM = 'stream',
 }

@@ -1,10 +1,15 @@
 import { Connection } from '@/types'
 
-export async function runCommand<T extends string | string[]>(
-  connection: Connection,
-  command: string[],
-  raw: true,
-): Promise<T>
+function parseRaw(str: string | string[]): string | string[] {
+  if (Array.isArray(str)) {
+    return str.map(parseRaw) as string[]
+  }
+  return Buffer.from(str, 'hex').toString('binary')
+}
+
+export async function runCommand<
+  T extends string | string[] | [string, string[]]
+>(connection: Connection, command: string[], raw: true): Promise<T>
 export async function runCommand<T>(
   connection: Connection,
   command: string[],
@@ -26,17 +31,15 @@ export async function runCommand(
     }),
   })
   if (response.ok) {
-    if (raw) {
-      const text = await response.text()
-      if (text.startsWith('[') && text.endsWith(']')) {
-        return text
-          .substr(1, text.length - 1)
-          .split(' ')
-          .map((str) => Buffer.from(str, 'hex').toString('binary'))
-      }
-      return Buffer.from(text, 'hex').toString('binary')
-    }
-    return response.json()
+    return raw
+      ? parseRaw(
+          JSON.parse(
+            (await response.text())
+              .replace(/([0-9A-F]+)/g, '"$1"')
+              .replace(/ /g, ','),
+          ),
+        )
+      : response.json()
   }
   throw new Error(await response.text())
 }

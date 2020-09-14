@@ -96,15 +96,19 @@ export async function sscan(
     }
   }
   const count = calcCount(zeroTimes)
-  const [next, keys] = await runCommand<[string, string[]]>(connection, [
-    'sscan',
-    key,
-    cursor,
-    'match',
-    isPrefix ? `${match}*` : match || '*',
-    'count',
-    count.toString(),
-  ])
+  const [next, keys] = await runCommand<[string, string[]]>(
+    connection,
+    [
+      'sscan',
+      key,
+      cursor,
+      'match',
+      isPrefix ? `${match}*` : match || '*',
+      'count',
+      count.toString(),
+    ],
+    true,
+  )
   return {
     next,
     keys: keys.filter((item) => !isEqual(item, getKey)),

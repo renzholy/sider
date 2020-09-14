@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 import useSWR from 'swr'
 import { useSelector } from 'react-redux'
 import { Colors, H4 } from '@blueprintjs/core'
+import { sortBy } from 'lodash'
 
 import { runCommand } from '@/utils/fetcher'
 import { useIsDarkMode } from '@/hooks/use-is-dark-mode'
@@ -15,14 +16,17 @@ export default () => {
   const isDarkMode = useIsDarkMode()
   const info = useMemo(
     () =>
-      data
-        ?.trimRight()
-        .split('\n\r\n')
-        .map((section) =>
-          section.split('\n').map((line, index) => {
-            return index === 0 ? line.substr(2) : line.split(':')
-          }),
-        ),
+      sortBy(
+        data
+          ?.trimRight()
+          .split('\n\r\n')
+          .map((section) =>
+            section.split('\n').map((line, index) => {
+              return index === 0 ? line.substr(2) : line.split(':')
+            }),
+          ),
+        (section) => section.length,
+      ),
     [data],
   )
 
@@ -39,9 +43,10 @@ export default () => {
           columnCount: 2,
           columnGap: 8,
         }}>
-        {info?.map((section) =>
+        {info.map((section) =>
           section.length === 1 ? null : (
             <div
+              key={section[0] as string}
               style={{
                 breakInside: 'avoid',
                 whiteSpace: 'pre-wrap',

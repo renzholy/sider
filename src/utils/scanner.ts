@@ -36,14 +36,18 @@ export async function scan(
     }
   }
   const count = calcCount(zeroTimes)
-  const [next, keys] = await runCommand<[string, string[]]>(connection, [
-    'scan',
-    cursor,
-    'match',
-    isPrefix ? `${match}*` : match || '*',
-    'count',
-    count.toString(),
-  ])
+  const [next, keys] = await runCommand<[string, string[]]>(
+    connection,
+    [
+      'scan',
+      cursor,
+      'match',
+      isPrefix ? `${match}*` : match || '*',
+      'count',
+      count.toString(),
+    ],
+    true,
+  )
   const types = await runPipeline<KeyType[]>(
     connection,
     keys.map((key) => ['type', key]),
@@ -151,15 +155,19 @@ export async function hscan(
     }
   }
   const count = calcCount(zeroTimes)
-  const [next, keys] = await runCommand<[string, string[]]>(connection, [
-    'hscan',
-    key,
-    cursor,
-    'match',
-    isPrefix ? `${match}*` : match || '*',
-    'count',
-    count.toString(),
-  ])
+  const [next, keys] = await runCommand<[string, string[]]>(
+    connection,
+    [
+      'hscan',
+      key,
+      cursor,
+      'match',
+      isPrefix ? `${match}*` : match || '*',
+      'count',
+      count.toString(),
+    ],
+    true,
+  )
   return {
     next,
     keys: chunk(keys, 2)
@@ -204,15 +212,19 @@ export async function zscan(
     }
   }
   const count = calcCount(zeroTimes)
-  const [next, keys] = await runCommand<[string, string[]]>(connection, [
-    'zscan',
-    key,
-    cursor,
-    'match',
-    isPrefix ? `${match}*` : match || '*',
-    'count',
-    count.toString(),
-  ])
+  const [next, keys] = await runCommand<[string, string[]]>(
+    connection,
+    [
+      'zscan',
+      key,
+      cursor,
+      'match',
+      isPrefix ? `${match}*` : match || '*',
+      'count',
+      count.toString(),
+    ],
+    true,
+  )
   return {
     next,
     keys: chunk(keys, 2)
@@ -240,12 +252,11 @@ export async function lrange(
   totalScanned: number
 }> {
   const count = calcCount(zeroTimes)
-  const keys = await runCommand<string[]>(connection, [
-    'lrange',
-    key,
-    cursor,
-    (parseInt(cursor, 10) + count).toString(),
-  ])
+  const keys = await runCommand<string[]>(
+    connection,
+    ['lrange', key, cursor, (parseInt(cursor, 10) + count).toString()],
+    true,
+  )
   return {
     next: keys.length ? (parseInt(cursor, 10) + keys.length).toString() : '0',
     keys,

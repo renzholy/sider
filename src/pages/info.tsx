@@ -31,31 +31,39 @@ export default () => {
       style={{
         width: '100%',
         overflow: 'scroll',
-        margin: '0 8px',
+        margin: 8,
+        borderRadius: 4,
       }}>
-      {info?.map((section) =>
-        section.length === 1 ? null : (
-          <div
-            style={{
-              whiteSpace: 'pre-wrap',
-              wordBreak: 'break-word',
-              borderRadius: 4,
-              padding: 8,
-              margin: '8px 0',
-              backgroundColor: isDarkMode ? Colors.DARK_GRAY1 : Colors.WHITE,
-            }}>
-            <H4>{section[0]}</H4>
-            {section.map((line) =>
-              typeof line === 'string' ? null : (
-                <p key={line[0]} className={styles.item}>
-                  {line[0]}:&nbsp;
-                  <span style={{ float: 'right' }}>{line[1]}</span>
-                </p>
-              ),
-            )}
-          </div>
-        ),
-      )}
+      <div
+        style={{
+          columnCount: 2,
+          columnGap: 8,
+        }}>
+        {info?.map((section) =>
+          section.length === 1 ? null : (
+            <div
+              style={{
+                breakInside: 'avoid',
+                whiteSpace: 'pre-wrap',
+                wordBreak: 'break-word',
+                borderRadius: 4,
+                padding: 8,
+                marginBottom: 8,
+                backgroundColor: isDarkMode ? Colors.DARK_GRAY1 : Colors.WHITE,
+              }}>
+              <H4>{section[0]}</H4>
+              {section.map((line) =>
+                typeof line === 'string' ? null : (
+                  <p key={line[0]} className={styles.item}>
+                    {line[0]}
+                    <span style={{ float: 'right' }}>{line[1]}</span>
+                  </p>
+                ),
+              )}
+            </div>
+          ),
+        )}
+      </div>
     </div>
   )
 }

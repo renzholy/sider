@@ -10,7 +10,6 @@ const intentMap = {
   [KeyType.LIST]: Intent.WARNING,
   [KeyType.SET]: Intent.SUCCESS,
   [KeyType.ZSET]: Intent.DANGER,
-  [KeyType.STREAM]: Intent.NONE,
   [KeyType.NONE]: Intent.NONE,
 }
 
@@ -20,7 +19,6 @@ const textMap = {
   [KeyType.LIST]: 'L',
   [KeyType.SET]: 'S',
   [KeyType.ZSET]: 'Z',
-  [KeyType.STREAM]: 'X',
   [KeyType.NONE]: 'N',
 }
 
@@ -30,7 +28,6 @@ const minimalMap = {
   [KeyType.LIST]: true,
   [KeyType.SET]: true,
   [KeyType.ZSET]: true,
-  [KeyType.STREAM]: false,
   [KeyType.NONE]: true,
 }
 

@@ -264,3 +264,37 @@ export async function lrange(
     totalScanned: totalScanned + count,
   }
 }
+
+export async function scan2(
+  connection: Connection,
+  cursor: string = '0',
+  totalScanned: number = 0,
+): Promise<{
+  next: string
+  keys: { key: string; type: KeyType; memory: number }[]
+  totalScanned: number
+}> {
+  const count = 8192
+  const [next, keys] = await runCommand<[string, string[]]>(
+    connection,
+    ['scan', cursor, 'count', count.toString()],
+    true,
+  )
+  const types = await runPipeline<KeyType[]>(
+    connection,
+    keys.map((key) => ['type', key]),
+  )
+  const memories = await runPipeline<number[]>(
+    connection,
+    keys.map((key) => ['memory', 'usage', key]),
+  )
+  return {
+    next,
+    keys: keys.map((key, index) => ({
+      key,
+      type: types[index],
+      memory: memories[index],
+    })),
+    totalScanned: totalScanned + count,
+  }
+}

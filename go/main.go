@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -31,7 +30,6 @@ type connection struct {
 type requestCommand struct {
 	Connection connection
 	Command    []interface{}
-	Raw        bool
 }
 
 func runCommand(w http.ResponseWriter, r *http.Request) {
@@ -53,18 +51,13 @@ func runCommand(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	if request.Raw {
-		w.Header().Set("Content-Type", "plain/text")
-		w.Write([]byte(fmt.Sprintf("%X", raw)))
-	} else {
-		bytes, err := json.Marshal(raw)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		w.Header().Set("Content-Type", "application/json")
-		w.Write([]byte(bytes))
+	bytes, err := json.Marshal(raw)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write([]byte(bytes))
 }
 
 type requestPipeline struct {

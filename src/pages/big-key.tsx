@@ -9,6 +9,8 @@ import bytes from 'bytes'
 import { runCommand } from '@/utils/fetcher'
 import { scan2 } from '@/utils/scanner'
 import { KeyType } from '@/types'
+import { InfiniteListItem } from '@/components/pure/InfiniteListItem'
+import { KeyTag } from '@/components/KeyTag'
 
 type Data = {
   type: KeyType
@@ -71,17 +73,33 @@ export default () => {
   ])
 
   return (
-    <div style={{ margin: 8, flex: 1 }}>
-      <ProgressBar value={progress} />
-      {map(ranks, (rank, type) => (
-        <div key={type}>
-          {rank?.map((item) => (
-            <div>
-              {item.key} {bytes(item.memory)}
-            </div>
-          ))}
-        </div>
-      ))}
+    <div
+      style={{ margin: 8, flex: 1, display: 'flex', flexDirection: 'column' }}>
+      <div style={{ marginTop: 8, marginBottom: 8 }}>
+        <ProgressBar value={progress} />
+      </div>
+      <div style={{ flex: 1, overflow: 'scroll' }}>
+        {map(ranks, (rank, type) => (
+          <div key={type} style={{ breakInside: 'avoid' }}>
+            {rank?.map((item) => (
+              <InfiniteListItem key={item.key}>
+                <span
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                  }}>
+                  <span>
+                    <KeyTag type={item.type} />
+                    &nbsp;
+                    {item.key}
+                  </span>
+                  {bytes(item.memory)}
+                </span>
+              </InfiniteListItem>
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

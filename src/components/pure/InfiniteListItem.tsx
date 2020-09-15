@@ -8,12 +8,12 @@ import { useIsDarkMode } from '@/hooks/use-is-dark-mode'
 import styles from './InfiniteListItem.less'
 
 export function InfiniteListItem(props: {
-  isSelected: boolean
-  onSelect(isSelected: boolean): void
+  isSelected?: boolean
+  onSelect?(isSelected: boolean): void
   children: React.ReactNode
 }) {
   const handleClick = useCallback(() => {
-    props.onSelect(true)
+    props.onSelect?.(true)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.onSelect])
   const isDarkMode = useIsDarkMode()

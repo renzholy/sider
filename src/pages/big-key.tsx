@@ -1,16 +1,18 @@
 import FixedReverseHeap from 'mnemonist/fixed-reverse-heap'
 import React, { useMemo, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import useAsyncEffect from 'use-async-effect'
 import { Button, ProgressBar } from '@blueprintjs/core'
 import { map } from 'lodash'
 import bytes from 'bytes'
+import { useHistory } from 'umi'
 
 import { runCommand } from '@/utils/fetcher'
 import { scan2 } from '@/utils/scanner'
 import { KeyType } from '@/types'
 import { InfiniteListItem } from '@/components/pure/InfiniteListItem'
 import { KeyTag } from '@/components/KeyTag'
+import { actions } from '@/stores'
 
 type Data = {
   type: KeyType
@@ -73,6 +75,8 @@ export default () => {
     dbsize,
     totalScanned,
   ])
+  const dispatch = useDispatch()
+  const history = useHistory()
 
   return (
     <div
@@ -96,7 +100,18 @@ export default () => {
         {map(ranks, (rank, type) => (
           <div key={type} style={{ breakInside: 'avoid' }}>
             {rank?.map((item) => (
-              <InfiniteListItem key={item.key}>
+              <InfiniteListItem
+                key={item.key}
+                onSelect={() => {
+                  dispatch(actions.keys.setMatch(item.key))
+                  dispatch(
+                    actions.keys.setSelectedKey({
+                      type: item.type,
+                      key: item.key,
+                    }),
+                  )
+                  history.push('/keys')
+                }}>
                 <span
                   style={{
                     display: 'flex',

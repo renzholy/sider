@@ -5,22 +5,27 @@ import useAsyncEffect from 'use-async-effect'
 
 export default () => {
   const connection = useSelector((state) => state.root.connection)
-  useAsyncEffect(async () => {
-    if (!connection) {
-      return
-    }
-    let next = '0'
-    // eslint-disable-next-line no-constant-condition
-    while (true) {
-      // eslint-disable-next-line no-await-in-loop
-      const scanned = await scan2(connection, next)
-      next = scanned.next
-      console.log(scanned)
-      if (scanned.next === '0') {
-        break
+  useAsyncEffect(
+    async (isMounted) => {
+      if (!connection) {
+        return
       }
-    }
-  }, [connection])
+      let next = '0'
+      let totalScanned = 0
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        // eslint-disable-next-line no-await-in-loop
+        const scanned = await scan2(connection, next, totalScanned)
+        next = scanned.next
+        totalScanned = scanned.totalScanned
+        console.log(scanned)
+        if (scanned.next === '0' || !isMounted()) {
+          break
+        }
+      }
+    },
+    [connection],
+  )
 
   return <>123</>
 }

@@ -267,8 +267,8 @@ export async function lrange(
 
 export async function scan2(
   connection: Connection,
-  cursor: string = '0',
-  totalScanned: number = 0,
+  cursor: string,
+  totalScanned: number,
 ): Promise<{
   next: string
   keys: { key: string; type: KeyType; memory: number }[]

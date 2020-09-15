@@ -90,11 +90,7 @@ func runPipeline(w http.ResponseWriter, r *http.Request) {
 	for _, command := range request.Commands {
 		pipeline.Do(ctx, command...)
 	}
-	cmders, err := pipeline.Exec(ctx)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	cmders, _ := pipeline.Exec(ctx)
 	raw := make([]interface{}, len(cmders))
 	for index, cmder := range cmders {
 		cmd := cmder.(*redis.Cmd)

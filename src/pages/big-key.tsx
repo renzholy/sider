@@ -2,7 +2,7 @@ import FixedReverseHeap from 'mnemonist/fixed-reverse-heap'
 import React, { useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import useAsyncEffect from 'use-async-effect'
-import { ProgressBar } from '@blueprintjs/core'
+import { Button, ProgressBar } from '@blueprintjs/core'
 import { map } from 'lodash'
 import bytes from 'bytes'
 
@@ -23,9 +23,10 @@ export default () => {
   const [dbsize, setDbsize] = useState(0)
   const [totalScanned, setTotalScanned] = useState(0)
   const [ranks, setRanks] = useState<{ [key in KeyType]?: Data[] }>({})
+  const [stopped, setStopped] = useState(false)
   useAsyncEffect(
     async (isMounted) => {
-      if (!connection) {
+      if (!connection || stopped) {
         return
       }
       setDbsize(
@@ -42,6 +43,7 @@ export default () => {
         [KeyType.ZSET]: new FixedReverseHeap<Data>(Array, comparator, 10),
         [KeyType.NONE]: new FixedReverseHeap<Data>(Array, comparator, 10),
       }
+      setRanks({})
       // eslint-disable-next-line no-constant-condition
       while (true) {
         // eslint-disable-next-line no-await-in-loop
@@ -65,7 +67,7 @@ export default () => {
         }
       }
     },
-    [connection],
+    [connection, stopped],
   )
   const progress = useMemo(() => (dbsize ? totalScanned / dbsize : 0), [
     dbsize,
@@ -75,8 +77,20 @@ export default () => {
   return (
     <div
       style={{ margin: 8, flex: 1, display: 'flex', flexDirection: 'column' }}>
-      <div style={{ marginTop: 8, marginBottom: 8 }}>
-        <ProgressBar value={progress} />
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+        }}>
+        <ProgressBar animate={!stopped} value={progress} />
+        <Button
+          icon={stopped ? 'refresh' : 'stop'}
+          minimal={true}
+          style={{ marginLeft: 8 }}
+          onClick={() => {
+            setStopped(!stopped)
+          }}
+        />
       </div>
       <div style={{ flex: 1, overflow: 'scroll' }}>
         {map(ranks, (rank, type) => (

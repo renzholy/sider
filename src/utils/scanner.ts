@@ -36,18 +36,14 @@ export async function scan(
     }
   }
   const count = calcCount(zeroTimes)
-  const [next, keys] = await runCommand<[string, string[]]>(
-    connection,
-    [
-      'scan',
-      cursor,
-      'match',
-      isPrefix ? `${match}*` : match || '*',
-      'count',
-      count.toString(),
-    ],
-    true,
-  )
+  const [next, keys] = await runCommand<[string, string[]]>(connection, [
+    'scan',
+    cursor,
+    'match',
+    isPrefix ? `${match}*` : match || '*',
+    'count',
+    count.toString(),
+  ])
   const types = await runPipeline<KeyType[]>(
     connection,
     keys.map((key) => ['type', key]),
@@ -275,11 +271,12 @@ export async function scan2(
   totalScanned: number
 }> {
   const count = 8192
-  const [next, keys] = await runCommand<[string, string[]]>(
-    connection,
-    ['scan', cursor, 'count', count.toString()],
-    true,
-  )
+  const [next, keys] = await runCommand<[string, string[]]>(connection, [
+    'scan',
+    cursor,
+    'count',
+    count.toString(),
+  ])
   const types = await runPipeline<KeyType[]>(
     connection,
     keys.map((key) => ['type', key]),

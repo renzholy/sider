@@ -29,6 +29,7 @@
     "@reduxjs/toolkit": "1.4.0",
     "bytes": "3.1.0",
     "lodash": "4.17.20",
+    "mnemonist": "0.38.0",
     "ms": "2.1.2",
     "msgpack-lite": "0.1.26",
     "normalize.css": "8.0.1",

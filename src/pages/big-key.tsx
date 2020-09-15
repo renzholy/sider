@@ -1,5 +1,5 @@
 import FixedReverseHeap from 'mnemonist/fixed-reverse-heap'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useAsyncEffect from 'use-async-effect'
 import { Button, ProgressBar } from '@blueprintjs/core'
@@ -13,6 +13,8 @@ import { KeyType } from '@/types'
 import { InfiniteListItem } from '@/components/pure/InfiniteListItem'
 import { KeyTag } from '@/components/KeyTag'
 import { actions } from '@/stores'
+import { Footer } from '@/components/pure/Footer'
+import { formatNumber } from '@/utils/formatter'
 
 type Data = {
   type: KeyType
@@ -26,6 +28,7 @@ export default () => {
   const [totalScanned, setTotalScanned] = useState(0)
   const [ranks, setRanks] = useState<{ [key in KeyType]?: Data[] }>({})
   const [stopped, setStopped] = useState(false)
+  const [next, setNext] = useState('')
   useAsyncEffect(
     async (isMounted) => {
       if (!connection || stopped) {
@@ -34,7 +37,7 @@ export default () => {
       setDbsize(
         await runCommand<number>(connection, ['dbsize']),
       )
-      let next = '0'
+      let _next = '0'
       let _totalScanned = 0
       const comparator = (a: Data, b: Data) => b.memory - a.memory
       const heaps = {
@@ -45,12 +48,14 @@ export default () => {
         [KeyType.ZSET]: new FixedReverseHeap<Data>(Array, comparator, 10),
         [KeyType.NONE]: new FixedReverseHeap<Data>(Array, comparator, 10),
       }
+      setNext('')
       setRanks({})
       // eslint-disable-next-line no-constant-condition
       while (true) {
         // eslint-disable-next-line no-await-in-loop
-        const scanned = await scan2(connection, next, _totalScanned)
-        next = scanned.next
+        const scanned = await scan2(connection, _next, _totalScanned)
+        _next = scanned.next
+        setNext(_next)
         _totalScanned = scanned.totalScanned
         setTotalScanned(_totalScanned)
         // eslint-disable-next-line no-restricted-syntax
@@ -77,25 +82,20 @@ export default () => {
   ])
   const dispatch = useDispatch()
   const history = useHistory()
+  useEffect(() => {
+    if (next === '0') {
+      setStopped(true)
+    }
+  }, [next])
+  useEffect(() => {
+    if (connection) {
+      setStopped(false)
+    }
+  }, [connection])
 
   return (
     <div
       style={{ margin: 8, flex: 1, display: 'flex', flexDirection: 'column' }}>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-        }}>
-        <ProgressBar animate={!stopped} value={progress} />
-        <Button
-          icon={stopped ? 'refresh' : 'stop'}
-          minimal={true}
-          style={{ marginLeft: 8 }}
-          onClick={() => {
-            setStopped(!stopped)
-          }}
-        />
-      </div>
       <div style={{ flex: 1, overflow: 'scroll' }}>
         {map(ranks, (rank, type) => (
           <div key={type} style={{ breakInside: 'avoid' }}>
@@ -129,6 +129,23 @@ export default () => {
           </div>
         ))}
       </div>
+      <div style={{ marginTop: 8 }}>
+        <ProgressBar animate={!stopped} value={progress} />
+      </div>
+      <Footer>
+        <span style={{ flexBasis: 30 }} />
+        <span>
+          {formatNumber(totalScanned)}&nbsp;of&nbsp;{formatNumber(dbsize)}
+        </span>
+        <Button
+          icon={stopped ? 'refresh' : 'stop'}
+          minimal={true}
+          style={{ marginLeft: 8 }}
+          onClick={() => {
+            setStopped(!stopped)
+          }}
+        />
+      </Footer>
     </div>
   )
 }

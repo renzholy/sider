@@ -35,7 +35,8 @@ export function InfiniteListItems<T>(
           color: isDarkMode ? Colors.GRAY1 : Colors.GRAY5,
           userSelect: 'none',
           height: 36,
-          padding: 8,
+          paddingTop: 8,
+          paddingBottom: 8,
         }}>
         {data.progress || 'end'}
       </div>

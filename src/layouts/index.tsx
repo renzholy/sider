@@ -51,17 +51,6 @@ export default (props: { children: React.ReactNode }) => {
                 }}
               />
             </Tooltip>
-            <Tooltip content="Info" position={Position.RIGHT}>
-              <Button
-                icon="info-sign"
-                minimal={true}
-                large={true}
-                active={history.location.pathname === '/info'}
-                onClick={() => {
-                  history.push('/info')
-                }}
-              />
-            </Tooltip>
             <Tooltip content="Big key" position={Position.RIGHT}>
               <Button
                 icon="heatmap"
@@ -70,6 +59,17 @@ export default (props: { children: React.ReactNode }) => {
                 active={history.location.pathname === '/big-key'}
                 onClick={() => {
                   history.push('/big-key')
+                }}
+              />
+            </Tooltip>
+            <Tooltip content="Info" position={Position.RIGHT}>
+              <Button
+                icon="info-sign"
+                minimal={true}
+                large={true}
+                active={history.location.pathname === '/info'}
+                onClick={() => {
+                  history.push('/info')
                 }}
               />
             </Tooltip>

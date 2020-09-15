@@ -1,7 +1,7 @@
 import { chunk, isEqual } from 'lodash'
 
 import { Connection, KeyType } from '@/types'
-import { MAX_SCAN_COUNT } from '@/constants'
+import { MAX_SCAN_COUNT, MAX_SCAN2_COUNT } from '@/constants'
 import { runCommand, runPipeline } from './fetcher'
 
 function calcCount(zeroTimes: number): number {
@@ -271,7 +271,7 @@ export async function scan2(
   keys: { key: string; type: KeyType; memory: number }[]
   totalScanned: number
 }> {
-  const count = MAX_SCAN_COUNT
+  const count = MAX_SCAN2_COUNT
   const [next, keys] = await runCommand<[string, string[]]>(connection, [
     'scan',
     cursor,

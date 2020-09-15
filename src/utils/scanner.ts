@@ -1,10 +1,11 @@
 import { chunk, isEqual } from 'lodash'
 
 import { Connection, KeyType } from '@/types'
+import { MAX_SCAN_COUNT } from '@/constants'
 import { runCommand, runPipeline } from './fetcher'
 
 function calcCount(zeroTimes: number): number {
-  return Math.max(16, Math.min(8192, 4 ** zeroTimes))
+  return Math.max(16, Math.min(MAX_SCAN_COUNT, 4 ** zeroTimes))
 }
 
 export async function scan(
@@ -36,18 +37,14 @@ export async function scan(
     }
   }
   const count = calcCount(zeroTimes)
-  const [next, keys] = await runCommand<[string, string[]]>(
-    connection,
-    [
-      'scan',
-      cursor,
-      'match',
-      isPrefix ? `${match}*` : match || '*',
-      'count',
-      count.toString(),
-    ],
-    true,
-  )
+  const [next, keys] = await runCommand<[string, string[]]>(connection, [
+    'scan',
+    cursor,
+    'match',
+    isPrefix ? `${match}*` : match || '*',
+    'count',
+    count.toString(),
+  ])
   const types = await runPipeline<KeyType[]>(
     connection,
     keys.map((key) => ['type', key]),
@@ -261,6 +258,41 @@ export async function lrange(
     next: keys.length ? (parseInt(cursor, 10) + keys.length).toString() : '0',
     keys,
     zeroTimes: keys.length === 0 ? zeroTimes + 1 : 0,
+    totalScanned: totalScanned + count,
+  }
+}
+
+export async function scan2(
+  connection: Connection,
+  cursor: string,
+  totalScanned: number,
+): Promise<{
+  next: string
+  keys: { key: string; type: KeyType; memory: number }[]
+  totalScanned: number
+}> {
+  const count = MAX_SCAN_COUNT
+  const [next, keys] = await runCommand<[string, string[]]>(connection, [
+    'scan',
+    cursor,
+    'count',
+    count.toString(),
+  ])
+  const types = await runPipeline<KeyType[]>(
+    connection,
+    keys.map((key) => ['type', key]),
+  )
+  const memories = await runPipeline<number[]>(
+    connection,
+    keys.map((key) => ['memory', 'usage', key]),
+  )
+  return {
+    next,
+    keys: keys.map((key, index) => ({
+      key,
+      type: types[index],
+      memory: memories[index],
+    })),
     totalScanned: totalScanned + count,
   }
 }

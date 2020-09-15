@@ -1,6 +1,6 @@
 import React from 'react'
 import { Provider } from 'react-redux'
-import { Classes, Colors, Button } from '@blueprintjs/core'
+import { Classes, Colors, Button, Tooltip, Position } from '@blueprintjs/core'
 import { useHistory } from 'umi'
 
 import { store } from '@/stores/index'
@@ -40,24 +40,39 @@ export default (props: { children: React.ReactNode }) => {
             justifyContent: 'space-between',
           }}>
           <div>
-            <Button
-              icon="list-detail-view"
-              minimal={true}
-              large={true}
-              active={history.location.pathname === '/keys'}
-              onClick={() => {
-                history.push('/keys')
-              }}
-            />
-            <Button
-              icon="info-sign"
-              minimal={true}
-              large={true}
-              active={history.location.pathname === '/info'}
-              onClick={() => {
-                history.push('/info')
-              }}
-            />
+            <Tooltip content="Keys" position={Position.RIGHT}>
+              <Button
+                icon="list-detail-view"
+                minimal={true}
+                large={true}
+                active={history.location.pathname === '/keys'}
+                onClick={() => {
+                  history.push('/keys')
+                }}
+              />
+            </Tooltip>
+            <Tooltip content="Big key" position={Position.RIGHT}>
+              <Button
+                icon="heatmap"
+                minimal={true}
+                large={true}
+                active={history.location.pathname === '/big-key'}
+                onClick={() => {
+                  history.push('/big-key')
+                }}
+              />
+            </Tooltip>
+            <Tooltip content="Info" position={Position.RIGHT}>
+              <Button
+                icon="info-sign"
+                minimal={true}
+                large={true}
+                active={history.location.pathname === '/info'}
+                onClick={() => {
+                  history.push('/info')
+                }}
+              />
+            </Tooltip>
           </div>
           <ConnectionSelector />
         </div>

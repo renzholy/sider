@@ -135,7 +135,8 @@ export default () => {
       <Footer>
         <span style={{ flexBasis: 30 }} />
         <span>
-          {formatNumber(totalScanned)}&nbsp;of&nbsp;{formatNumber(dbsize)}
+          {formatNumber(Math.min(totalScanned, dbsize))}&nbsp;of&nbsp;
+          {formatNumber(dbsize)}
         </span>
         <Button
           icon={stopped ? 'refresh' : 'stop'}

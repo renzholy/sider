@@ -129,9 +129,11 @@ export default () => {
           </div>
         ))}
       </div>
-      <div style={{ marginTop: 8 }}>
-        <ProgressBar animate={!stopped} value={progress} />
-      </div>
+      {progress < 1 ? (
+        <div style={{ marginTop: 8 }}>
+          <ProgressBar animate={!stopped} value={progress} />
+        </div>
+      ) : null}
       <Footer>
         <span style={{ flexBasis: 30 }} />
         <span>

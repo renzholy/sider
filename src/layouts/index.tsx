@@ -56,9 +56,9 @@ export default (props: { children: React.ReactNode }) => {
                 icon="heatmap"
                 minimal={true}
                 large={true}
-                active={history.location.pathname === '/big-key'}
+                active={history.location.pathname === '/big-keys'}
                 onClick={() => {
-                  history.push('/big-key')
+                  history.push('/big-keys')
                 }}
               />
             </Tooltip>

@@ -3,9 +3,11 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"regexp"
 	"sync"
 
 	"github.com/NYTimes/gziphandler"
@@ -18,6 +20,7 @@ var (
 	clients       sync.Map
 	creationMutex sync.Mutex
 	mux           = http.NewServeMux()
+	re            = regexp.MustCompile("\" ")
 )
 
 type connection struct {
@@ -51,13 +54,21 @@ func runCommand(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	bytes, err := json.Marshal(raw)
+	var bytes []byte
+	switch raw.(type) {
+	case string:
+	case []interface{}:
+		bytes = []byte(re.ReplaceAllLiteralString(fmt.Sprintf("%q", raw), "\","))
+		break
+	default:
+		bytes, err = json.Marshal(raw)
+	}
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
-	w.Write([]byte(bytes))
+	w.Write(bytes)
 }
 
 type requestPipeline struct {
@@ -72,7 +83,6 @@ func runPipeline(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	log.Println(request.Commands)
 
 	client, err := getClient(request.Connection)
 	if err != nil {

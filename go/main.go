@@ -21,6 +21,7 @@ var (
 	creationMutex sync.Mutex
 	mux           = http.NewServeMux()
 	re            = regexp.MustCompile("\" ")
+	re2           = regexp.MustCompile("\\\\x")
 )
 
 type connection struct {
@@ -57,9 +58,9 @@ func runCommand(w http.ResponseWriter, r *http.Request) {
 	var bytes []byte
 	switch raw.(type) {
 	case string:
-		bytes = []byte(fmt.Sprintf("%q", raw))
+		bytes = []byte(re2.ReplaceAllLiteralString(fmt.Sprintf("%q", raw), "\\\\x"))
 	case []interface{}:
-		bytes = []byte(re.ReplaceAllLiteralString(fmt.Sprintf("%q", raw), "\","))
+		bytes = []byte(re2.ReplaceAllLiteralString(re.ReplaceAllLiteralString(fmt.Sprintf("%q", raw), "\","), "\\\\x"))
 	default:
 		bytes, err = json.Marshal(raw)
 	}

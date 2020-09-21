@@ -57,9 +57,9 @@ func runCommand(w http.ResponseWriter, r *http.Request) {
 	var bytes []byte
 	switch raw.(type) {
 	case string:
+		bytes = []byte(fmt.Sprintf("%q", raw))
 	case []interface{}:
 		bytes = []byte(re.ReplaceAllLiteralString(fmt.Sprintf("%q", raw), "\","))
-		break
 	default:
 		bytes, err = json.Marshal(raw)
 	}

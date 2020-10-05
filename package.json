@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/RenzHoly/Sider#readme",
   "dependencies": {
-    "@blueprintjs/core": "3.32.1",
+    "@blueprintjs/core": "3.33.0",
     "@blueprintjs/icons": "3.21.0",
     "@monaco-editor/react": "3.6.3",
     "@reduxjs/toolkit": "1.4.0",

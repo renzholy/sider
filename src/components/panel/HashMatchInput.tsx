@@ -1,6 +1,7 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Tooltip } from '@blueprintjs/core'
+import { Button } from '@blueprintjs/core'
+import { Tooltip2 } from '@blueprintjs/popover2'
 
 import { actions } from '@/stores'
 import { MatchInput } from '../pure/MatchInput'
@@ -24,8 +25,8 @@ export function HashMatchInput() {
         marginBottom: 8,
       }}
       rightElement={
-        <Tooltip
-          boundary="window"
+        <Tooltip2
+          boundary={window.document.body}
           content={`Prefix match: ${isPrefix ? 'ON' : 'OFF'}`}>
           <Button
             icon="asterisk"
@@ -35,7 +36,7 @@ export function HashMatchInput() {
               dispatch(actions.hash.setIsPrefix(!isPrefix))
             }}
           />
-        </Tooltip>
+        </Tooltip2>
       }
     />
   )

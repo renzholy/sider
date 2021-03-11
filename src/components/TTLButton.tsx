@@ -1,5 +1,6 @@
-import React, { CSSProperties, useState, useCallback } from 'react'
-import { Button, Tooltip } from '@blueprintjs/core'
+import { CSSProperties, useState, useCallback } from 'react'
+import { Button } from '@blueprintjs/core'
+import { Tooltip2 } from '@blueprintjs/popover2'
 import useSWR from 'swr'
 import { useSelector } from 'react-redux'
 import ms from 'ms'
@@ -24,10 +25,10 @@ export function TTLButton(props: { style?: CSSProperties; value: string }) {
 
   return (
     <div style={props.style}>
-      <Tooltip
+      <Tooltip2
         onOpened={handleOpened}
         onClosed={handleClosed}
-        boundary="window"
+        boundary={window.document.body}
         content={
           !data || data < 0
             ? 'Persisted'
@@ -39,7 +40,7 @@ export function TTLButton(props: { style?: CSSProperties; value: string }) {
           icon="time"
           style={!data || data < 0 ? undefined : { paddingLeft: 7 }}
         />
-      </Tooltip>
+      </Tooltip2>
     </div>
   )
 }

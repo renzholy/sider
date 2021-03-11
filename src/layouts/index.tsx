@@ -1,6 +1,6 @@
-import React from 'react'
 import { Provider } from 'react-redux'
-import { Classes, Colors, Button, Tooltip, Position } from '@blueprintjs/core'
+import { Classes, Colors, Button } from '@blueprintjs/core'
+import { Tooltip2 } from '@blueprintjs/popover2'
 import { useHistory } from 'umi'
 
 import { store } from '@/stores/index'
@@ -40,7 +40,7 @@ export default (props: { children: React.ReactNode }) => {
             justifyContent: 'space-between',
           }}>
           <div>
-            <Tooltip content="Keys" position={Position.RIGHT}>
+            <Tooltip2 content="Keys" placement="right">
               <Button
                 icon="list-detail-view"
                 minimal={true}
@@ -50,8 +50,8 @@ export default (props: { children: React.ReactNode }) => {
                   history.push('/keys')
                 }}
               />
-            </Tooltip>
-            <Tooltip content="Big key" position={Position.RIGHT}>
+            </Tooltip2>
+            <Tooltip2 content="Big key" placement="right">
               <Button
                 icon="heatmap"
                 minimal={true}
@@ -61,8 +61,8 @@ export default (props: { children: React.ReactNode }) => {
                   history.push('/big-keys')
                 }}
               />
-            </Tooltip>
-            <Tooltip content="Info" position={Position.RIGHT}>
+            </Tooltip2>
+            <Tooltip2 content="Info" placement="right">
               <Button
                 icon="info-sign"
                 minimal={true}
@@ -72,7 +72,7 @@ export default (props: { children: React.ReactNode }) => {
                   history.push('/info')
                 }}
               />
-            </Tooltip>
+            </Tooltip2>
           </div>
           <ConnectionSelector />
         </div>

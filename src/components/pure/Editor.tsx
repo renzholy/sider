@@ -1,6 +1,6 @@
 /* eslint-disable react/no-danger */
 
-import React, { CSSProperties, useState, useEffect } from 'react'
+import { CSSProperties, useState, useEffect } from 'react'
 import { Colors } from '@blueprintjs/core'
 
 import { useIsDarkMode } from '@/hooks/use-is-dark-mode'
@@ -8,7 +8,7 @@ import { useColorize } from '@/hooks/use-colorize'
 
 enum ValueType {
   STRING = 'String',
-  JSON = 'Json',
+  JSON = 'JSON',
 }
 
 function isJSONObjectOrArray(value: string): boolean {

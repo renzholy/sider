@@ -1,4 +1,4 @@
-import React, { CSSProperties } from 'react'
+import { CSSProperties } from 'react'
 import { Tag, Intent } from '@blueprintjs/core'
 
 import { KeyType } from '@/types'

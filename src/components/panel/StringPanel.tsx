@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 import useSWR from 'swr'
 import { useSelector } from 'react-redux'
 import bytes from 'bytes'

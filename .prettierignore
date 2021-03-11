@@ -18,3 +18,4 @@ Dockerfile
 go/
 LICENSE
 yarn.lock
+.husky/

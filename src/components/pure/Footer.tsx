@@ -1,4 +1,3 @@
-import React from 'react'
 import { Colors } from '@blueprintjs/core'
 
 import { useIsDarkMode } from '@/hooks/use-is-dark-mode'

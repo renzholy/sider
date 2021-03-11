@@ -1,4 +1,3 @@
-import React from 'react'
 import { Button, Popover, Menu, MenuItem } from '@blueprintjs/core'
 import { useSelector, useDispatch } from 'react-redux'
 import { startCase } from 'lodash'

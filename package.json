@@ -25,6 +25,7 @@
   "dependencies": {
     "@blueprintjs/core": "3.41.0",
     "@blueprintjs/icons": "3.25.1",
+    "@blueprintjs/popover2": "0.3.3",
     "@monaco-editor/react": "4.0.11",
     "@reduxjs/toolkit": "1.5.0",
     "bytes": "3.1.0",

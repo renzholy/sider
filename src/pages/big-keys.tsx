@@ -1,5 +1,5 @@
 import FixedReverseHeap from 'mnemonist/fixed-reverse-heap'
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useAsyncEffect from 'use-async-effect'
 import { Button, ProgressBar } from '@blueprintjs/core'

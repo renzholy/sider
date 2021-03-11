@@ -1,4 +1,4 @@
-import React, { useCallback, CSSProperties } from 'react'
+import { useCallback, CSSProperties } from 'react'
 import { InputGroup, Colors } from '@blueprintjs/core'
 
 import { useIsDarkMode } from '@/hooks/use-is-dark-mode'

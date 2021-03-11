@@ -1,4 +1,3 @@
-import React from 'react'
 import { Colors, Tag } from '@blueprintjs/core'
 import useSWR from 'swr'
 import { useSelector } from 'react-redux'

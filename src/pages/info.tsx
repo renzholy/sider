@@ -21,9 +21,11 @@ export default () => {
           ?.trimRight()
           .split('\n\r\n')
           .map((section) =>
-            section.split('\n').map((line, index) => {
-              return index === 0 ? line.substr(2) : line.split(':')
-            }),
+            section
+              .split('\n')
+              .map((line, index) =>
+                index === 0 ? line.substr(2) : line.split(':'),
+              ),
           ),
         (section) => section.length,
       ),

@@ -50,30 +50,28 @@ export function ConnectionSelector() {
         </Menu>
         <Divider />
         <div style={{ display: 'flex', padding: 6 }}>
-          {range(0, 4).map((num1) => {
-            return (
-              <div key={num1} style={{ minWidth: 0, padding: 0 }}>
-                {range(0, 4).map((num2) => {
-                  const num = num1 + num2 * 4
-                  return (
-                    <DatabaseButton
-                      key={num}
-                      db={num}
-                      intent={num === db ? Intent.PRIMARY : Intent.NONE}
-                      active={num === db}
-                      onClick={() => {
-                        dispatch(
-                          actions.root.setConnection(
-                            connection ? { ...connection, db: num } : undefined,
-                          ),
-                        )
-                      }}
-                    />
-                  )
-                })}
-              </div>
-            )
-          })}
+          {range(0, 4).map((num1) => (
+            <div key={num1} style={{ minWidth: 0, padding: 0 }}>
+              {range(0, 4).map((num2) => {
+                const num = num1 + num2 * 4
+                return (
+                  <DatabaseButton
+                    key={num}
+                    db={num}
+                    intent={num === db ? Intent.PRIMARY : Intent.NONE}
+                    active={num === db}
+                    onClick={() => {
+                      dispatch(
+                        actions.root.setConnection(
+                          connection ? { ...connection, db: num } : undefined,
+                        ),
+                      )
+                    }}
+                  />
+                )
+              })}
+            </div>
+          ))}
         </div>
       </div>
     </Popover>

@@ -1,10 +1,10 @@
-import { monaco, Monaco, ControlledEditor } from '@monaco-editor/react'
+import ControlledEditor, { loader, Monaco } from '@monaco-editor/react'
 
 import { Deferred } from './deferred'
 
 const _monaco = new Deferred<Monaco>()
 
-monaco
+loader
   .init()
   .then((_m) => {
     _monaco.resolve(_m)

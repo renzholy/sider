@@ -33,9 +33,8 @@ export function InfiniteList<T>(props: {
   }, [props.items])
   const itemCount = (props.items?.length || 0) + 1
   const handleItemSize = useCallback(
-    (index: number) => {
-      return props.items?.[index] ? props.items[index].keys.length * 36 : 36
-    },
+    (index: number) =>
+      props.items?.[index] ? props.items[index].keys.length * 36 : 36,
     [props.items],
   )
   const hasNextPage = useMemo(() => last(props.items)?.next !== '0', [

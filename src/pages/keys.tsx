@@ -2,8 +2,7 @@ import { useCallback, useEffect } from 'react'
 import useSWR, { useSWRInfinite } from 'swr'
 import { useSelector } from 'react-redux'
 import { ListChildComponentProps } from 'react-window'
-import { Intent, Button } from '@blueprintjs/core'
-import { Tooltip2 } from '@blueprintjs/popover2'
+import { Intent, Button, Tooltip } from '@blueprintjs/core'
 
 import { runCommand } from '@/utils/fetcher'
 import { scan } from '@/utils/scanner'
@@ -17,7 +16,7 @@ import { KeyItem } from '@/components/KeyItem'
 import { Footer } from '@/components/pure/Footer'
 import { ReloadButton } from '@/components/pure/ReloadButton'
 import { useScanSize } from '@/hooks/use-scan-size'
-import { AppToaster } from '@/utils/toaster'
+import { Toaster } from '@/utils/toaster'
 
 export default () => {
   const connection = useSelector((state) => state.root.connection)
@@ -76,7 +75,7 @@ export default () => {
   )
   useEffect(() => {
     if (error) {
-      AppToaster.show({ message: error.message, intent: Intent.DANGER })
+      Toaster.show({ message: error.message, intent: Intent.DANGER })
     }
   }, [error])
 
@@ -106,9 +105,9 @@ export default () => {
           </InfiniteList>
         </div>
         <Footer>
-          <Tooltip2 content="Comming soon.">
+          <Tooltip content="Comming soon.">
             <Button icon="plus" minimal={true} />
-          </Tooltip2>
+          </Tooltip>
           <span>
             {formatNumber(scanSize)}&nbsp;of&nbsp;
             {formatNumber(dbSize || 0)}

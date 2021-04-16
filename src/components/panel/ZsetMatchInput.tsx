@@ -1,7 +1,6 @@
 import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button } from '@blueprintjs/core'
-import { Tooltip2 } from '@blueprintjs/popover2'
+import { Button, Tooltip } from '@blueprintjs/core'
 
 import { actions } from '@/stores'
 import { MatchInput } from '../pure/MatchInput'
@@ -25,7 +24,7 @@ export function ZsetMatchInput() {
         marginBottom: 8,
       }}
       rightElement={
-        <Tooltip2
+        <Tooltip
           boundary={window.document.body}
           content={`Prefix match: ${isPrefix ? 'ON' : 'OFF'}`}>
           <Button
@@ -36,7 +35,7 @@ export function ZsetMatchInput() {
               dispatch(actions.zset.setIsPrefix(!isPrefix))
             }}
           />
-        </Tooltip2>
+        </Tooltip>
       }
     />
   )

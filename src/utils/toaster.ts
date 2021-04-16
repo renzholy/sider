@@ -1,5 +1,5 @@
-import { Position, Toaster } from '@blueprintjs/core'
+import { Position, OverlayToaster } from '@blueprintjs/core'
 
-export const AppToaster = Toaster.create({
+export const Toaster = OverlayToaster.create({
   position: Position.TOP,
 })

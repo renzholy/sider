@@ -1,6 +1,12 @@
 import { useEffect } from 'react'
-import { Button, Menu, MenuItem, Intent, Divider } from '@blueprintjs/core'
-import { Popover2 } from '@blueprintjs/popover2'
+import {
+  Button,
+  Menu,
+  MenuItem,
+  Intent,
+  Divider,
+  Popover,
+} from '@blueprintjs/core'
 import useSWR from 'swr'
 import { useDispatch, useSelector } from 'react-redux'
 import { range, isEqual } from 'lodash'
@@ -27,7 +33,7 @@ export function ConnectionSelector() {
   const db = connection?.db || 0
 
   return (
-    <Popover2
+    <Popover
       boundary={window.document.body}
       hasBackdrop={true}
       content={
@@ -72,6 +78,6 @@ export function ConnectionSelector() {
         </div>
       }>
       <Button icon="database" minimal={true} large={true} />
-    </Popover2>
+    </Popover>
   )
 }

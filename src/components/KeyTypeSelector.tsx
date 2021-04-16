@@ -1,7 +1,6 @@
-import { Button, Menu, MenuItem } from '@blueprintjs/core'
+import { Button, Menu, MenuItem, Popover } from '@blueprintjs/core'
 import { useSelector, useDispatch } from 'react-redux'
 import { startCase } from 'lodash'
-import { Popover2 } from '@blueprintjs/popover2'
 
 import { KeyType } from '@/types'
 import { actions } from '@/stores'
@@ -12,7 +11,7 @@ export function KeyTypeSelector() {
   const dispatch = useDispatch()
 
   return (
-    <Popover2
+    <Popover
       boundary={window.document.body}
       hasBackdrop={true}
       content={
@@ -46,6 +45,6 @@ export function KeyTypeSelector() {
       ) : (
         <Button icon="filter-list" minimal={true} />
       )}
-    </Popover2>
+    </Popover>
   )
 }

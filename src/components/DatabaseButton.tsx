@@ -1,5 +1,4 @@
-import { Intent, Button, Classes } from '@blueprintjs/core'
-import { Tooltip2 } from '@blueprintjs/popover2'
+import { Intent, Button, Classes, Tooltip } from '@blueprintjs/core'
 import useSWR from 'swr'
 import { useSelector } from 'react-redux'
 
@@ -24,7 +23,7 @@ export function DatabaseButton(props: {
   )
 
   return (
-    <Tooltip2
+    <Tooltip
       key={num}
       content={`${formatNumber(data || 0)} keys`}
       onOpened={revalidate}
@@ -42,6 +41,6 @@ export function DatabaseButton(props: {
         className={Classes.POPOVER_DISMISS}
         onClick={props.onClick}
       />
-    </Tooltip2>
+    </Tooltip>
   )
 }

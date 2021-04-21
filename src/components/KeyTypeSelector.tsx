@@ -14,6 +14,7 @@ export function KeyTypeSelector() {
     <Popover
       boundary={window.document.body}
       hasBackdrop={true}
+      position="bottom-left"
       content={
         <Menu>
           {Object.entries(KeyType).map(([key, type]) =>

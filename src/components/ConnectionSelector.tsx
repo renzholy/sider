@@ -53,7 +53,14 @@ export function ConnectionSelector() {
           <Divider />
           <div style={{ display: 'flex', padding: 6 }}>
             {range(0, 4).map((num1) => (
-              <div key={num1} style={{ minWidth: 0, padding: 0 }}>
+              <div
+                key={num1}
+                style={{
+                  minWidth: 0,
+                  padding: 0,
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}>
                 {range(0, 4).map((num2) => {
                   const num = num1 + num2 * 4
                   return (

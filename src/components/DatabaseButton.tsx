@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux'
 
 import { formatNumber } from '@/utils/formatter'
 import { runCommand } from '@/utils/fetcher'
-import styles from './DatabaseButton.less'
 
 export function DatabaseButton(props: {
   db: number
@@ -26,8 +25,7 @@ export function DatabaseButton(props: {
     <Tooltip
       key={num}
       content={`${formatNumber(data || 0)} keys`}
-      onOpened={revalidate}
-      className={styles.tooltip}>
+      onOpened={revalidate}>
       <Button
         minimal={true}
         text={num}

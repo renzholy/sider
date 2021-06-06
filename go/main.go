@@ -2,8 +2,10 @@ package main
 
 import (
 	"context"
+	"embed"
 	"encoding/json"
 	"fmt"
+	"io/fs"
 	"log"
 	"net/http"
 	"os"
@@ -12,7 +14,6 @@ import (
 
 	"github.com/NYTimes/gziphandler"
 	"github.com/go-redis/redis/v8"
-	"github.com/markbates/pkger"
 )
 
 var (
@@ -22,6 +23,8 @@ var (
 	mux           = http.NewServeMux()
 	re            = regexp.MustCompile("\" ")
 	re2           = regexp.MustCompile("\\\\x")
+	//go:embed dist
+	dist embed.FS
 )
 
 type connection struct {
@@ -163,11 +166,19 @@ func listConnections(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(opts))
 }
 
+func getFileSystem() http.FileSystem {
+	fsys, err := fs.Sub(dist, "dist")
+	if err != nil {
+		log.Fatal(err)
+	}
+	return http.FS(fsys)
+}
+
 func main() {
 	ctx = context.Background()
 
 	// serve root dir
-	mux.Handle("/", gziphandler.GzipHandler(http.FileServer(pkger.Dir("/dist"))))
+	mux.Handle("/", gziphandler.GzipHandler(http.FileServer(getFileSystem())))
 
 	// handle runCommand
 	mux.Handle("/api/runCommand", gziphandler.GzipHandler(http.HandlerFunc(runCommand)))

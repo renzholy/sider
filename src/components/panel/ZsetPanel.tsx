@@ -66,7 +66,7 @@ export function ZsetPanel(props: { value: string }) {
   )
   const scanSize = useScanSize(data)
   const { data: count, revalidate: revalidateCount } = useSWR(
-    connection ? `zcount/${JSON.stringify(connection)}/${props.value}` : null,
+    connection ? ['zcount', connection, props.value] : null,
     () =>
       runCommand<number>(connection!, ['zcount', props.value, '-inf', '+inf']),
   )

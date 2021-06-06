@@ -13,11 +13,11 @@ import { HyperLogLog } from './HyperLogLog'
 export function StringPanel(props: { value: string }) {
   const connection = useSelector((state) => state.root.connection)
   const { data, revalidate, isValidating } = useSWR(
-    connection ? `get/${JSON.stringify(connection)}/${props.value}` : null,
+    connection ? ['get', connection, props.value] : null,
     () => runCommand<string>(connection!, ['get', props.value]),
   )
   const { data: strlen, revalidate: revalidateStrlen } = useSWR(
-    connection ? `strlen/${JSON.stringify(connection)}/${props.value}` : null,
+    connection ? ['strlen', connection, props.value] : null,
     () => runCommand<number>(connection!, ['strlen', props.value]),
   )
   const handleReload = useCallback(async () => {

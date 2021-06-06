@@ -10,7 +10,7 @@ import styles from './info.less'
 
 export default () => {
   const connection = useSelector((state) => state.root.connection)
-  const { data } = useSWR(`info/${JSON.stringify(connection)}`, () =>
+  const { data } = useSWR(['info', connection], () =>
     runCommand<string>(connection!, ['info']),
   )
   const isDarkMode = useIsDarkMode()

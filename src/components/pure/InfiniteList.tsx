@@ -31,9 +31,10 @@ export function InfiniteList<T>(props: {
       props.items?.[index] ? props.items[index].keys.length * 36 : 36,
     [props.items],
   )
-  const hasNextPage = useMemo(() => last(props.items)?.next !== '0', [
-    props.items,
-  ])
+  const hasNextPage = useMemo(
+    () => last(props.items)?.next !== '0',
+    [props.items],
+  )
   const progressValue = useMemo(
     () =>
       props.total

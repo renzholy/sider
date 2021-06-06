@@ -34,9 +34,7 @@ export default () => {
       if (!connection || stopped) {
         return
       }
-      setDbsize(
-        await runCommand<number>(connection, ['dbsize']),
-      )
+      setDbsize(await runCommand<number>(connection, ['dbsize']))
       let _next = '0'
       let _totalScanned = 0
       const comparator = (a: Data, b: Data) => b.memory - a.memory
@@ -76,10 +74,10 @@ export default () => {
     },
     [connection, stopped],
   )
-  const progress = useMemo(() => (dbsize ? totalScanned / dbsize : 0), [
-    dbsize,
-    totalScanned,
-  ])
+  const progress = useMemo(
+    () => (dbsize ? totalScanned / dbsize : 0),
+    [dbsize, totalScanned],
+  )
   const dispatch = useDispatch()
   const history = useHistory()
   useEffect(() => {

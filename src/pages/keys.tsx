@@ -58,7 +58,7 @@ export default () => {
     await setSize((_size) => _size + 1)
   }, [setSize])
   const { data: dbSize, revalidate: revalidateDbSize } = useSWR(
-    connection ? `dbsize/${JSON.stringify(connection)}` : null,
+    connection ? ['dbsize', connection] : null,
     () => runCommand<number>(connection!, ['dbsize']),
   )
   const handleReload = useCallback(async () => {

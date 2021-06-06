@@ -63,7 +63,7 @@ export function SetPanel(props: { value: string }) {
     [],
   )
   const { data: scard, revalidate: revalidateScard } = useSWR(
-    connection ? `scard/${JSON.stringify(connection)}/${props.value}` : null,
+    connection ? ['scard', connection, props.value] : null,
     () => runCommand<number>(connection!, ['scard', props.value]),
   )
   const scanSize = useScanSize(data)

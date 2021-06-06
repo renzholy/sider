@@ -7,7 +7,8 @@ export function useScanSize(
     keys: unknown[]
   }[],
 ): number {
-  return useMemo(() => (data ? flatMap(data, (item) => item.keys).length : 0), [
-    data,
-  ])
+  return useMemo(
+    () => (data ? flatMap(data, (item) => item.keys).length : 0),
+    [data],
+  )
 }

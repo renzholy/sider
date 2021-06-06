@@ -8,7 +8,7 @@ import { runCommand } from '@/utils/fetcher'
 export function HyperLogLog(props: { value: string }) {
   const connection = useSelector((state) => state.root.connection)
   const { data: pfCount } = useSWR(
-    connection ? `pfcount/${JSON.stringify(connection)}/${props.value}` : null,
+    connection ? ['pfcount', connection, props.value] : null,
     () => runCommand<number>(connection!, ['pfcount', props.value]),
   )
   const isDarkMode = useIsDarkMode()

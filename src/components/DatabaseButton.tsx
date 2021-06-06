@@ -14,9 +14,7 @@ export function DatabaseButton(props: {
   const num = props.db
   const connection = useSelector((state) => state.root.connection)
   const { data, revalidate } = useSWR(
-    connection
-      ? `dbsize/${JSON.stringify({ ...connection, db: props.db })}`
-      : null,
+    connection ? ['dbsize', connection, props.db] : null,
     () => runCommand<number>({ ...connection!, db: props.db }, ['dbsize']),
     { revalidateOnFocus: false, revalidateOnMount: false },
   )

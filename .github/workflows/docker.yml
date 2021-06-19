@@ -30,7 +30,7 @@ jobs:
         with:
           push: true
           tags: |
-            ghcr.io/renzholy/sider:latest
+            ghcr.io/${{ github.repository }}:latest
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.clone_url }}
             org.opencontainers.image.revision=${{ github.sha }}

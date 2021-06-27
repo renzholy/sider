@@ -1,8 +1,7 @@
 import { ComponentType } from 'react'
 import type { ListChildComponentProps } from 'react-window'
 import { Colors } from '@blueprintjs/core'
-
-import { useIsDarkMode } from '@/hooks/use-is-dark-mode'
+import { useIsDarkMode } from 'hooks/use-is-dark-mode'
 
 export function InfiniteListItems<T>(
   props: ListChildComponentProps & {

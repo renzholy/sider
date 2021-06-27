@@ -1,7 +1,6 @@
 import { chunk, isEqual } from 'lodash'
-
-import { Connection, KeyType } from '@/types'
-import { MAX_SCAN_COUNT, MAX_SCAN2_COUNT } from '@/constants'
+import { Connection, KeyType } from 'types'
+import { MAX_SCAN_COUNT, MAX_SCAN2_COUNT } from '../constants'
 import { runCommand, runPipeline } from './fetcher'
 
 function calcCount(zeroTimes: number): number {

@@ -3,8 +3,8 @@
 import { CSSProperties, useState, useEffect } from 'react'
 import { Colors } from '@blueprintjs/core'
 
-import { useIsDarkMode } from '@/hooks/use-is-dark-mode'
-import { useColorize } from '@/hooks/use-colorize'
+import { useIsDarkMode } from 'hooks/use-is-dark-mode'
+import { useColorize } from 'hooks/use-colorize'
 
 enum ValueType {
   STRING = 'String',

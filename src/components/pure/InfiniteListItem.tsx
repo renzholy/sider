@@ -4,8 +4,8 @@
 import { useCallback } from 'react'
 import { Colors } from '@blueprintjs/core'
 
-import { useIsDarkMode } from '@/hooks/use-is-dark-mode'
-import styles from './InfiniteListItem.less'
+import { useIsDarkMode } from 'hooks/use-is-dark-mode'
+// import styles from './InfiniteListItem.less' // TODO: use emotion
 
 export function InfiniteListItem(props: {
   isSelected?: boolean
@@ -25,7 +25,7 @@ export function InfiniteListItem(props: {
 
   return (
     <div
-      className={styles.listItem}
+      // className={styles.listItem}
       style={{
         backgroundColor,
       }}

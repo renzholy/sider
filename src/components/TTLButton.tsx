@@ -4,8 +4,8 @@ import useSWR from 'swr'
 import { useSelector } from 'react-redux'
 import ms from 'ms'
 
-import { runCommand } from '@/utils/fetcher'
-import { formatNumber } from '@/utils/formatter'
+import { runCommand } from 'utils/fetcher'
+import { formatNumber } from 'utils/formatter'
 
 export function TTLButton(props: { style?: CSSProperties; value: string }) {
   const connection = useSelector((state) => state.root.connection)

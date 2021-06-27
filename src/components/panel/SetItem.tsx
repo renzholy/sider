@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { isEqual } from 'lodash'
 
-import { actions } from '@/stores'
+import { actions } from 'stores'
 import { InfiniteListItem } from '../pure/InfiniteListItem'
 
 export function SetItem(props: { value: string }) {

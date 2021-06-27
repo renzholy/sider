@@ -1,15 +1,14 @@
 import { Provider } from 'react-redux'
 import { Classes, Colors, Button, Tooltip } from '@blueprintjs/core'
-import { useHistory } from 'umi'
-
-import { store } from '@/stores/index'
-import { useIsDarkMode } from '@/hooks/use-is-dark-mode'
-import { ControlledEditor } from '@/utils/editor'
-import { ConnectionSelector } from '@/components/ConnectionSelector'
+import { store } from 'stores/index'
+import { useIsDarkMode } from 'hooks/use-is-dark-mode'
+import { ControlledEditor } from 'utils/editor'
+import { ConnectionSelector } from 'components/ConnectionSelector'
+import { useRouter } from 'next/router'
 
 export default (props: { children: React.ReactNode }) => {
   const isDarkMode = useIsDarkMode()
-  const history = useHistory()
+  const router = useRouter()
 
   return (
     <Provider store={store}>
@@ -44,9 +43,9 @@ export default (props: { children: React.ReactNode }) => {
                 icon="list-detail-view"
                 minimal={true}
                 large={true}
-                active={history.location.pathname === '/keys'}
+                active={router.pathname === '/keys'}
                 onClick={() => {
-                  history.push('/keys')
+                  router.push('/keys')
                 }}
               />
             </Tooltip>
@@ -55,9 +54,9 @@ export default (props: { children: React.ReactNode }) => {
                 icon="heatmap"
                 minimal={true}
                 large={true}
-                active={history.location.pathname === '/big-keys'}
+                active={router.pathname === '/big-keys'}
                 onClick={() => {
-                  history.push('/big-keys')
+                  router.push('/big-keys')
                 }}
               />
             </Tooltip>
@@ -66,9 +65,9 @@ export default (props: { children: React.ReactNode }) => {
                 icon="info-sign"
                 minimal={true}
                 large={true}
-                active={history.location.pathname === '/info'}
+                active={router.pathname === '/info'}
                 onClick={() => {
-                  history.push('/info')
+                  router.push('/info')
                 }}
               />
             </Tooltip>

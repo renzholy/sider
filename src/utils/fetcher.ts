@@ -1,4 +1,4 @@
-import { Connection } from '@/types'
+import { Connection } from 'types'
 
 export async function runCommand<T>(
   connection: Connection,

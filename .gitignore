@@ -1,10 +1,9 @@
 node_modules/
 dist/
-.umi/
-.umi-production/
 go/sider
 go/sider.app
 go/sider-darwin
 go/sider.exe
 go/sider-windows
 .DS_Store
+.next/

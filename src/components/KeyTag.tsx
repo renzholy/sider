@@ -1,8 +1,8 @@
 import { CSSProperties } from 'react'
 import { Tag, Intent } from '@blueprintjs/core'
 
-import { KeyType } from '@/types'
-import styles from './KeyTag.less'
+import { KeyType } from 'types'
+// import styles from './KeyTag.module.css' // TODO: use emotion
 
 const intentMap = {
   [KeyType.STRING]: Intent.NONE,
@@ -38,7 +38,7 @@ export function KeyTag(props: {
 }) {
   return (
     <Tag
-      className={styles.keyTag}
+      // className={styles.keyTag}
       large={props.large}
       style={props.style}
       title={props.type}

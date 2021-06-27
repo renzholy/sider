@@ -2,8 +2,8 @@ import { useCallback, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { isEqual } from 'lodash'
 
-import { KeyType } from '@/types'
-import { actions } from '@/stores'
+import { KeyType } from 'types'
+import { actions } from 'stores'
 import { KeyTag } from './KeyTag'
 import { InfiniteListItem } from './pure/InfiniteListItem'
 

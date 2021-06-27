@@ -23,7 +23,7 @@ var (
 	mux           = http.NewServeMux()
 	re            = regexp.MustCompile("\" ")
 	re2           = regexp.MustCompile("\\\\x")
-	//go:embed dist
+	//go:embed out/* out/_next/static/*/* out/_next/static/*/*/*
 	dist embed.FS
 )
 

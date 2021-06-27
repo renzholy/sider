@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Tooltip } from '@blueprintjs/core'
 
-import { actions } from '@/stores'
+import { actions } from 'stores'
 import { MatchInput } from '../pure/MatchInput'
 
 export function SetMatchInput() {

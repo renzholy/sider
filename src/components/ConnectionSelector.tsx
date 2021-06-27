@@ -11,8 +11,8 @@ import useSWR from 'swr'
 import { useDispatch, useSelector } from 'react-redux'
 import { range, isEqual } from 'lodash'
 
-import { listConnections } from '@/utils/fetcher'
-import { actions } from '@/stores'
+import { listConnections } from 'utils/fetcher'
+import { actions } from 'stores'
 import { DatabaseButton } from './DatabaseButton'
 
 export function ConnectionSelector() {

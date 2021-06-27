@@ -5,16 +5,15 @@ import useAsyncEffect from 'use-async-effect'
 import { Button, ProgressBar } from '@blueprintjs/core'
 import { map } from 'lodash'
 import bytes from 'bytes'
-import { useHistory } from 'umi'
-
-import { runCommand } from '@/utils/fetcher'
-import { scan2 } from '@/utils/scanner'
-import { KeyType } from '@/types'
-import { InfiniteListItem } from '@/components/pure/InfiniteListItem'
-import { KeyTag } from '@/components/KeyTag'
-import { actions } from '@/stores'
-import { Footer } from '@/components/pure/Footer'
-import { formatNumber } from '@/utils/formatter'
+import { runCommand } from 'utils/fetcher'
+import { scan2 } from 'utils/scanner'
+import { KeyType } from 'types'
+import { InfiniteListItem } from 'components/pure/InfiniteListItem'
+import { KeyTag } from 'components/KeyTag'
+import { actions } from 'stores'
+import { Footer } from 'components/pure/Footer'
+import { formatNumber } from 'utils/formatter'
+import { useRouter } from 'next/router'
 
 type Data = {
   type: KeyType
@@ -22,7 +21,7 @@ type Data = {
   memory: number
 }
 
-export default () => {
+export default function BigKeys() {
   const connection = useSelector((state) => state.root.connection)
   const [dbsize, setDbsize] = useState(0)
   const [totalScanned, setTotalScanned] = useState(0)
@@ -79,7 +78,7 @@ export default () => {
     [dbsize, totalScanned],
   )
   const dispatch = useDispatch()
-  const history = useHistory()
+  const router = useRouter()
   useEffect(() => {
     if (next === '0') {
       setStopped(true)
@@ -108,7 +107,7 @@ export default () => {
                       key: item.key,
                     }),
                   )
-                  history.push('/keys')
+                  router.push('/keys')
                 }}>
                 <span
                   style={{

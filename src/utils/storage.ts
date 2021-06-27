@@ -1,4 +1,4 @@
-import { Connection } from '@/types'
+import { Connection } from 'types'
 
 enum StorageType {
   STRING,
@@ -10,6 +10,9 @@ function getItem<T>(
   type: StorageType,
   key: string,
 ): string | number | T | undefined {
+  if (typeof window === 'undefined') {
+    return undefined
+  }
   const item = localStorage.getItem(key)
   switch (type) {
     case StorageType.STRING: {
@@ -40,6 +43,9 @@ function setItem<T>(
   key: string,
 ): (value?: T | number | string) => void {
   return (value) => {
+    if (typeof window === 'undefined') {
+      return
+    }
     if (value === undefined) {
       localStorage.removeItem(key)
       return

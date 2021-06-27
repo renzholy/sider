@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Button, Tooltip } from '@blueprintjs/core'
 
 import { actions } from 'stores'
-import { KeyTypeSelector } from './KeyTypeSelector'
-import { MatchInput } from './pure/MatchInput'
+import { KeyTypeSelector } from './key-type-selector'
+import { MatchInput } from './pure/match-input'
 
 export function KeysMatchInput() {
   const match = useSelector((state) => state.keys.match)

@@ -13,7 +13,7 @@ import { range, isEqual } from 'lodash'
 
 import { listConnections } from 'utils/fetcher'
 import { actions } from 'stores'
-import { DatabaseButton } from './DatabaseButton'
+import { DatabaseButton } from './database-button'
 
 export function ConnectionSelector() {
   const { data } = useSWR('connections', () => listConnections())

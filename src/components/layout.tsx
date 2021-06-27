@@ -2,7 +2,7 @@ import { Provider } from 'react-redux'
 import { Classes, Colors, Button, Tooltip } from '@blueprintjs/core'
 import { store } from 'stores/index'
 import { useIsDarkMode } from 'hooks/use-is-dark-mode'
-import { ConnectionSelector } from 'components/ConnectionSelector'
+import { ConnectionSelector } from 'components/connection-selector'
 import { useRouter } from 'next/router'
 
 export default function Layout(props: { children: React.ReactNode }) {

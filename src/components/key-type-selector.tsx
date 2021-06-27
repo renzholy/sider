@@ -4,7 +4,7 @@ import { startCase } from 'lodash'
 
 import { KeyType } from 'types'
 import { actions } from 'stores'
-import { KeyTag } from './KeyTag'
+import { KeyTag } from './key-tag'
 
 export function KeyTypeSelector() {
   const keyType = useSelector((state) => state.keys.keyType)

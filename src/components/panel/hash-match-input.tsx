@@ -3,15 +3,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Button, Tooltip } from '@blueprintjs/core'
 
 import { actions } from 'stores'
-import { MatchInput } from '../pure/MatchInput'
+import { MatchInput } from '../pure/match-input'
 
-export function SetMatchInput() {
-  const match = useSelector((state) => state.set.match)
-  const isPrefix = useSelector((state) => state.set.isPrefix)
+export function HashMatchInput() {
+  const match = useSelector((state) => state.hash.match)
+  const isPrefix = useSelector((state) => state.hash.isPrefix)
   const dispatch = useDispatch()
   const handleMatchChange = useCallback(
     (_match: string) => {
-      dispatch(actions.set.setMatch(_match))
+      dispatch(actions.hash.setMatch(_match))
     },
     [dispatch],
   )
@@ -32,7 +32,7 @@ export function SetMatchInput() {
             minimal={true}
             active={isPrefix}
             onClick={() => {
-              dispatch(actions.set.setIsPrefix(!isPrefix))
+              dispatch(actions.hash.setIsPrefix(!isPrefix))
             }}
           />
         </Tooltip>

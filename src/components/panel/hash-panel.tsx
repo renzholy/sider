@@ -4,29 +4,29 @@ import { useSelector, useDispatch } from 'react-redux'
 import { ListChildComponentProps } from 'react-window'
 
 import { Unpacked } from 'utils'
-import { sscan } from 'utils/scanner'
+import { hscan } from 'utils/scanner'
+import { runCommand } from 'utils/fetcher'
 import { useScanSize } from 'hooks/use-scan-size'
 import { formatNumber } from 'utils/formatter'
-import { runCommand } from 'utils/fetcher'
 import { actions } from 'stores'
-import { SetMatchInput } from './SetMatchInput'
-import { InfiniteList } from '../pure/InfiniteList'
-import { InfiniteListItems } from '../pure/InfiniteListItems'
-import { SetItem } from './SetItem'
-import { Footer } from '../pure/Footer'
-import { TTLButton } from '../TTLButton'
-import { ReloadButton } from '../pure/ReloadButton'
-import { Editor } from '../pure/Editor'
+import { HashMatchInput } from './hash-match-input'
+import { InfiniteList } from '../pure/infinite-list'
+import { InfiniteListItems } from '../pure/infinite-list-items'
+import { HashItem } from './hash-item'
+import { Editor } from '../pure/editor0'
+import { Footer } from '../pure/footer0'
+import { ReloadButton } from '../pure/reload-button'
+import { TTLButton } from '../ttl-button'
 
-export function SetPanel(props: { value: string }) {
+export function HashPanel(props: { value: string }) {
   const connection = useSelector((state) => state.root.connection)
-  const match = useSelector((state) => state.set.match)
-  const isPrefix = useSelector((state) => state.set.isPrefix)
+  const match = useSelector((state) => state.hash.match)
+  const isPrefix = useSelector((state) => state.hash.isPrefix)
   const handleGetKey = useCallback(
     (
       _index: number,
-      previousPageData: Unpacked<ReturnType<typeof sscan>> | null,
-    ): Parameters<typeof sscan> | null => {
+      previousPageData: Unpacked<ReturnType<typeof hscan>> | null,
+    ): Parameters<typeof hscan> | null => {
       if (previousPageData?.next === '0') {
         return null
       }
@@ -47,10 +47,14 @@ export function SetPanel(props: { value: string }) {
   )
   const { data, setSize, isValidating, revalidate } = useSWRInfinite(
     handleGetKey,
-    sscan,
+    hscan,
     {
       revalidateOnFocus: false,
     },
+  )
+  const { data: hlen, revalidate: revalidateHlen } = useSWR(
+    connection ? ['hlen', connection, props.value] : null,
+    () => runCommand<number>(connection!, ['hlen', props.value]),
   )
   const handleLoadMoreItems = useCallback(async () => {
     await setSize((_size) => _size + 1)
@@ -58,34 +62,30 @@ export function SetPanel(props: { value: string }) {
   const renderItems = useCallback(
     (p: ListChildComponentProps) => (
       // eslint-disable-next-line react/jsx-props-no-spreading
-      <InfiniteListItems {...p}>{SetItem}</InfiniteListItems>
+      <InfiniteListItems {...p}>{HashItem}</InfiniteListItems>
     ),
     [],
   )
-  const { data: scard, revalidate: revalidateScard } = useSWR(
-    connection ? ['scard', connection, props.value] : null,
-    () => runCommand<number>(connection!, ['scard', props.value]),
-  )
-  const scanSize = useScanSize(data)
   const handleReload = useCallback(async () => {
     await revalidate()
     await setSize(1)
-    await revalidateScard()
-  }, [setSize, revalidate, revalidateScard])
-  const selectedKey = useSelector((state) => state.set.selectedKey)
+    await revalidateHlen()
+  }, [setSize, revalidate, revalidateHlen])
+  const scanSize = useScanSize(data)
+  const selectedKey = useSelector((state) => state.hash.selectedKey)
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(actions.set.setSelectedKey(data?.[0]?.keys[0]))
+    dispatch(actions.hash.setSelectedKey(data?.[0]?.keys[0]))
   }, [props.value, dispatch, data])
 
   return (
     <>
       <div style={{ width: 360, display: 'flex', flexDirection: 'column' }}>
-        <SetMatchInput />
+        <HashMatchInput />
         <div style={{ flex: 1 }}>
           <InfiniteList
             items={data}
-            total={scard}
+            total={hlen}
             onLoadMoreItems={handleLoadMoreItems}>
             {renderItems}
           </InfiniteList>
@@ -94,7 +94,7 @@ export function SetPanel(props: { value: string }) {
           <TTLButton style={{ flexBasis: 80 }} value={props.value} />
           <span>
             {formatNumber(scanSize)}&nbsp;of&nbsp;
-            {formatNumber(scard || 0)}
+            {formatNumber(hlen || 0)}
           </span>
           <ReloadButton
             style={{
@@ -113,7 +113,7 @@ export function SetPanel(props: { value: string }) {
             flex: 1,
             marginLeft: 8,
           }}
-          value={selectedKey}
+          value={selectedKey.value}
         />
       ) : null}
     </>

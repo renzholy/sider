@@ -4,11 +4,11 @@ import { useSelector } from 'react-redux'
 import bytes from 'bytes'
 
 import { runCommand } from 'utils/fetcher'
-import { Editor } from '../pure/Editor'
-import { Footer } from '../pure/Footer'
-import { TTLButton } from '../TTLButton'
-import { ReloadButton } from '../pure/ReloadButton'
-import { HyperLogLog } from './HyperLogLog'
+import { Editor } from '../pure/editor0'
+import { Footer } from '../pure/footer0'
+import { TTLButton } from '../ttl-button'
+import { ReloadButton } from '../pure/reload-button'
+import { HyperLogLog } from './hyper-log-log'
 
 export function StringPanel(props: { value: string }) {
   const connection = useSelector((state) => state.root.connection)

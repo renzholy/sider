@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { isEqual } from 'lodash'
 
 import { actions } from 'stores'
-import { InfiniteListItem } from '../pure/InfiniteListItem'
+import { InfiniteListItem } from '../pure/infinite-list-item'
 
 export function SetItem(props: { value: string }) {
   const selectedKey = useSelector((state) => state.set.selectedKey)

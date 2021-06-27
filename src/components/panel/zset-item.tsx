@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { isEqual } from 'lodash'
 
 import { actions } from 'stores'
-import { InfiniteListItem } from '../pure/InfiniteListItem'
+import { InfiniteListItem } from '../pure/infinite-list-item'
 
 export function ZsetItem(props: { value: { key: string; score: number } }) {
   const selectedKey = useSelector((state) => state.zset.selectedKey)

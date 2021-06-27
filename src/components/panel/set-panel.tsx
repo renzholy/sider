@@ -4,29 +4,29 @@ import { useSelector, useDispatch } from 'react-redux'
 import { ListChildComponentProps } from 'react-window'
 
 import { Unpacked } from 'utils'
-import { hscan } from 'utils/scanner'
-import { runCommand } from 'utils/fetcher'
+import { sscan } from 'utils/scanner'
 import { useScanSize } from 'hooks/use-scan-size'
 import { formatNumber } from 'utils/formatter'
+import { runCommand } from 'utils/fetcher'
 import { actions } from 'stores'
-import { HashMatchInput } from './HashMatchInput'
-import { InfiniteList } from '../pure/InfiniteList'
-import { InfiniteListItems } from '../pure/InfiniteListItems'
-import { HashItem } from './HashItem'
-import { Editor } from '../pure/Editor'
-import { Footer } from '../pure/Footer'
-import { ReloadButton } from '../pure/ReloadButton'
-import { TTLButton } from '../TTLButton'
+import { SetMatchInput } from './set-match-input'
+import { InfiniteList } from '../pure/infinite-list'
+import { InfiniteListItems } from '../pure/infinite-list-items'
+import { SetItem } from './set-item'
+import { Footer } from '../pure/footer0'
+import { TTLButton } from '../ttl-button'
+import { ReloadButton } from '../pure/reload-button'
+import { Editor } from '../pure/editor0'
 
-export function HashPanel(props: { value: string }) {
+export function SetPanel(props: { value: string }) {
   const connection = useSelector((state) => state.root.connection)
-  const match = useSelector((state) => state.hash.match)
-  const isPrefix = useSelector((state) => state.hash.isPrefix)
+  const match = useSelector((state) => state.set.match)
+  const isPrefix = useSelector((state) => state.set.isPrefix)
   const handleGetKey = useCallback(
     (
       _index: number,
-      previousPageData: Unpacked<ReturnType<typeof hscan>> | null,
-    ): Parameters<typeof hscan> | null => {
+      previousPageData: Unpacked<ReturnType<typeof sscan>> | null,
+    ): Parameters<typeof sscan> | null => {
       if (previousPageData?.next === '0') {
         return null
       }
@@ -47,14 +47,10 @@ export function HashPanel(props: { value: string }) {
   )
   const { data, setSize, isValidating, revalidate } = useSWRInfinite(
     handleGetKey,
-    hscan,
+    sscan,
     {
       revalidateOnFocus: false,
     },
-  )
-  const { data: hlen, revalidate: revalidateHlen } = useSWR(
-    connection ? ['hlen', connection, props.value] : null,
-    () => runCommand<number>(connection!, ['hlen', props.value]),
   )
   const handleLoadMoreItems = useCallback(async () => {
     await setSize((_size) => _size + 1)
@@ -62,30 +58,34 @@ export function HashPanel(props: { value: string }) {
   const renderItems = useCallback(
     (p: ListChildComponentProps) => (
       // eslint-disable-next-line react/jsx-props-no-spreading
-      <InfiniteListItems {...p}>{HashItem}</InfiniteListItems>
+      <InfiniteListItems {...p}>{SetItem}</InfiniteListItems>
     ),
     [],
   )
+  const { data: scard, revalidate: revalidateScard } = useSWR(
+    connection ? ['scard', connection, props.value] : null,
+    () => runCommand<number>(connection!, ['scard', props.value]),
+  )
+  const scanSize = useScanSize(data)
   const handleReload = useCallback(async () => {
     await revalidate()
     await setSize(1)
-    await revalidateHlen()
-  }, [setSize, revalidate, revalidateHlen])
-  const scanSize = useScanSize(data)
-  const selectedKey = useSelector((state) => state.hash.selectedKey)
+    await revalidateScard()
+  }, [setSize, revalidate, revalidateScard])
+  const selectedKey = useSelector((state) => state.set.selectedKey)
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(actions.hash.setSelectedKey(data?.[0]?.keys[0]))
+    dispatch(actions.set.setSelectedKey(data?.[0]?.keys[0]))
   }, [props.value, dispatch, data])
 
   return (
     <>
       <div style={{ width: 360, display: 'flex', flexDirection: 'column' }}>
-        <HashMatchInput />
+        <SetMatchInput />
         <div style={{ flex: 1 }}>
           <InfiniteList
             items={data}
-            total={hlen}
+            total={scard}
             onLoadMoreItems={handleLoadMoreItems}>
             {renderItems}
           </InfiniteList>
@@ -94,7 +94,7 @@ export function HashPanel(props: { value: string }) {
           <TTLButton style={{ flexBasis: 80 }} value={props.value} />
           <span>
             {formatNumber(scanSize)}&nbsp;of&nbsp;
-            {formatNumber(hlen || 0)}
+            {formatNumber(scard || 0)}
           </span>
           <ReloadButton
             style={{
@@ -113,7 +113,7 @@ export function HashPanel(props: { value: string }) {
             flex: 1,
             marginLeft: 8,
           }}
-          value={selectedKey.value}
+          value={selectedKey}
         />
       ) : null}
     </>

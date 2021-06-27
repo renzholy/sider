@@ -4,8 +4,8 @@ import { isEqual } from 'lodash'
 
 import { KeyType } from 'types'
 import { actions } from 'stores'
-import { KeyTag } from './KeyTag'
-import { InfiniteListItem } from './pure/InfiniteListItem'
+import { KeyTag } from './key-tag'
+import { InfiniteListItem } from './pure/infinite-list-item'
 
 export function KeyItem(props: { value: { key: string; type: KeyType } }) {
   const selectedKey = useSelector((state) => state.keys.selectedKey)

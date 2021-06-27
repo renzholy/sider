@@ -16,7 +16,7 @@ WORKDIR /src/golang
 COPY go/go.mod go/go.sum ./
 RUN go mod download
 COPY go/. .
-COPY --from=node-builder /src/node/dist ./dist
+COPY --from=node-builder /src/node/out ./out
 RUN go build -tags headless -o sider .
 
 FROM alpine

@@ -13,10 +13,10 @@ import { SetMatchInput } from './set-match-input'
 import { InfiniteList } from '../pure/infinite-list'
 import { InfiniteListItems } from '../pure/infinite-list-items'
 import { SetItem } from './set-item'
-import { Footer } from '../pure/footer0'
+import { Footer } from '../pure/footer'
 import { TTLButton } from '../ttl-button'
 import { ReloadButton } from '../pure/reload-button'
-import { Editor } from '../pure/editor0'
+import { Editor } from '../pure/editor'
 
 export function SetPanel(props: { value: string }) {
   const connection = useSelector((state) => state.root.connection)

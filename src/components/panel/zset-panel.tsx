@@ -15,10 +15,10 @@ import { ZsetMatchInput } from './zset-match-input'
 import { InfiniteList } from '../pure/infinite-list'
 import { InfiniteListItems } from '../pure/infinite-list-items'
 import { ZsetItem } from './zset-item'
-import { Footer } from '../pure/footer0'
+import { Footer } from '../pure/footer'
 import { ReloadButton } from '../pure/reload-button'
 import { TTLButton } from '../ttl-button'
-import { Editor } from '../pure/editor0'
+import { Editor } from '../pure/editor'
 
 export function ZsetPanel(props: { value: string }) {
   const connection = useSelector((state) => state.root.connection)

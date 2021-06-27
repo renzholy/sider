@@ -11,7 +11,7 @@ import { KeyType } from 'types'
 import { InfiniteListItem } from 'components/pure/infinite-list-item'
 import { KeyTag } from 'components/key-tag'
 import { actions } from 'stores'
-import { Footer } from 'components/pure/footer0'
+import { Footer } from 'components/pure/footer'
 import { formatNumber } from 'utils/formatter'
 import { useRouter } from 'next/router'
 

@@ -15,17 +15,19 @@ export function useIsDarkMode(): boolean {
         setIsDarkMode(false)
       }
     }
-    window.matchMedia('(prefers-color-scheme: dark)').addListener(darkListener)
+    window
+      .matchMedia('(prefers-color-scheme: dark)')
+      .addEventListener('change', darkListener)
     window
       .matchMedia('(prefers-color-scheme: light)')
-      .addListener(lightListener)
+      .addEventListener('change', lightListener)
     return () => {
       window
         .matchMedia('(prefers-color-scheme: dark)')
-        .removeListener(darkListener)
+        .removeEventListener('change', darkListener)
       window
         .matchMedia('(prefers-color-scheme: light)')
-        .removeListener(lightListener)
+        .removeEventListener('change', lightListener)
     }
   }, [])
   return isDarkMode

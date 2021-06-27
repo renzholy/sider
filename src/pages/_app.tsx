@@ -6,6 +6,7 @@ import 'normalize.css'
 import '@blueprintjs/core/lib/css/blueprint.css'
 import '@blueprintjs/icons/lib/css/blueprint-icons.css'
 import './global.css'
+import Layout from 'components/layout'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -18,8 +19,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <title>Sider</title>
       </Head>
       <Provider store={store}>
-        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-        <Component {...pageProps} />
+        <Layout>
+          {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+          <Component {...pageProps} />
+        </Layout>
       </Provider>
     </>
   )

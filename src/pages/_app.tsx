@@ -19,9 +19,10 @@ injectGlobal`
 
 html,
 body {
+  margin: 0;
   height: 100vh;
   width: 100vw;
-  min-width: 1200px;
+  min-width: 900px;
   font-family: 'Consolas', 'Lucida Console', monospace;
 }
 

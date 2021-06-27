@@ -3,10 +3,9 @@ import useSWR from 'swr'
 import { useSelector } from 'react-redux'
 import { Colors, H4 } from '@blueprintjs/core'
 import { sortBy } from 'lodash'
-
+import { css } from '@emotion/css'
 import { runCommand } from 'utils/fetcher'
 import { useIsDarkMode } from 'hooks/use-is-dark-mode'
-// import styles from './info.module.css' // TODO: use emotion
 
 export default function Info() {
   const connection = useSelector((state) => state.root.connection)
@@ -63,8 +62,21 @@ export default function Info() {
                 typeof line === 'string' ? null : (
                   <p
                     key={line[0]}
-                    // className={styles.item}
-                  >
+                    className={css`
+                      border-radius: 4px;
+                      margin: 0;
+                      padding: 4px;
+                      @media (prefers-color-scheme: light) {
+                        &:hover {
+                          background-color: #ebf1f5;
+                        }
+                      }
+                      @media (prefers-color-scheme: dark) {
+                        &:hover {
+                          background-color: #30404d;
+                        }
+                      }
+                    `}>
                     {line[0]}
                     <span style={{ float: 'right' }}>{line[1]}</span>
                   </p>

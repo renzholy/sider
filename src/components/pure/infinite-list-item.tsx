@@ -3,9 +3,8 @@
 
 import { useCallback } from 'react'
 import { Colors } from '@blueprintjs/core'
-
+import { css } from '@emotion/css'
 import { useIsDarkMode } from 'hooks/use-is-dark-mode'
-// import styles from './InfiniteListItem.less' // TODO: use emotion
 
 export function InfiniteListItem(props: {
   isSelected?: boolean
@@ -25,11 +24,33 @@ export function InfiniteListItem(props: {
 
   return (
     <div
-      // className={styles.listItem}
       style={{
         backgroundColor,
       }}
-      onClick={handleClick}>
+      onClick={handleClick}
+      className={css`
+        height: 36px;
+        padding: 8px;
+        user-select: none;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        border-radius: 4px;
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        @media (prefers-color-scheme: light) {
+          &:hover {
+            background-color: #ebf1f5;
+          }
+        }
+        @media (prefers-color-scheme: dark) {
+          &:hover {
+            background-color: #30404d;
+          }
+        }
+      `}>
       {props.children}
     </div>
   )

@@ -1,5 +1,6 @@
 node_modules/
 dist/
+out/
 go/sider
 go/sider.app
 go/sider-darwin

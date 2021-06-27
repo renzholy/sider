@@ -68,12 +68,12 @@ export default function Info() {
                       padding: 4px;
                       @media (prefers-color-scheme: light) {
                         &:hover {
-                          background-color: #ebf1f5;
+                          background-color: var(--light-gray4);
                         }
                       }
                       @media (prefers-color-scheme: dark) {
                         &:hover {
-                          background-color: #30404d;
+                          background-color: var(--dark-gray4);
                         }
                       }
                     `}>

@@ -17,6 +17,13 @@ injectGlobal`
   outline: none !important;
 }
 
+:root {
+  --dark-gray4: #30404d;
+  --dark-gray5: #394b59;
+  --light-gray4: #ebf1f5;
+  --light-gray5: #f5f8fa;
+}
+
 html,
 body {
   margin: 0;
@@ -28,15 +35,16 @@ body {
 
 @media (prefers-color-scheme: light) {
   body {
-    background-color: #f5f8fa;
+    background-color: var(--light-gray5);
   }
 }
 
 @media (prefers-color-scheme: dark) {
   body {
-    background-color: #394b59;
+    background-color: var(--dark-gray5);
   }
 }
+
 `
 
 export default function MyApp({ Component, pageProps }: AppProps) {

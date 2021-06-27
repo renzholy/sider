@@ -27,7 +27,9 @@ export function TTLButton(props: { style?: CSSProperties; value: string }) {
       <Tooltip
         onOpened={handleOpened}
         onClosed={handleClosed}
-        boundary={window.document.body}
+        boundary={
+          typeof window === 'undefined' ? undefined : window.document.body
+        }
         content={
           !data || data < 0
             ? 'Persisted'

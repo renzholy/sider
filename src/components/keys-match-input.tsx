@@ -28,7 +28,9 @@ export function KeysMatchInput() {
       rightElement={
         <Tooltip
           content={`Prefix match: ${isPrefix ? 'ON' : 'OFF'}`}
-          boundary={window.document.body}>
+          boundary={
+            typeof window === 'undefined' ? undefined : window.document.body
+          }>
           <Button
             icon="asterisk"
             minimal={true}

@@ -34,7 +34,9 @@ export function ConnectionSelector() {
 
   return (
     <Popover
-      boundary={window.document.body}
+      boundary={
+        typeof window === 'undefined' ? undefined : window.document.body
+      }
       hasBackdrop={true}
       content={
         <div style={{ display: 'flex', padding: 4 }}>

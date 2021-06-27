@@ -25,7 +25,9 @@ export function HashMatchInput() {
       }}
       rightElement={
         <Tooltip
-          boundary={window.document.body}
+          boundary={
+            typeof window === 'undefined' ? undefined : window.document.body
+          }
           content={`Prefix match: ${isPrefix ? 'ON' : 'OFF'}`}>
           <Button
             icon="asterisk"

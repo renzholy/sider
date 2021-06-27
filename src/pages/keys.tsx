@@ -2,8 +2,13 @@ import { useCallback, useEffect } from 'react'
 import useSWR, { useSWRInfinite } from 'swr'
 import { useSelector } from 'react-redux'
 import { ListChildComponentProps } from 'react-window'
-import { Intent, Button, Tooltip } from '@blueprintjs/core'
-
+import {
+  Intent,
+  Button,
+  Tooltip,
+  Position,
+  OverlayToaster,
+} from '@blueprintjs/core'
 import { runCommand } from 'utils/fetcher'
 import { scan } from 'utils/scanner'
 import { Unpacked } from 'utils/index'
@@ -16,7 +21,6 @@ import { KeyItem } from 'components/key-item'
 import { Footer } from 'components/pure/footer'
 import { ReloadButton } from 'components/pure/reload-button'
 import { useScanSize } from 'hooks/use-scan-size'
-import { Toaster } from 'utils/toaster'
 
 export default function Keys() {
   const connection = useSelector((state) => state.root.connection)
@@ -75,7 +79,9 @@ export default function Keys() {
   )
   useEffect(() => {
     if (error) {
-      Toaster.show({ message: error.message, intent: Intent.DANGER })
+      OverlayToaster.create({
+        position: Position.TOP,
+      }).show({ message: error.message, intent: Intent.DANGER })
     }
   }, [error])
 

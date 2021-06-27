@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react'
 
 export function useIsDarkMode(): boolean {
   const [isDarkMode, setIsDarkMode] = useState(
-    window.matchMedia('(prefers-color-scheme: dark)').matches,
+    typeof window === 'undefined'
+      ? false
+      : window.matchMedia('(prefers-color-scheme: dark)').matches,
   )
   useEffect(() => {
     function darkListener(e: MediaQueryListEvent) {

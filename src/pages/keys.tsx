@@ -2,23 +2,27 @@ import { useCallback, useEffect } from 'react'
 import useSWR, { useSWRInfinite } from 'swr'
 import { useSelector } from 'react-redux'
 import { ListChildComponentProps } from 'react-window'
-import { Intent, Button, Tooltip } from '@blueprintjs/core'
+import {
+  Intent,
+  Button,
+  Tooltip,
+  Position,
+  OverlayToaster,
+} from '@blueprintjs/core'
+import { runCommand } from 'utils/fetcher'
+import { scan } from 'utils/scanner'
+import { Unpacked } from 'utils/index'
+import { formatNumber } from 'utils/formatter'
+import { KeysMatchInput } from 'components/keys-match-input'
+import { Panel } from 'components/panel/panel'
+import { InfiniteList } from 'components/pure/infinite-list'
+import { InfiniteListItems } from 'components/pure/infinite-list-items'
+import { KeyItem } from 'components/key-item'
+import { Footer } from 'components/pure/footer'
+import { ReloadButton } from 'components/pure/reload-button'
+import { useScanSize } from 'hooks/use-scan-size'
 
-import { runCommand } from '@/utils/fetcher'
-import { scan } from '@/utils/scanner'
-import { Unpacked } from '@/utils/index'
-import { formatNumber } from '@/utils/formatter'
-import { KeysMatchInput } from '@/components/KeysMatchInput'
-import { Panel } from '@/components/panel/Panel'
-import { InfiniteList } from '@/components/pure/InfiniteList'
-import { InfiniteListItems } from '@/components/pure/InfiniteListItems'
-import { KeyItem } from '@/components/KeyItem'
-import { Footer } from '@/components/pure/Footer'
-import { ReloadButton } from '@/components/pure/ReloadButton'
-import { useScanSize } from '@/hooks/use-scan-size'
-import { Toaster } from '@/utils/toaster'
-
-export default () => {
+export default function Keys() {
   const connection = useSelector((state) => state.root.connection)
   const match = useSelector((state) => state.keys.match)
   const keyType = useSelector((state) => state.keys.keyType)
@@ -75,7 +79,9 @@ export default () => {
   )
   useEffect(() => {
     if (error) {
-      Toaster.show({ message: error.message, intent: Intent.DANGER })
+      OverlayToaster.create({
+        position: Position.TOP,
+      }).show({ message: error.message, intent: Intent.DANGER })
     }
   }, [error])
 

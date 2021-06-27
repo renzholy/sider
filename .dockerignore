@@ -2,7 +2,6 @@
 node_modules/
 dist/
 screenshot/
-src/.umi/
 npm-debug.log
 go/sider
 go/sider.app

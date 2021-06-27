@@ -3,12 +3,11 @@ import useSWR from 'swr'
 import { useSelector } from 'react-redux'
 import { Colors, H4 } from '@blueprintjs/core'
 import { sortBy } from 'lodash'
+import { css } from '@emotion/css'
+import { runCommand } from 'utils/fetcher'
+import { useIsDarkMode } from 'hooks/use-is-dark-mode'
 
-import { runCommand } from '@/utils/fetcher'
-import { useIsDarkMode } from '@/hooks/use-is-dark-mode'
-import styles from './info.less'
-
-export default () => {
+export default function Info() {
   const connection = useSelector((state) => state.root.connection)
   const { data } = useSWR(['info', connection], () =>
     runCommand<string>(connection!, ['info']),
@@ -61,7 +60,23 @@ export default () => {
               <H4>{section[0]}</H4>
               {section.map((line) =>
                 typeof line === 'string' ? null : (
-                  <p key={line[0]} className={styles.item}>
+                  <p
+                    key={line[0]}
+                    className={css`
+                      border-radius: 4px;
+                      margin: 0;
+                      padding: 4px;
+                      @media (prefers-color-scheme: light) {
+                        &:hover {
+                          background-color: #ebf1f5;
+                        }
+                      }
+                      @media (prefers-color-scheme: dark) {
+                        &:hover {
+                          background-color: #30404d;
+                        }
+                      }
+                    `}>
                     {line[0]}
                     <span style={{ float: 'right' }}>{line[1]}</span>
                   </p>

@@ -4,18 +4,31 @@
     "module": "CommonJS",
     "moduleResolution": "Node",
     "importHelpers": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "esModuleInterop": true,
     "sourceMap": true,
-    "baseUrl": "./",
+    "baseUrl": "src",
     "alwaysStrict": true,
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
-    "paths": {
-      "@/*": ["src/*"],
-      "@@/*": ["src/.umi/*"]
-    }
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true
   },
-  "include": ["mock/**/*", "src/**/*", "config/**/*"]
+  "include": [
+    "mock/**/*",
+    "src/**/*",
+    "config/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

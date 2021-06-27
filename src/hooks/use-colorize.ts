@@ -1,20 +1,19 @@
-import useAsyncEffect from 'use-async-effect'
-import { useState } from 'react'
-
-import { colorize } from '@/utils/editor'
-import { useIsDarkMode } from '@/hooks/use-is-dark-mode'
+import { useEffect } from 'react'
+import { useIsDarkMode } from 'hooks/use-is-dark-mode'
+import { useMonaco } from '@monaco-editor/react'
+import useSWR from 'swr'
 
 export function useColorize(str: string) {
-  const [html, setHtml] = useState(str)
   const isDarkMode = useIsDarkMode()
-  useAsyncEffect(
-    async (isMounted) => {
-      const _html = await colorize(str, isDarkMode)
-      if (isMounted()) {
-        setHtml(_html)
-      }
-    },
-    [str, isDarkMode],
+  const monaco = useMonaco()
+  useEffect(() => {
+    if (!monaco) {
+      return
+    }
+    monaco.editor.setTheme(isDarkMode ? 'vs-dark' : 'vs')
+  }, [isDarkMode, monaco])
+  const { data } = useSWR(monaco ? ['colorize', monaco, str] : null, () =>
+    monaco!.editor.colorize(str, 'javascript'),
   )
-  return html
+  return data || str
 }

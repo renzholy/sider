@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { KeyType } from '@/types'
+import { KeyType } from 'types'
 
 export default createSlice({
   name: 'keys',

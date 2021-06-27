@@ -1,9 +1,8 @@
 import { useCallback, CSSProperties } from 'react'
 import { InputGroup, Colors } from '@blueprintjs/core'
+import useIsDarkMode from 'hooks/use-is-dark-mode'
 
-import { useIsDarkMode } from 'hooks/use-is-dark-mode'
-
-export function MatchInput(props: {
+export default function MatchInput(props: {
   leftElement?: JSX.Element
   rightElement?: JSX.Element
   style?: CSSProperties

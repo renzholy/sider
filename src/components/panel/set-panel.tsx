@@ -2,23 +2,22 @@ import { useCallback, useEffect } from 'react'
 import useSWR, { useSWRInfinite } from 'swr'
 import { useSelector, useDispatch } from 'react-redux'
 import { ListChildComponentProps } from 'react-window'
-
 import { Unpacked } from 'utils'
 import { sscan } from 'utils/scanner'
-import { useScanSize } from 'hooks/use-scan-size'
+import useScanSize from 'hooks/use-scan-size'
 import { formatNumber } from 'utils/formatter'
 import { runCommand } from 'utils/fetcher'
 import { actions } from 'stores'
-import { SetMatchInput } from './set-match-input'
-import { InfiniteList } from '../pure/infinite-list'
-import { InfiniteListItems } from '../pure/infinite-list-items'
-import { SetItem } from './set-item'
-import { Footer } from '../pure/footer'
-import { TTLButton } from '../ttl-button'
-import { ReloadButton } from '../pure/reload-button'
-import { Editor } from '../pure/editor'
+import SetMatchInput from './set-match-input'
+import InfiniteList from '../pure/infinite-list'
+import InfiniteListItems from '../pure/infinite-list-items'
+import SetItem from './set-item'
+import Footer from '../pure/footer'
+import TTLButton from '../ttl-button'
+import ReloadButton from '../pure/reload-button'
+import Editor from '../pure/editor'
 
-export function SetPanel(props: { value: string }) {
+export default function SetPanel(props: { value: string }) {
   const connection = useSelector((state) => state.root.connection)
   const match = useSelector((state) => state.set.match)
   const isPrefix = useSelector((state) => state.set.isPrefix)

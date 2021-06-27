@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
-import { useIsDarkMode } from 'hooks/use-is-dark-mode'
+import useIsDarkMode from 'hooks/use-is-dark-mode'
 import { useMonaco } from '@monaco-editor/react'
 import useSWR from 'swr'
 
-export function useColorize(str: string) {
+export default function useColorize(str: string) {
   const isDarkMode = useIsDarkMode()
   const monaco = useMonaco()
   useEffect(() => {

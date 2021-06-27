@@ -4,9 +4,9 @@
 import { useCallback } from 'react'
 import { Colors } from '@blueprintjs/core'
 import { css } from '@emotion/css'
-import { useIsDarkMode } from 'hooks/use-is-dark-mode'
+import useIsDarkMode from 'hooks/use-is-dark-mode'
 
-export function InfiniteListItem(props: {
+export default function InfiniteListItem(props: {
   isSelected?: boolean
   onSelect?(isSelected: boolean): void
   children: React.ReactNode

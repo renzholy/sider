@@ -1,12 +1,11 @@
 import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Tooltip } from '@blueprintjs/core'
-
 import { actions } from 'stores'
-import { KeyTypeSelector } from './key-type-selector'
-import { MatchInput } from './pure/match-input'
+import KeyTypeSelector from './key-type-selector'
+import MatchInput from './pure/match-input'
 
-export function KeysMatchInput() {
+export default function KeysMatchInput() {
   const match = useSelector((state) => state.keys.match)
   const isPrefix = useSelector((state) => state.keys.isPrefix)
   const dispatch = useDispatch()

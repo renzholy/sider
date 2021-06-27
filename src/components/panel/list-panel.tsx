@@ -2,22 +2,21 @@ import { useCallback, useEffect } from 'react'
 import useSWR, { useSWRInfinite } from 'swr'
 import { useSelector, useDispatch } from 'react-redux'
 import { ListChildComponentProps } from 'react-window'
-
 import { Unpacked } from 'utils'
 import { lrange } from 'utils/scanner'
 import { formatNumber } from 'utils/formatter'
-import { useScanSize } from 'hooks/use-scan-size'
+import useScanSize from 'hooks/use-scan-size'
 import { runCommand } from 'utils/fetcher'
 import { actions } from 'stores'
-import { InfiniteList } from '../pure/infinite-list'
-import { InfiniteListItems } from '../pure/infinite-list-items'
-import { ListItem } from './list-item'
-import { Footer } from '../pure/footer'
-import { TTLButton } from '../ttl-button'
-import { ReloadButton } from '../pure/reload-button'
-import { Editor } from '../pure/editor'
+import InfiniteList from '../pure/infinite-list'
+import InfiniteListItems from '../pure/infinite-list-items'
+import ListItem from './list-item'
+import Footer from '../pure/footer'
+import TTLButton from '../ttl-button'
+import ReloadButton from '../pure/reload-button'
+import Editor from '../pure/editor'
 
-export function ListPanel(props: { value: string }) {
+export default function ListPanel(props: { value: string }) {
   const connection = useSelector((state) => state.root.connection)
   const handleGetKey = useCallback(
     (

@@ -10,12 +10,11 @@ import {
 import useSWR from 'swr'
 import { useDispatch, useSelector } from 'react-redux'
 import { range, isEqual } from 'lodash'
-
 import { listConnections } from 'utils/fetcher'
 import { actions } from 'stores'
-import { DatabaseButton } from './database-button'
+import DatabaseButton from './database-button'
 
-export function ConnectionSelector() {
+export default function ConnectionSelector() {
   const { data } = useSWR('connections', () => listConnections())
   const dispatch = useDispatch()
   const connection = useSelector((state) => state.root.connection)

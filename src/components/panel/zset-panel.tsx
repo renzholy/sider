@@ -3,24 +3,23 @@ import useSWR, { useSWRInfinite } from 'swr'
 import { useSelector, useDispatch } from 'react-redux'
 import { ListChildComponentProps } from 'react-window'
 import { Colors } from '@blueprintjs/core'
-
 import { Unpacked } from 'utils'
 import { zscan } from 'utils/scanner'
 import { formatNumber } from 'utils/formatter'
 import { runCommand } from 'utils/fetcher'
-import { useScanSize } from 'hooks/use-scan-size'
+import useScanSize from 'hooks/use-scan-size'
 import { actions } from 'stores'
-import { useIsDarkMode } from 'hooks/use-is-dark-mode'
-import { ZsetMatchInput } from './zset-match-input'
-import { InfiniteList } from '../pure/infinite-list'
-import { InfiniteListItems } from '../pure/infinite-list-items'
-import { ZsetItem } from './zset-item'
-import { Footer } from '../pure/footer'
-import { ReloadButton } from '../pure/reload-button'
-import { TTLButton } from '../ttl-button'
-import { Editor } from '../pure/editor'
+import useIsDarkMode from 'hooks/use-is-dark-mode'
+import ZsetMatchInput from './zset-match-input'
+import InfiniteList from '../pure/infinite-list'
+import InfiniteListItems from '../pure/infinite-list-items'
+import ZsetItem from './zset-item'
+import Footer from '../pure/footer'
+import ReloadButton from '../pure/reload-button'
+import TTLButton from '../ttl-button'
+import Editor from '../pure/editor'
 
-export function ZsetPanel(props: { value: string }) {
+export default function ZsetPanel(props: { value: string }) {
   const connection = useSelector((state) => state.root.connection)
   const match = useSelector((state) => state.zset.match)
   const isPrefix = useSelector((state) => state.zset.isPrefix)

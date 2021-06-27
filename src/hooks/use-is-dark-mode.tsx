@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-export function useIsDarkMode(): boolean {
+export default function useIsDarkMode(): boolean {
   const [isDarkMode, setIsDarkMode] = useState(false)
   useEffect(() => {
     function darkListener(e: MediaQueryListEvent) {

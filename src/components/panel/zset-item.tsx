@@ -1,11 +1,12 @@
 import { useCallback, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { isEqual } from 'lodash'
-
 import { actions } from 'stores'
-import { InfiniteListItem } from '../pure/infinite-list-item'
+import InfiniteListItem from '../pure/infinite-list-item'
 
-export function ZsetItem(props: { value: { key: string; score: number } }) {
+export default function ZsetItem(props: {
+  value: { key: string; score: number }
+}) {
   const selectedKey = useSelector((state) => state.zset.selectedKey)
   const match = useSelector((state) => state.zset.match)
   const isPrefix = useSelector((state) => state.zset.isPrefix)

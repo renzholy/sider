@@ -1,11 +1,10 @@
 import { useCallback, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { isEqual } from 'lodash'
-
 import { actions } from 'stores'
-import { InfiniteListItem } from '../pure/infinite-list-item'
+import InfiniteListItem from '../pure/infinite-list-item'
 
-export function SetItem(props: { value: string }) {
+export default function SetItem(props: { value: string }) {
   const selectedKey = useSelector((state) => state.set.selectedKey)
   const match = useSelector((state) => state.set.match)
   const isPrefix = useSelector((state) => state.set.isPrefix)

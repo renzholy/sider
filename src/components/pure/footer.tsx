@@ -1,8 +1,7 @@
 import { Colors } from '@blueprintjs/core'
+import useIsDarkMode from 'hooks/use-is-dark-mode'
 
-import { useIsDarkMode } from 'hooks/use-is-dark-mode'
-
-export function Footer(props: { children: React.ReactNode }) {
+export default function Footer(props: { children: React.ReactNode }) {
   const isDarkMode = useIsDarkMode()
 
   return (

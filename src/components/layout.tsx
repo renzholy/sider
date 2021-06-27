@@ -1,6 +1,6 @@
 import { Classes, Colors, Button, Tooltip } from '@blueprintjs/core'
-import { useIsDarkMode } from 'hooks/use-is-dark-mode'
-import { ConnectionSelector } from 'components/connection-selector'
+import useIsDarkMode from 'hooks/use-is-dark-mode'
+import ConnectionSelector from 'components/connection-selector'
 import { useRouter } from 'next/router'
 
 export default function Layout(props: { children: React.ReactNode }) {

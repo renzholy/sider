@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { flatMap } from 'lodash'
 
-export function useScanSize(
+export default function useScanSize(
   data?: {
     next: string
     keys: unknown[]

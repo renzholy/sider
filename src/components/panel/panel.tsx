@@ -1,16 +1,15 @@
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Colors } from '@blueprintjs/core'
-
 import { KeyType } from 'types'
 import { actions } from 'stores'
-import { useIsDarkMode } from 'hooks/use-is-dark-mode'
-import { KeyTag } from '../key-tag'
-import { SetPanel } from './set-panel'
-import { StringPanel } from './string-panel'
-import { HashPanel } from './hash-panel'
-import { ZsetPanel } from './zset-panel'
-import { ListPanel } from './list-panel'
+import useIsDarkMode from 'hooks/use-is-dark-mode'
+import KeyTag from '../key-tag'
+import SetPanel from './set-panel'
+import StringPanel from './string-panel'
+import HashPanel from './hash-panel'
+import ZsetPanel from './zset-panel'
+import ListPanel from './list-panel'
 
 function PanelInner(props: { value: { type: KeyType; key: string } }) {
   switch (props.value.type) {
@@ -35,7 +34,7 @@ function PanelInner(props: { value: { type: KeyType; key: string } }) {
   }
 }
 
-export function Panel() {
+export default function Panel() {
   const selectedKey = useSelector((state) => state.keys.selectedKey)
   const dispatch = useDispatch()
   useEffect(() => {

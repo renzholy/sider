@@ -1,12 +1,11 @@
 import { Button, Menu, MenuItem, Popover } from '@blueprintjs/core'
 import { useSelector, useDispatch } from 'react-redux'
 import { startCase } from 'lodash'
-
 import { KeyType } from 'types'
 import { actions } from 'stores'
-import { KeyTag } from './key-tag'
+import KeyTag from './key-tag'
 
-export function KeyTypeSelector() {
+export default function KeyTypeSelector() {
   const keyType = useSelector((state) => state.keys.keyType)
   const dispatch = useDispatch()
 

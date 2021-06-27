@@ -1,11 +1,10 @@
 import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Tooltip } from '@blueprintjs/core'
-
 import { actions } from 'stores'
-import { MatchInput } from '../pure/match-input'
+import MatchInput from '../pure/match-input'
 
-export function SetMatchInput() {
+export default function SetMatchInput() {
   const match = useSelector((state) => state.set.match)
   const isPrefix = useSelector((state) => state.set.isPrefix)
   const dispatch = useDispatch()

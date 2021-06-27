@@ -30,7 +30,7 @@ const minimalMap = {
   [KeyType.NONE]: true,
 }
 
-export function KeyTag(props: {
+export default function KeyTag(props: {
   large?: boolean
   type: KeyType
   style?: CSSProperties

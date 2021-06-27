@@ -12,23 +12,13 @@
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "resolveJsonModule": true,
     "isolatedModules": true
   },
-  "include": [
-    "mock/**/*",
-    "src/**/*",
-    "config/**/*"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["mock/**/*", "src/**/*", "config/**/*"],
+  "exclude": ["node_modules"]
 }

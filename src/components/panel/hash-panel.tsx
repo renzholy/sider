@@ -2,23 +2,22 @@ import { useCallback, useEffect } from 'react'
 import useSWR, { useSWRInfinite } from 'swr'
 import { useSelector, useDispatch } from 'react-redux'
 import { ListChildComponentProps } from 'react-window'
-
 import { Unpacked } from 'utils'
 import { hscan } from 'utils/scanner'
 import { runCommand } from 'utils/fetcher'
-import { useScanSize } from 'hooks/use-scan-size'
+import useScanSize from 'hooks/use-scan-size'
 import { formatNumber } from 'utils/formatter'
 import { actions } from 'stores'
-import { HashMatchInput } from './hash-match-input'
-import { InfiniteList } from '../pure/infinite-list'
-import { InfiniteListItems } from '../pure/infinite-list-items'
-import { HashItem } from './hash-item'
-import { Editor } from '../pure/editor'
-import { Footer } from '../pure/footer'
-import { ReloadButton } from '../pure/reload-button'
-import { TTLButton } from '../ttl-button'
+import HashMatchInput from './hash-match-input'
+import InfiniteList from '../pure/infinite-list'
+import InfiniteListItems from '../pure/infinite-list-items'
+import HashItem from './hash-item'
+import Editor from '../pure/editor'
+import Footer from '../pure/footer'
+import ReloadButton from '../pure/reload-button'
+import TTLButton from '../ttl-button'
 
-export function HashPanel(props: { value: string }) {
+export default function HashPanel(props: { value: string }) {
   const connection = useSelector((state) => state.root.connection)
   const match = useSelector((state) => state.hash.match)
   const isPrefix = useSelector((state) => state.hash.isPrefix)

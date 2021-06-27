@@ -1,11 +1,10 @@
 import { useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { isEqual } from 'lodash'
-
 import { actions } from 'stores'
-import { InfiniteListItem } from '../pure/infinite-list-item'
+import InfiniteListItem from '../pure/infinite-list-item'
 
-export function ListItem(props: { value: string }) {
+export default function ListItem(props: { value: string }) {
   const selectedKey = useSelector((state) => state.list.selectedKey)
   const dispatch = useDispatch()
   const item = props.value

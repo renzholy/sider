@@ -1,11 +1,10 @@
 import { Intent, Button, Classes, Tooltip } from '@blueprintjs/core'
 import useSWR from 'swr'
 import { useSelector } from 'react-redux'
-
 import { formatNumber } from 'utils/formatter'
 import { runCommand } from 'utils/fetcher'
 
-export function DatabaseButton(props: {
+export default function DatabaseButton(props: {
   db: number
   intent: Intent
   active: boolean

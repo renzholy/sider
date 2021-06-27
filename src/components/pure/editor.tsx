@@ -3,8 +3,8 @@
 import { CSSProperties, useState, useEffect } from 'react'
 import { Colors } from '@blueprintjs/core'
 
-import { useIsDarkMode } from 'hooks/use-is-dark-mode'
-import { useColorize } from 'hooks/use-colorize'
+import useIsDarkMode from 'hooks/use-is-dark-mode'
+import useColorize from 'hooks/use-colorize'
 
 enum ValueType {
   STRING = 'String',
@@ -23,7 +23,10 @@ function isJSONObjectOrArray(value: string): boolean {
   }
 }
 
-export function Editor(props: { style?: CSSProperties; value?: string }) {
+export default function Editor(props: {
+  style?: CSSProperties
+  value?: string
+}) {
   const [str, setStr] = useState('')
   const [valueType, setValueType] = useState(ValueType.STRING)
   useEffect(() => {

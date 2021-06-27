@@ -3,11 +3,13 @@ import { Button, Tooltip } from '@blueprintjs/core'
 import useSWR from 'swr'
 import { useSelector } from 'react-redux'
 import ms from 'ms'
-
 import { runCommand } from 'utils/fetcher'
 import { formatNumber } from 'utils/formatter'
 
-export function TTLButton(props: { style?: CSSProperties; value: string }) {
+export default function TTLButton(props: {
+  style?: CSSProperties
+  value: string
+}) {
   const connection = useSelector((state) => state.root.connection)
   const [refreshInterval, setRefreshInterval] = useState(0)
   const { data } = useSWR(

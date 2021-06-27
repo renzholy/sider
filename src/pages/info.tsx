@@ -5,7 +5,7 @@ import { Colors, H4 } from '@blueprintjs/core'
 import { sortBy } from 'lodash'
 import { css } from '@emotion/css'
 import { runCommand } from 'utils/fetcher'
-import { useIsDarkMode } from 'hooks/use-is-dark-mode'
+import useIsDarkMode from 'hooks/use-is-dark-mode'
 
 export default function Info() {
   const connection = useSelector((state) => state.root.connection)

@@ -2,15 +2,14 @@ import { useCallback } from 'react'
 import useSWR from 'swr'
 import { useSelector } from 'react-redux'
 import bytes from 'bytes'
-
 import { runCommand } from 'utils/fetcher'
-import { Editor } from '../pure/editor'
-import { Footer } from '../pure/footer'
-import { TTLButton } from '../ttl-button'
-import { ReloadButton } from '../pure/reload-button'
-import { HyperLogLog } from './hyper-log-log'
+import Editor from '../pure/editor'
+import Footer from '../pure/footer'
+import TTLButton from '../ttl-button'
+import ReloadButton from '../pure/reload-button'
+import HyperLogLog from './hyper-log-log'
 
-export function StringPanel(props: { value: string }) {
+export default function StringPanel(props: { value: string }) {
   const connection = useSelector((state) => state.root.connection)
   const { data, revalidate, isValidating } = useSWR(
     connection ? ['get', connection, props.value] : null,

@@ -1,11 +1,10 @@
 import { Colors, Tag } from '@blueprintjs/core'
 import useSWR from 'swr'
 import { useSelector } from 'react-redux'
-
-import { useIsDarkMode } from 'hooks/use-is-dark-mode'
+import useIsDarkMode from 'hooks/use-is-dark-mode'
 import { runCommand } from 'utils/fetcher'
 
-export function HyperLogLog(props: { value: string }) {
+export default function HyperLogLog(props: { value: string }) {
   const connection = useSelector((state) => state.root.connection)
   const { data: pfCount } = useSWR(
     connection ? ['pfcount', connection, props.value] : null,

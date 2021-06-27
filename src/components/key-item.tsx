@@ -1,13 +1,14 @@
 import { useCallback, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { isEqual } from 'lodash'
-
 import { KeyType } from 'types'
 import { actions } from 'stores'
-import { KeyTag } from './key-tag'
-import { InfiniteListItem } from './pure/infinite-list-item'
+import KeyTag from './key-tag'
+import InfiniteListItem from './pure/infinite-list-item'
 
-export function KeyItem(props: { value: { key: string; type: KeyType } }) {
+export default function KeyItem(props: {
+  value: { key: string; type: KeyType }
+}) {
   const selectedKey = useSelector((state) => state.keys.selectedKey)
   const match = useSelector((state) => state.keys.match)
   const isPrefix = useSelector((state) => state.keys.isPrefix)

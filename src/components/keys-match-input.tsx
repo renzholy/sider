@@ -1,9 +1,10 @@
 import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Tooltip } from '@blueprintjs/core'
+import { Button } from '@blueprintjs/core'
 import { actions } from 'stores'
 import KeyTypeSelector from './key-type-selector'
 import MatchInput from './pure/match-input'
+import { Tooltip2 } from '@blueprintjs/popover2'
 
 export default function KeysMatchInput() {
   const match = useSelector((state) => state.keys.match)
@@ -25,11 +26,12 @@ export default function KeysMatchInput() {
       }}
       leftElement={<KeyTypeSelector />}
       rightElement={
-        <Tooltip
+        <Tooltip2
           content={`Prefix match: ${isPrefix ? 'ON' : 'OFF'}`}
           boundary={
             typeof window === 'undefined' ? undefined : window.document.body
-          }>
+          }
+        >
           <Button
             icon="asterisk"
             minimal={true}
@@ -38,7 +40,7 @@ export default function KeysMatchInput() {
               dispatch(actions.keys.setIsPrefix(!isPrefix))
             }}
           />
-        </Tooltip>
+        </Tooltip2>
       }
     />
   )

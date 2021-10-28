@@ -31,12 +31,14 @@ export default function ZsetItem(props: {
   return (
     <InfiniteListItem
       isSelected={isEqual(selectedKey, item)}
-      onSelect={handleSelect}>
+      onSelect={handleSelect}
+    >
       <div
         style={{
           display: 'flex',
           justifyContent: 'space-between',
-        }}>
+        }}
+      >
         <span
           title={item.key}
           style={{
@@ -44,13 +46,15 @@ export default function ZsetItem(props: {
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
-          }}>
+          }}
+        >
           {item.key !== str ? <span style={{ opacity: 0.5 }}>…</span> : null}
           {str}
         </span>
         <span
           title={item.score.toString()}
-          style={{ flexShrink: 0, marginLeft: 8 }}>
+          style={{ flexShrink: 0, marginLeft: 8 }}
+        >
           {item.score}
         </span>
       </div>

@@ -1,7 +1,8 @@
-import { Classes, Colors, Button, Tooltip } from '@blueprintjs/core'
+import { Classes, Colors, Button } from '@blueprintjs/core'
 import useIsDarkMode from 'hooks/use-is-dark-mode'
 import ConnectionSelector from 'components/connection-selector'
 import { useRouter } from 'next/router'
+import { Tooltip2 } from '@blueprintjs/popover2'
 
 export default function Layout(props: { children: React.ReactNode }) {
   const isDarkMode = useIsDarkMode()
@@ -14,7 +15,8 @@ export default function Layout(props: { children: React.ReactNode }) {
         height: '100vh',
         overflow: 'hidden',
         display: 'flex',
-      }}>
+      }}
+    >
       <div
         style={{
           width: 50,
@@ -27,9 +29,10 @@ export default function Layout(props: { children: React.ReactNode }) {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-        }}>
+        }}
+      >
         <div>
-          <Tooltip content="Keys" placement="right">
+          <Tooltip2 content="Keys" placement="right">
             <Button
               icon="list-detail-view"
               minimal={true}
@@ -39,8 +42,8 @@ export default function Layout(props: { children: React.ReactNode }) {
                 router.push('/keys')
               }}
             />
-          </Tooltip>
-          <Tooltip content="Big key" placement="right">
+          </Tooltip2>
+          <Tooltip2 content="Big key" placement="right">
             <Button
               icon="heatmap"
               minimal={true}
@@ -50,8 +53,8 @@ export default function Layout(props: { children: React.ReactNode }) {
                 router.push('/big-keys')
               }}
             />
-          </Tooltip>
-          <Tooltip content="Info" placement="right">
+          </Tooltip2>
+          <Tooltip2 content="Info" placement="right">
             <Button
               icon="info-sign"
               minimal={true}
@@ -61,7 +64,7 @@ export default function Layout(props: { children: React.ReactNode }) {
                 router.push('/info')
               }}
             />
-          </Tooltip>
+          </Tooltip2>
         </div>
         <ConnectionSelector />
       </div>

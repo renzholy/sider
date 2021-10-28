@@ -11,18 +11,18 @@ import HyperLogLog from './hyper-log-log'
 
 export default function StringPanel(props: { value: string }) {
   const connection = useSelector((state) => state.root.connection)
-  const { data, revalidate, isValidating } = useSWR(
+  const { data, mutate, isValidating } = useSWR(
     connection ? ['get', connection, props.value] : null,
     () => runCommand<string>(connection!, ['get', props.value]),
   )
-  const { data: strlen, revalidate: revalidateStrlen } = useSWR(
+  const { data: strlen, mutate: mutateStrlen } = useSWR(
     connection ? ['strlen', connection, props.value] : null,
     () => runCommand<number>(connection!, ['strlen', props.value]),
   )
   const handleReload = useCallback(async () => {
-    await revalidate()
-    await revalidateStrlen()
-  }, [revalidate, revalidateStrlen])
+    await mutate()
+    await mutateStrlen()
+  }, [mutate, mutateStrlen])
   const isHyperLogLog = data?.startsWith('HYLL')
 
   return (
@@ -32,7 +32,8 @@ export default function StringPanel(props: { value: string }) {
         display: 'flex',
         flexDirection: 'column',
         width: '100%',
-      }}>
+      }}
+    >
       {isHyperLogLog ? (
         <HyperLogLog value={props.value} />
       ) : (

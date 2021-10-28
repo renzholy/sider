@@ -16,7 +16,8 @@ export default function Footer(props: { children: React.ReactNode }) {
         borderRadius: 4,
         padding: 5,
         userSelect: 'none',
-      }}>
+      }}
+    >
       {props.children}
     </div>
   )

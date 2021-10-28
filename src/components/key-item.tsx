@@ -33,7 +33,8 @@ export default function KeyItem(props: {
   return (
     <InfiniteListItem
       isSelected={isEqual(selectedKey, item)}
-      onSelect={handleSelect}>
+      onSelect={handleSelect}
+    >
       <KeyTag type={item.type} />
       &nbsp;
       <span title={item.key}>

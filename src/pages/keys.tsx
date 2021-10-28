@@ -1,14 +1,9 @@
 import { useCallback, useEffect } from 'react'
-import useSWR, { useSWRInfinite } from 'swr'
+import useSWR from 'swr'
+import useSWRInfinite from 'swr/infinite'
 import { useSelector } from 'react-redux'
 import { ListChildComponentProps } from 'react-window'
-import {
-  Intent,
-  Button,
-  Tooltip,
-  Position,
-  OverlayToaster,
-} from '@blueprintjs/core'
+import { Intent, Button, Position, OverlayToaster } from '@blueprintjs/core'
 import { runCommand } from 'utils/fetcher'
 import { scan } from 'utils/scanner'
 import { Unpacked } from 'utils/index'
@@ -21,6 +16,7 @@ import KeyItem from 'components/key-item'
 import Footer from 'components/pure/footer'
 import ReloadButton from 'components/pure/reload-button'
 import useScanSize from 'hooks/use-scan-size'
+import { Tooltip2 } from '@blueprintjs/popover2'
 
 export default function Keys() {
   const connection = useSelector((state) => state.root.connection)
@@ -50,7 +46,7 @@ export default function Keys() {
     },
     [match, connection, keyType, isPrefix],
   )
-  const { data, setSize, isValidating, revalidate, error } = useSWRInfinite(
+  const { data, setSize, isValidating, mutate, error } = useSWRInfinite(
     handleGetKey,
     scan,
     {
@@ -61,15 +57,15 @@ export default function Keys() {
   const handleLoadMoreItems = useCallback(async () => {
     await setSize((_size) => _size + 1)
   }, [setSize])
-  const { data: dbSize, revalidate: revalidateDbSize } = useSWR(
+  const { data: dbSize, mutate: mutateDbSize } = useSWR(
     connection ? ['dbsize', connection] : null,
     () => runCommand<number>(connection!, ['dbsize']),
   )
   const handleReload = useCallback(async () => {
-    await revalidate()
+    await mutate()
     await setSize(1)
-    await revalidateDbSize()
-  }, [setSize, revalidate, revalidateDbSize])
+    await mutateDbSize()
+  }, [setSize, mutate, mutateDbSize])
   const renderItems = useCallback(
     (p: ListChildComponentProps) => (
       // eslint-disable-next-line react/jsx-props-no-spreading
@@ -94,7 +90,8 @@ export default function Keys() {
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
-        }}>
+        }}
+      >
         <KeysMatchInput />
         <div
           style={{
@@ -102,18 +99,20 @@ export default function Keys() {
             flex: 1,
             borderRadius: 4,
             overflow: 'hidden',
-          }}>
+          }}
+        >
           <InfiniteList
             items={data}
             total={dbSize}
-            onLoadMoreItems={handleLoadMoreItems}>
+            onLoadMoreItems={handleLoadMoreItems}
+          >
             {renderItems}
           </InfiniteList>
         </div>
         <Footer>
-          <Tooltip content="Comming soon.">
+          <Tooltip2 content="Comming soon.">
             <Button icon="plus" minimal={true} />
-          </Tooltip>
+          </Tooltip2>
           <span>
             {formatNumber(scanSize)}&nbsp;of&nbsp;
             {formatNumber(dbSize || 0)}

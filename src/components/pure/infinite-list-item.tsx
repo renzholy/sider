@@ -1,6 +1,3 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-
 import { useCallback } from 'react'
 import { Colors } from '@blueprintjs/core'
 import { css } from '@emotion/css'
@@ -50,7 +47,8 @@ export default function InfiniteListItem(props: {
             background-color: var(--dark-gray4);
           }
         }
-      `}>
+      `}
+    >
       {props.children}
     </div>
   )

@@ -31,7 +31,8 @@ export default function HashItem(props: {
   return (
     <InfiniteListItem
       isSelected={isEqual(selectedKey, item)}
-      onSelect={handleSelect}>
+      onSelect={handleSelect}
+    >
       <span title={item.hash}>
         {item.hash !== str ? <span style={{ opacity: 0.5 }}>…</span> : null}
         {str}

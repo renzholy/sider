@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react'
-import useSWR, { useSWRInfinite } from 'swr'
+import useSWR from 'swr'
+import useSWRInfinite from 'swr/infinite'
 import { useSelector, useDispatch } from 'react-redux'
 import { ListChildComponentProps } from 'react-window'
 import { Unpacked } from 'utils'
@@ -38,7 +39,7 @@ export default function ListPanel(props: { value: string }) {
     },
     [connection, props.value],
   )
-  const { data, setSize, isValidating, revalidate } = useSWRInfinite(
+  const { data, setSize, isValidating, mutate } = useSWRInfinite(
     handleGetKey,
     lrange,
     {
@@ -55,15 +56,15 @@ export default function ListPanel(props: { value: string }) {
     ),
     [],
   )
-  const { data: llen, revalidate: revalidateLlen } = useSWR(
+  const { data: llen, mutate: mutateLlen } = useSWR(
     connection ? ['llen', connection, props.value] : null,
     () => runCommand<number>(connection!, ['llen', props.value]),
   )
   const handleReload = useCallback(async () => {
-    await revalidate()
+    await mutate()
     await setSize(1)
-    await revalidateLlen()
-  }, [setSize, revalidate, revalidateLlen])
+    await mutateLlen()
+  }, [setSize, mutate, mutateLlen])
   const scanSize = useScanSize(data)
   const selectedKey = useSelector((state) => state.list.selectedKey)
   const dispatch = useDispatch()
@@ -78,7 +79,8 @@ export default function ListPanel(props: { value: string }) {
           <InfiniteList
             items={data}
             total={llen}
-            onLoadMoreItems={handleLoadMoreItems}>
+            onLoadMoreItems={handleLoadMoreItems}
+          >
             {renderItems}
           </InfiniteList>
         </div>

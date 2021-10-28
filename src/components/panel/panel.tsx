@@ -61,7 +61,8 @@ export default function Panel() {
           backgroundColor: isDarkMode ? Colors.DARK_GRAY4 : Colors.LIGHT_GRAY4,
           borderRadius: 4,
           padding: 5,
-        }}>
+        }}
+      >
         <KeyTag large={true} type={selectedKey.type} />
         <span
           style={{
@@ -70,7 +71,8 @@ export default function Panel() {
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
-          }}>
+          }}
+        >
           {selectedKey.key}
         </span>
       </div>
@@ -80,7 +82,8 @@ export default function Panel() {
           marginTop: 8,
           width: '100%',
           display: 'flex',
-        }}>
+        }}
+      >
         <PanelInner value={selectedKey} />
       </div>
     </div>

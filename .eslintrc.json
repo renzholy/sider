@@ -3,7 +3,7 @@
     "airbnb-typescript",
     "plugin:react-hooks/recommended",
     "prettier",
-    "next"
+    "plugin:@next/next/recommended"
   ],
   "plugins": ["prettier", "react", "import"],
   "env": {

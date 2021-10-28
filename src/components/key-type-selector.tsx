@@ -1,16 +1,17 @@
-import { Button, Menu, MenuItem, Popover } from '@blueprintjs/core'
+import { Button, Menu, MenuItem } from '@blueprintjs/core'
 import { useSelector, useDispatch } from 'react-redux'
 import { startCase } from 'lodash'
 import { KeyType } from 'types'
 import { actions } from 'stores'
 import KeyTag from './key-tag'
+import { Popover2 } from '@blueprintjs/popover2'
 
 export default function KeyTypeSelector() {
   const keyType = useSelector((state) => state.keys.keyType)
   const dispatch = useDispatch()
 
   return (
-    <Popover
+    <Popover2
       boundary={
         typeof window === 'undefined' ? undefined : window.document.body
       }
@@ -41,12 +42,13 @@ export default function KeyTypeSelector() {
             ),
           )}
         </Menu>
-      }>
+      }
+    >
       {keyType ? (
         <KeyTag type={keyType} style={{ cursor: 'pointer' }} />
       ) : (
         <Button icon="filter-list" minimal={true} />
       )}
-    </Popover>
+    </Popover2>
   )
 }

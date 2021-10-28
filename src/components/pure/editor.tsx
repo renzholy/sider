@@ -53,7 +53,8 @@ export default function Editor(props: {
         backgroundColor: isDarkMode ? Colors.DARK_GRAY1 : Colors.WHITE,
         overflow: 'hidden',
         position: 'relative',
-      }}>
+      }}
+    >
       {valueType === ValueType.JSON ? (
         <div
           style={{ overflow: 'scroll', height: '100%' }}
@@ -66,7 +67,8 @@ export default function Editor(props: {
             height: '100%',
             wordBreak: 'break-word',
             whiteSpace: 'pre-wrap',
-          }}>
+          }}
+        >
           {str}
         </div>
       )}
@@ -79,7 +81,8 @@ export default function Editor(props: {
           padding: 8,
           backgroundColor: isDarkMode ? Colors.DARK_GRAY5 : Colors.LIGHT_GRAY5,
           userSelect: 'none',
-        }}>
+        }}
+      >
         {valueType}
       </div>
     </div>

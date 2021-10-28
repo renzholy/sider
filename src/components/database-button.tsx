@@ -1,8 +1,9 @@
-import { Intent, Button, Classes, Tooltip } from '@blueprintjs/core'
+import { Intent, Button, Classes } from '@blueprintjs/core'
 import useSWR from 'swr'
 import { useSelector } from 'react-redux'
 import { formatNumber } from 'utils/formatter'
 import { runCommand } from 'utils/fetcher'
+import { Tooltip2 } from '@blueprintjs/popover2'
 
 export default function DatabaseButton(props: {
   db: number
@@ -12,17 +13,18 @@ export default function DatabaseButton(props: {
 }) {
   const num = props.db
   const connection = useSelector((state) => state.root.connection)
-  const { data, revalidate } = useSWR(
+  const { data, mutate } = useSWR(
     connection ? ['dbsize', connection, props.db] : null,
     () => runCommand<number>({ ...connection!, db: props.db }, ['dbsize']),
     { revalidateOnFocus: false, revalidateOnMount: false },
   )
 
   return (
-    <Tooltip
+    <Tooltip2
       key={num}
       content={`${formatNumber(data || 0)} keys`}
-      onOpened={revalidate}>
+      onOpened={() => mutate()}
+    >
       <Button
         minimal={true}
         text={num}
@@ -36,6 +38,6 @@ export default function DatabaseButton(props: {
         className={Classes.POPOVER_DISMISS}
         onClick={props.onClick}
       />
-    </Tooltip>
+    </Tooltip2>
   )
 }

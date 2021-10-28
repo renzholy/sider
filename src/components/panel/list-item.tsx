@@ -18,7 +18,8 @@ export default function ListItem(props: { value: string }) {
   return (
     <InfiniteListItem
       isSelected={isEqual(selectedKey, item)}
-      onSelect={handleSelect}>
+      onSelect={handleSelect}
+    >
       <span title={item}>{item}</span>
     </InfiniteListItem>
   )

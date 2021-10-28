@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react'
-import useSWR, { useSWRInfinite } from 'swr'
+import useSWR from 'swr'
+import useSWRInfinite from 'swr/infinite'
 import { useSelector, useDispatch } from 'react-redux'
 import { ListChildComponentProps } from 'react-window'
 import { Colors } from '@blueprintjs/core'
@@ -46,7 +47,7 @@ export default function ZsetPanel(props: { value: string }) {
     },
     [connection, props.value, match, isPrefix],
   )
-  const { data, setSize, isValidating, revalidate } = useSWRInfinite(
+  const { data, setSize, isValidating, mutate } = useSWRInfinite(
     handleGetKey,
     zscan,
     {
@@ -64,16 +65,16 @@ export default function ZsetPanel(props: { value: string }) {
     [],
   )
   const scanSize = useScanSize(data)
-  const { data: count, revalidate: revalidateCount } = useSWR(
+  const { data: count, mutate: mutateCount } = useSWR(
     connection ? ['zcount', connection, props.value] : null,
     () =>
       runCommand<number>(connection!, ['zcount', props.value, '-inf', '+inf']),
   )
   const handleReload = useCallback(async () => {
-    await revalidate()
+    await mutate()
     await setSize(1)
-    await revalidateCount()
-  }, [setSize, revalidate, revalidateCount])
+    await mutateCount()
+  }, [setSize, mutate, mutateCount])
   const selectedKey = useSelector((state) => state.zset.selectedKey)
   const dispatch = useDispatch()
   useEffect(() => {
@@ -89,7 +90,8 @@ export default function ZsetPanel(props: { value: string }) {
           <InfiniteList
             items={data}
             total={count}
-            onLoadMoreItems={handleLoadMoreItems}>
+            onLoadMoreItems={handleLoadMoreItems}
+          >
             {renderItems}
           </InfiniteList>
         </div>
@@ -117,7 +119,8 @@ export default function ZsetPanel(props: { value: string }) {
             display: 'flex',
             flexDirection: 'column',
             marginLeft: 8,
-          }}>
+          }}
+        >
           <div
             style={{
               marginBottom: 8,
@@ -129,7 +132,8 @@ export default function ZsetPanel(props: { value: string }) {
               padding: 8,
               display: 'flex',
               alignItems: 'center',
-            }}>
+            }}
+          >
             {selectedKey.score}
           </div>
           <Editor

@@ -13,7 +13,7 @@ export default function InfiniteList<T>(props: {
   onLoadMoreItems: (
     startIndex: number,
     stopIndex: number,
-  ) => Promise<any> | null
+  ) => Promise<void> | void
 }) {
   const handleIsItemLoaded = useCallback(
     (index: number) => !!props.items?.[index],
@@ -69,7 +69,8 @@ export default function InfiniteList<T>(props: {
         <InfiniteLoader
           isItemLoaded={handleIsItemLoaded}
           itemCount={itemCount}
-          loadMoreItems={props.onLoadMoreItems}>
+          loadMoreItems={props.onLoadMoreItems}
+        >
           {({ onItemsRendered, ref }) => (
             <VariableSizeList
               ref={mergeRefs([ref, variableSizeListRef])}
@@ -83,7 +84,8 @@ export default function InfiniteList<T>(props: {
                 items: props.items,
                 progress,
               }}
-              onItemsRendered={onItemsRendered}>
+              onItemsRendered={onItemsRendered}
+            >
               {props.children}
             </VariableSizeList>
           )}

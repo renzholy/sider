@@ -21,7 +21,8 @@ export default function HyperLogLog(props: { value: string }) {
         justifyContent: 'center',
         borderRadius: 4,
         backgroundColor: isDarkMode ? Colors.DARK_GRAY1 : Colors.WHITE,
-      }}>
+      }}
+    >
       <Tag large={true} minimal={true}>
         HyperLogLog:&nbsp;{pfCount}&nbsp;items
       </Tag>

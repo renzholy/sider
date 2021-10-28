@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react'
-import useSWR, { useSWRInfinite } from 'swr'
+import useSWR from 'swr'
+import useSWRInfinite from 'swr/infinite'
 import { useSelector, useDispatch } from 'react-redux'
 import { ListChildComponentProps } from 'react-window'
 import { Unpacked } from 'utils'
@@ -44,14 +45,14 @@ export default function HashPanel(props: { value: string }) {
     },
     [connection, props.value, match, isPrefix],
   )
-  const { data, setSize, isValidating, revalidate } = useSWRInfinite(
+  const { data, setSize, isValidating, mutate } = useSWRInfinite(
     handleGetKey,
     hscan,
     {
       revalidateOnFocus: false,
     },
   )
-  const { data: hlen, revalidate: revalidateHlen } = useSWR(
+  const { data: hlen, mutate: mutateHlen } = useSWR(
     connection ? ['hlen', connection, props.value] : null,
     () => runCommand<number>(connection!, ['hlen', props.value]),
   )
@@ -66,10 +67,10 @@ export default function HashPanel(props: { value: string }) {
     [],
   )
   const handleReload = useCallback(async () => {
-    await revalidate()
+    await mutate()
     await setSize(1)
-    await revalidateHlen()
-  }, [setSize, revalidate, revalidateHlen])
+    await mutateHlen()
+  }, [setSize, mutate, mutateHlen])
   const scanSize = useScanSize(data)
   const selectedKey = useSelector((state) => state.hash.selectedKey)
   const dispatch = useDispatch()
@@ -85,7 +86,8 @@ export default function HashPanel(props: { value: string }) {
           <InfiniteList
             items={data}
             total={hlen}
-            onLoadMoreItems={handleLoadMoreItems}>
+            onLoadMoreItems={handleLoadMoreItems}
+          >
             {renderItems}
           </InfiniteList>
         </div>

@@ -1,8 +1,9 @@
 import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Tooltip } from '@blueprintjs/core'
+import { Button } from '@blueprintjs/core'
 import { actions } from 'stores'
 import MatchInput from '../pure/match-input'
+import { Tooltip2 } from '@blueprintjs/popover2'
 
 export default function SetMatchInput() {
   const match = useSelector((state) => state.set.match)
@@ -23,11 +24,12 @@ export default function SetMatchInput() {
         marginBottom: 8,
       }}
       rightElement={
-        <Tooltip
+        <Tooltip2
           boundary={
             typeof window === 'undefined' ? undefined : window.document.body
           }
-          content={`Prefix match: ${isPrefix ? 'ON' : 'OFF'}`}>
+          content={`Prefix match: ${isPrefix ? 'ON' : 'OFF'}`}
+        >
           <Button
             icon="asterisk"
             minimal={true}
@@ -36,7 +38,7 @@ export default function SetMatchInput() {
               dispatch(actions.set.setIsPrefix(!isPrefix))
             }}
           />
-        </Tooltip>
+        </Tooltip2>
       }
     />
   )

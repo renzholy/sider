@@ -51,7 +51,8 @@ export default function KeyTag(props: {
               font-size: 16px !important;
             `
           : undefined,
-      )}>
+      )}
+    >
       {textMap[props.type]}
     </Tag>
   )

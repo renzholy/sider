@@ -36,7 +36,8 @@ export default function InfiniteListItems<T>(
           height: 36,
           paddingTop: 8,
           paddingBottom: 8,
-        }}>
+        }}
+      >
         {data.progress || 'end'}
       </div>
     )

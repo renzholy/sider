@@ -1,10 +1,11 @@
 import { CSSProperties, useState, useCallback } from 'react'
-import { Button, Tooltip } from '@blueprintjs/core'
+import { Button } from '@blueprintjs/core'
 import useSWR from 'swr'
 import { useSelector } from 'react-redux'
 import ms from 'ms'
 import { runCommand } from 'utils/fetcher'
 import { formatNumber } from 'utils/formatter'
+import { Tooltip2 } from '@blueprintjs/popover2'
 
 export default function TTLButton(props: {
   style?: CSSProperties
@@ -26,7 +27,7 @@ export default function TTLButton(props: {
 
   return (
     <div style={props.style}>
-      <Tooltip
+      <Tooltip2
         onOpened={handleOpened}
         onClosed={handleClosed}
         boundary={
@@ -36,14 +37,15 @@ export default function TTLButton(props: {
           !data || data < 0
             ? 'Persisted'
             : `Expire after ${formatNumber(data)} seconds`
-        }>
+        }
+      >
         <Button
           text={!data || data < 0 ? undefined : ms(data * 1000)}
           minimal={true}
           icon="time"
           style={!data || data < 0 ? undefined : { paddingLeft: 7 }}
         />
-      </Tooltip>
+      </Tooltip2>
     </div>
   )
 }

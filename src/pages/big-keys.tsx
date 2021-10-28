@@ -92,7 +92,8 @@ export default function BigKeys() {
 
   return (
     <div
-      style={{ margin: 8, flex: 1, display: 'flex', flexDirection: 'column' }}>
+      style={{ margin: 8, flex: 1, display: 'flex', flexDirection: 'column' }}
+    >
       <div style={{ flex: 1, overflow: 'scroll' }}>
         {map(ranks, (rank, type) => (
           <div key={type} style={{ breakInside: 'avoid' }}>
@@ -108,12 +109,14 @@ export default function BigKeys() {
                     }),
                   )
                   router.push('/keys')
-                }}>
+                }}
+              >
                 <span
                   style={{
                     display: 'flex',
                     justifyContent: 'space-between',
-                  }}>
+                  }}
+                >
                   <span>
                     <KeyTag type={item.type} />
                     &nbsp;

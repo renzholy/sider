@@ -1,18 +1,12 @@
 import { useEffect } from 'react'
-import {
-  Button,
-  Menu,
-  MenuItem,
-  Intent,
-  Divider,
-  Popover,
-} from '@blueprintjs/core'
+import { Button, Menu, MenuItem, Intent, Divider } from '@blueprintjs/core'
 import useSWR from 'swr'
 import { useDispatch, useSelector } from 'react-redux'
 import { range, isEqual } from 'lodash'
 import { listConnections } from 'utils/fetcher'
 import { actions } from 'stores'
 import DatabaseButton from './database-button'
+import { Popover2 } from '@blueprintjs/popover2'
 
 export default function ConnectionSelector() {
   const { data } = useSWR('connections', () => listConnections())
@@ -32,7 +26,7 @@ export default function ConnectionSelector() {
   const db = connection?.db || 0
 
   return (
-    <Popover
+    <Popover2
       boundary={
         typeof window === 'undefined' ? undefined : window.document.body
       }
@@ -61,7 +55,8 @@ export default function ConnectionSelector() {
                   padding: 0,
                   display: 'flex',
                   flexDirection: 'column',
-                }}>
+                }}
+              >
                 {range(0, 4).map((num2) => {
                   const num = num1 + num2 * 4
                   return (
@@ -84,8 +79,9 @@ export default function ConnectionSelector() {
             ))}
           </div>
         </div>
-      }>
+      }
+    >
       <Button icon="database" minimal={true} large={true} />
-    </Popover>
+    </Popover2>
   )
 }

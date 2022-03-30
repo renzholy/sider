@@ -1,9 +1,15 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
 import { useSelector } from 'react-redux'
 import { ListChildComponentProps } from 'react-window'
-import { Intent, Button, Position, OverlayToaster } from '@blueprintjs/core'
+import {
+  Intent,
+  Button,
+  Position,
+  OverlayToaster,
+  Toaster,
+} from '@blueprintjs/core'
 import { runCommand } from 'utils/fetcher'
 import { scan } from 'utils/scanner'
 import { Unpacked } from 'utils/index'
@@ -17,10 +23,6 @@ import Footer from 'components/pure/footer'
 import ReloadButton from 'components/pure/reload-button'
 import useScanSize from 'hooks/use-scan-size'
 import { Tooltip2 } from '@blueprintjs/popover2'
-
-const toaster = OverlayToaster.create({
-  position: Position.TOP,
-})
 
 export default function Keys() {
   const connection = useSelector((state) => state.root.connection)
@@ -77,14 +79,16 @@ export default function Keys() {
     ),
     [],
   )
+  const ref = useRef<Toaster>(null)
   useEffect(() => {
     if (error) {
-      toaster.show({ message: error.message, intent: Intent.DANGER })
+      ref.current?.show({ message: error.message, intent: Intent.DANGER })
     }
   }, [error])
 
   return (
     <>
+      <OverlayToaster ref={ref} position={Position.TOP} />
       <div
         style={{
           width: 360,

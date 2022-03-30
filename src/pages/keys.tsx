@@ -18,6 +18,10 @@ import ReloadButton from 'components/pure/reload-button'
 import useScanSize from 'hooks/use-scan-size'
 import { Tooltip2 } from '@blueprintjs/popover2'
 
+const toaster = OverlayToaster.create({
+  position: Position.TOP,
+})
+
 export default function Keys() {
   const connection = useSelector((state) => state.root.connection)
   const match = useSelector((state) => state.keys.match)
@@ -75,9 +79,7 @@ export default function Keys() {
   )
   useEffect(() => {
     if (error) {
-      OverlayToaster.create({
-        position: Position.TOP,
-      }).show({ message: error.message, intent: Intent.DANGER })
+      toaster.show({ message: error.message, intent: Intent.DANGER })
     }
   }, [error])
 

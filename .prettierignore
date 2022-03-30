@@ -17,5 +17,4 @@ Dockerfile
 go/
 LICENSE
 yarn.lock
-.husky/
 .next/

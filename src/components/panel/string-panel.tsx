@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import useSWR from 'swr'
-import { useSelector } from 'react-redux'
+import { useAppSelector } from 'hooks/use-app'
 import bytes from 'bytes'
 import { runCommand } from 'utils/fetcher'
 import Editor from '../pure/editor'
@@ -10,7 +10,7 @@ import ReloadButton from '../pure/reload-button'
 import HyperLogLog from './hyper-log-log'
 
 export default function StringPanel(props: { value: string }) {
-  const connection = useSelector((state) => state.root.connection)
+  const connection = useAppSelector((state) => state.root.connection)
   const { data, mutate, isValidating } = useSWR(
     connection ? ['get', connection, props.value] : null,
     () => runCommand<string>(connection!, ['get', props.value]),

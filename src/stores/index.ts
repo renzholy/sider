@@ -30,8 +30,6 @@ export const store = configureStore({
   reducer: rootReducer,
 })
 
-type RootState = ReturnType<typeof rootReducer>
+export type RootState = ReturnType<typeof store.getState>
 
-declare module 'react-redux' {
-  export interface DefaultRootState extends RootState {}
-}
+export type AppDispatch = typeof store.dispatch

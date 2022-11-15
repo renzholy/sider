@@ -1,14 +1,14 @@
 import { useCallback } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppSelector, useAppDispatch } from 'hooks/use-app'
 import { Button } from '@blueprintjs/core'
 import { actions } from 'stores'
 import MatchInput from '../pure/match-input'
 import { Tooltip2 } from '@blueprintjs/popover2'
 
 export default function ZsetMatchInput() {
-  const match = useSelector((state) => state.zset.match)
-  const isPrefix = useSelector((state) => state.zset.isPrefix)
-  const dispatch = useDispatch()
+  const match = useAppSelector((state) => state.zset.match)
+  const isPrefix = useAppSelector((state) => state.zset.isPrefix)
+  const dispatch = useAppDispatch()
   const handleMatchChange = useCallback(
     (_match: string) => {
       dispatch(actions.zset.setMatch(_match))

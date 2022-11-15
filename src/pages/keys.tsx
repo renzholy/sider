@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
-import { useSelector } from 'react-redux'
+import { useAppSelector } from 'hooks/use-app'
 import { ListChildComponentProps } from 'react-window'
 import {
   Intent,
@@ -25,10 +25,10 @@ import useScanSize from 'hooks/use-scan-size'
 import { Tooltip2 } from '@blueprintjs/popover2'
 
 export default function Keys() {
-  const connection = useSelector((state) => state.root.connection)
-  const match = useSelector((state) => state.keys.match)
-  const keyType = useSelector((state) => state.keys.keyType)
-  const isPrefix = useSelector((state) => state.keys.isPrefix)
+  const connection = useAppSelector((state) => state.root.connection)
+  const match = useAppSelector((state) => state.keys.match)
+  const keyType = useAppSelector((state) => state.keys.keyType)
+  const isPrefix = useAppSelector((state) => state.keys.isPrefix)
   const handleGetKey = useCallback(
     (
       _index: number,
@@ -74,7 +74,6 @@ export default function Keys() {
   }, [setSize, mutate, mutateDbSize])
   const renderItems = useCallback(
     (p: ListChildComponentProps) => (
-      // eslint-disable-next-line react/jsx-props-no-spreading
       <InfiniteListItems {...p}>{KeyItem}</InfiniteListItems>
     ),
     [],

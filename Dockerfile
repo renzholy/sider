@@ -1,4 +1,4 @@
-FROM node:16-slim AS node-builder
+FROM node:18-slim AS node-builder
 WORKDIR /src/node
 COPY package.json .
 COPY yarn.lock .

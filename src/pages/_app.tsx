@@ -7,7 +7,6 @@ import '@blueprintjs/core/lib/css/blueprint.css'
 import '@blueprintjs/icons/lib/css/blueprint-icons.css'
 import Layout from 'components/layout'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-expressions
 injectGlobal`
 ::-webkit-scrollbar {
   display: none;
@@ -59,7 +58,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <Provider store={store}>
         <Layout>
-          {/* eslint-disable-next-line react/jsx-props-no-spreading */}
           <Component {...pageProps} />
         </Layout>
       </Provider>

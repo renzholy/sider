@@ -9,12 +9,12 @@ export default function MatchInput(props: {
   value: string
   onChange(value: string): void
 }) {
+  const { onChange } = props
   const handleMatchChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      props.onChange(e.target.value)
+      onChange(e.target.value)
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [props.onChange],
+    [onChange],
   )
   const isDarkMode = useIsDarkMode()
 

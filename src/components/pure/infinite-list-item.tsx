@@ -8,10 +8,10 @@ export default function InfiniteListItem(props: {
   onSelect?(isSelected: boolean): void
   children: React.ReactNode
 }) {
+  const { onSelect } = props
   const handleClick = useCallback(() => {
-    props.onSelect?.(true)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.onSelect])
+    onSelect?.(true)
+  }, [onSelect])
   const isDarkMode = useIsDarkMode()
   const backgroundColor = props.isSelected
     ? isDarkMode

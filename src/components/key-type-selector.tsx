@@ -1,5 +1,5 @@
 import { Button, Menu, MenuItem } from '@blueprintjs/core'
-import { useSelector, useDispatch } from 'react-redux'
+import { useAppSelector, useAppDispatch } from 'hooks/use-app'
 import { startCase } from 'lodash'
 import { KeyType } from 'types'
 import { actions } from 'stores'
@@ -7,8 +7,8 @@ import KeyTag from './key-tag'
 import { Popover2 } from '@blueprintjs/popover2'
 
 export default function KeyTypeSelector() {
-  const keyType = useSelector((state) => state.keys.keyType)
-  const dispatch = useDispatch()
+  const keyType = useAppSelector((state) => state.keys.keyType)
+  const dispatch = useAppDispatch()
 
   return (
     <Popover2

@@ -1,14 +1,14 @@
 import { useCallback } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppSelector, useAppDispatch } from 'hooks/use-app'
 import { Button } from '@blueprintjs/core'
 import { actions } from 'stores'
 import MatchInput from '../pure/match-input'
 import { Tooltip2 } from '@blueprintjs/popover2'
 
 export default function HashMatchInput() {
-  const match = useSelector((state) => state.hash.match)
-  const isPrefix = useSelector((state) => state.hash.isPrefix)
-  const dispatch = useDispatch()
+  const match = useAppSelector((state) => state.hash.match)
+  const isPrefix = useAppSelector((state) => state.hash.isPrefix)
+  const dispatch = useAppDispatch()
   const handleMatchChange = useCallback(
     (_match: string) => {
       dispatch(actions.hash.setMatch(_match))

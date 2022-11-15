@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
-import { useSelector, useDispatch } from 'react-redux'
+import { useAppSelector, useAppDispatch } from 'hooks/use-app'
 import { ListChildComponentProps } from 'react-window'
 import { Unpacked } from 'utils'
 import { hscan } from 'utils/scanner'
@@ -19,9 +19,9 @@ import ReloadButton from '../pure/reload-button'
 import TTLButton from '../ttl-button'
 
 export default function HashPanel(props: { value: string }) {
-  const connection = useSelector((state) => state.root.connection)
-  const match = useSelector((state) => state.hash.match)
-  const isPrefix = useSelector((state) => state.hash.isPrefix)
+  const connection = useAppSelector((state) => state.root.connection)
+  const match = useAppSelector((state) => state.hash.match)
+  const isPrefix = useAppSelector((state) => state.hash.isPrefix)
   const handleGetKey = useCallback(
     (
       _index: number,
@@ -61,7 +61,6 @@ export default function HashPanel(props: { value: string }) {
   }, [setSize])
   const renderItems = useCallback(
     (p: ListChildComponentProps) => (
-      // eslint-disable-next-line react/jsx-props-no-spreading
       <InfiniteListItems {...p}>{HashItem}</InfiniteListItems>
     ),
     [],
@@ -72,8 +71,8 @@ export default function HashPanel(props: { value: string }) {
     await mutateHlen()
   }, [setSize, mutate, mutateHlen])
   const scanSize = useScanSize(data)
-  const selectedKey = useSelector((state) => state.hash.selectedKey)
-  const dispatch = useDispatch()
+  const selectedKey = useAppSelector((state) => state.hash.selectedKey)
+  const dispatch = useAppDispatch()
   useEffect(() => {
     dispatch(actions.hash.setSelectedKey(data?.[0]?.keys[0]))
   }, [props.value, dispatch, data])

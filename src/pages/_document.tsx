@@ -30,7 +30,6 @@ export default class AppDocument extends Document {
           {initialProps.styles}
           <style
             data-emotion={`css ${ids.join(' ')}`}
-            // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{ __html: css }}
           />
         </>

@@ -1,17 +1,17 @@
 import { useEffect } from 'react'
 import { Button, Menu, MenuItem, Intent, Divider } from '@blueprintjs/core'
 import useSWR from 'swr'
-import { useDispatch, useSelector } from 'react-redux'
 import { range, isEqual } from 'lodash'
 import { listConnections } from 'utils/fetcher'
 import { actions } from 'stores'
 import DatabaseButton from './database-button'
 import { Popover2 } from '@blueprintjs/popover2'
+import { useAppDispatch, useAppSelector } from 'hooks/use-app'
 
 export default function ConnectionSelector() {
   const { data } = useSWR('connections', () => listConnections())
-  const dispatch = useDispatch()
-  const connection = useSelector((state) => state.root.connection)
+  const dispatch = useAppDispatch()
+  const connection = useAppSelector((state) => state.root.connection)
   useEffect(() => {
     if (!connection) {
       dispatch(actions.root.setConnection(data?.[0]))

@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
-import { useSelector, useDispatch } from 'react-redux'
+import { useAppSelector, useAppDispatch } from 'hooks/use-app'
 import { ListChildComponentProps } from 'react-window'
 import { Unpacked } from 'utils'
 import { sscan } from 'utils/scanner'
@@ -19,9 +19,9 @@ import ReloadButton from '../pure/reload-button'
 import Editor from '../pure/editor'
 
 export default function SetPanel(props: { value: string }) {
-  const connection = useSelector((state) => state.root.connection)
-  const match = useSelector((state) => state.set.match)
-  const isPrefix = useSelector((state) => state.set.isPrefix)
+  const connection = useAppSelector((state) => state.root.connection)
+  const match = useAppSelector((state) => state.set.match)
+  const isPrefix = useAppSelector((state) => state.set.isPrefix)
   const handleGetKey = useCallback(
     (
       _index: number,
@@ -57,7 +57,6 @@ export default function SetPanel(props: { value: string }) {
   }, [setSize])
   const renderItems = useCallback(
     (p: ListChildComponentProps) => (
-      // eslint-disable-next-line react/jsx-props-no-spreading
       <InfiniteListItems {...p}>{SetItem}</InfiniteListItems>
     ),
     [],
@@ -72,8 +71,8 @@ export default function SetPanel(props: { value: string }) {
     await setSize(1)
     await mutateScard()
   }, [setSize, mutate, mutateScard])
-  const selectedKey = useSelector((state) => state.set.selectedKey)
-  const dispatch = useDispatch()
+  const selectedKey = useAppSelector((state) => state.set.selectedKey)
+  const dispatch = useAppDispatch()
   useEffect(() => {
     dispatch(actions.set.setSelectedKey(data?.[0]?.keys[0]))
   }, [props.value, dispatch, data])

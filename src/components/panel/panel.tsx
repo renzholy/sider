@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useAppSelector, useAppDispatch } from 'hooks/use-app'
 import { Colors } from '@blueprintjs/core'
 import { KeyType } from 'types'
 import { actions } from 'stores'
@@ -35,8 +35,8 @@ function PanelInner(props: { value: { type: KeyType; key: string } }) {
 }
 
 export default function Panel() {
-  const selectedKey = useSelector((state) => state.keys.selectedKey)
-  const dispatch = useDispatch()
+  const selectedKey = useAppSelector((state) => state.keys.selectedKey)
+  const dispatch = useAppDispatch()
   useEffect(() => {
     dispatch(actions.hash.setIsPrefix(true))
     dispatch(actions.hash.setMatch(''))

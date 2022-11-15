@@ -2,7 +2,7 @@ import { useCallback, useRef, useEffect, ComponentType, useMemo } from 'react'
 import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
 import { VariableSizeList, ListChildComponentProps } from 'react-window'
 import InfiniteLoader from 'react-window-infinite-loader'
-import mergeRefs from 'react-merge-refs'
+import { mergeRefs } from 'react-merge-refs'
 import { last } from 'lodash'
 import { ProgressBar } from '@blueprintjs/core'
 
@@ -56,7 +56,13 @@ export default function InfiniteList<T>(props: {
     [hasNextPage, progressValue],
   )
   const handleItemKey = useCallback(
-    (index, data) => data.items[index]?.next || '-',
+    (
+      index: number,
+      data: {
+        items: { next: string }[] | undefined
+        progress: JSX.Element | null
+      },
+    ) => data.items?.[index]?.next || '-',
     [],
   )
 

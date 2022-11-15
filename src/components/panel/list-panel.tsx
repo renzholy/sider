@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
-import { useSelector, useDispatch } from 'react-redux'
+import { useAppSelector, useAppDispatch } from 'hooks/use-app'
 import { ListChildComponentProps } from 'react-window'
 import { Unpacked } from 'utils'
 import { lrange } from 'utils/scanner'
@@ -18,7 +18,7 @@ import ReloadButton from '../pure/reload-button'
 import Editor from '../pure/editor'
 
 export default function ListPanel(props: { value: string }) {
-  const connection = useSelector((state) => state.root.connection)
+  const connection = useAppSelector((state) => state.root.connection)
   const handleGetKey = useCallback(
     (
       _index: number,
@@ -51,7 +51,6 @@ export default function ListPanel(props: { value: string }) {
   }, [setSize])
   const renderItems = useCallback(
     (p: ListChildComponentProps) => (
-      // eslint-disable-next-line react/jsx-props-no-spreading
       <InfiniteListItems {...p}>{ListItem}</InfiniteListItems>
     ),
     [],
@@ -66,8 +65,8 @@ export default function ListPanel(props: { value: string }) {
     await mutateLlen()
   }, [setSize, mutate, mutateLlen])
   const scanSize = useScanSize(data)
-  const selectedKey = useSelector((state) => state.list.selectedKey)
-  const dispatch = useDispatch()
+  const selectedKey = useAppSelector((state) => state.list.selectedKey)
+  const dispatch = useAppDispatch()
   useEffect(() => {
     dispatch(actions.list.setSelectedKey(data?.[0]?.keys[0]))
   }, [props.value, dispatch, data])

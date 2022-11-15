@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import useSWR from 'swr'
-import { useSelector } from 'react-redux'
+import { useAppSelector } from 'hooks/use-app'
 import { Colors, H4 } from '@blueprintjs/core'
 import { sortBy } from 'lodash'
 import { css } from '@emotion/css'
@@ -8,7 +8,7 @@ import { runCommand } from 'utils/fetcher'
 import useIsDarkMode from 'hooks/use-is-dark-mode'
 
 export default function Info() {
-  const connection = useSelector((state) => state.root.connection)
+  const connection = useAppSelector((state) => state.root.connection)
   const { data } = useSWR(['info', connection], () =>
     runCommand<string>(connection!, ['info']),
   )

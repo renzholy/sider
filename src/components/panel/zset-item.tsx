@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useAppSelector, useAppDispatch } from 'hooks/use-app'
 import { isEqual } from 'lodash'
 import { actions } from 'stores'
 import InfiniteListItem from '../pure/infinite-list-item'
@@ -7,10 +7,10 @@ import InfiniteListItem from '../pure/infinite-list-item'
 export default function ZsetItem(props: {
   value: { key: string; score: number }
 }) {
-  const selectedKey = useSelector((state) => state.zset.selectedKey)
-  const match = useSelector((state) => state.zset.match)
-  const isPrefix = useSelector((state) => state.zset.isPrefix)
-  const dispatch = useDispatch()
+  const selectedKey = useAppSelector((state) => state.zset.selectedKey)
+  const match = useAppSelector((state) => state.zset.match)
+  const isPrefix = useAppSelector((state) => state.zset.isPrefix)
+  const dispatch = useAppDispatch()
   const item = props.value
   const handleSelect = useCallback(
     (isSelected: boolean) => {

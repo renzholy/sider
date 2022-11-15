@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
-import { useSelector, useDispatch } from 'react-redux'
+import { useAppSelector, useAppDispatch } from 'hooks/use-app'
 import { ListChildComponentProps } from 'react-window'
 import { Colors } from '@blueprintjs/core'
 import { Unpacked } from 'utils'
@@ -21,9 +21,9 @@ import TTLButton from '../ttl-button'
 import Editor from '../pure/editor'
 
 export default function ZsetPanel(props: { value: string }) {
-  const connection = useSelector((state) => state.root.connection)
-  const match = useSelector((state) => state.zset.match)
-  const isPrefix = useSelector((state) => state.zset.isPrefix)
+  const connection = useAppSelector((state) => state.root.connection)
+  const match = useAppSelector((state) => state.zset.match)
+  const isPrefix = useAppSelector((state) => state.zset.isPrefix)
   const handleGetKey = useCallback(
     (
       _index: number,
@@ -59,7 +59,6 @@ export default function ZsetPanel(props: { value: string }) {
   }, [setSize])
   const renderItems = useCallback(
     (p: ListChildComponentProps) => (
-      // eslint-disable-next-line react/jsx-props-no-spreading
       <InfiniteListItems {...p}>{ZsetItem}</InfiniteListItems>
     ),
     [],
@@ -75,8 +74,8 @@ export default function ZsetPanel(props: { value: string }) {
     await setSize(1)
     await mutateCount()
   }, [setSize, mutate, mutateCount])
-  const selectedKey = useSelector((state) => state.zset.selectedKey)
-  const dispatch = useDispatch()
+  const selectedKey = useAppSelector((state) => state.zset.selectedKey)
+  const dispatch = useAppDispatch()
   useEffect(() => {
     dispatch(actions.zset.setSelectedKey(data?.[0]?.keys[0]))
   }, [props.value, dispatch, data])

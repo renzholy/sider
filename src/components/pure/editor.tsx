@@ -1,5 +1,3 @@
-/* eslint-disable react/no-danger */
-
 import { CSSProperties, useState, useEffect } from 'react'
 import { Colors } from '@blueprintjs/core'
 

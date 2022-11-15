@@ -1,9 +1,9 @@
 import { Intent, Button, Classes } from '@blueprintjs/core'
 import useSWR from 'swr'
-import { useSelector } from 'react-redux'
 import { formatNumber } from 'utils/formatter'
 import { runCommand } from 'utils/fetcher'
 import { Tooltip2 } from '@blueprintjs/popover2'
+import { useAppSelector } from 'hooks/use-app'
 
 export default function DatabaseButton(props: {
   db: number
@@ -12,7 +12,7 @@ export default function DatabaseButton(props: {
   onClick(): void
 }) {
   const num = props.db
-  const connection = useSelector((state) => state.root.connection)
+  const connection = useAppSelector((state) => state.root.connection)
   const { data, mutate } = useSWR(
     connection ? ['dbsize', connection, props.db] : null,
     () => runCommand<number>({ ...connection!, db: props.db }, ['dbsize']),

@@ -15,7 +15,7 @@ import TTLButton from '../ttl-button'
 import ReloadButton from '../pure/reload-button'
 import Editor from '../pure/editor'
 import { last } from 'lodash'
-import InfiniteList2 from 'components/pure/infinite-list2'
+import InfiniteList from 'components/pure/infinite-list'
 
 export default function SetPanel(props: { value: string }) {
   const connection = useAppSelector((state) => state.root.connection)
@@ -78,9 +78,9 @@ export default function SetPanel(props: { value: string }) {
       <div style={{ width: 360, display: 'flex', flexDirection: 'column' }}>
         <SetMatchInput />
         <div style={{ flex: 1 }}>
-          <InfiniteList2 items={data} hasNextPage={hasNextPage}>
+          <InfiniteList items={data} hasNextPage={hasNextPage}>
             {SetItem}
-          </InfiniteList2>
+          </InfiniteList>
         </div>
         <Footer>
           <TTLButton style={{ flexBasis: 80 }} value={props.value} />

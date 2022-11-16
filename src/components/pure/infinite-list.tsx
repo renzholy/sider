@@ -1,7 +1,7 @@
 import { useRef, ComponentType } from 'react'
 import { useVirtualizer } from '@tanstack/react-virtual'
 
-export default function InfiniteList2<T>(props: {
+export default function InfiniteList<T>(props: {
   items?: { next: string; keys: T[] }[]
   hasNextPage: boolean
   children: ComponentType<{ value: T }>

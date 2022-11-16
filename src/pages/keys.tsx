@@ -21,7 +21,7 @@ import Footer from 'components/pure/footer'
 import ReloadButton from 'components/pure/reload-button'
 import useScanSize from 'hooks/use-scan-size'
 import { Tooltip2 } from '@blueprintjs/popover2'
-import InfiniteList2 from 'components/pure/infinite-list2'
+import InfiniteList from 'components/pure/infinite-list'
 
 export default function Keys() {
   const connection = useAppSelector((state) => state.root.connection)
@@ -100,9 +100,9 @@ export default function Keys() {
             overflow: 'hidden',
           }}
         >
-          <InfiniteList2 items={data} hasNextPage={hasNextPage}>
+          <InfiniteList items={data} hasNextPage={hasNextPage}>
             {KeyItem}
-          </InfiniteList2>
+          </InfiniteList>
         </div>
         <Footer>
           <Tooltip2 content="Comming soon.">

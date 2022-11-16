@@ -14,7 +14,7 @@ import Footer from '../pure/footer'
 import TTLButton from '../ttl-button'
 import ReloadButton from '../pure/reload-button'
 import Editor from '../pure/editor'
-import InfiniteList2 from 'components/pure/infinite-list2'
+import InfiniteList from 'components/pure/infinite-list'
 
 export default function ListPanel(props: { value: string }) {
   const connection = useAppSelector((state) => state.root.connection)
@@ -69,9 +69,9 @@ export default function ListPanel(props: { value: string }) {
     <>
       <div style={{ width: 360, display: 'flex', flexDirection: 'column' }}>
         <div style={{ flex: 1 }}>
-          <InfiniteList2 items={data} hasNextPage={hasNextPage}>
+          <InfiniteList items={data} hasNextPage={hasNextPage}>
             {ListItem}
-          </InfiniteList2>
+          </InfiniteList>
         </div>
         <Footer>
           <TTLButton style={{ flexBasis: 80 }} value={props.value} />

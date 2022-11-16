@@ -1,8 +1,7 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
 import { useAppSelector, useAppDispatch } from 'hooks/use-app'
-import { ListChildComponentProps } from 'react-window'
 import { Colors } from '@blueprintjs/core'
 import { Unpacked } from 'utils'
 import { zscan } from 'utils/scanner'
@@ -12,13 +11,13 @@ import useScanSize from 'hooks/use-scan-size'
 import { actions } from 'stores'
 import useIsDarkMode from 'hooks/use-is-dark-mode'
 import ZsetMatchInput from './zset-match-input'
-import InfiniteList from '../pure/infinite-list'
-import InfiniteListItems from '../pure/infinite-list-items'
 import ZsetItem from './zset-item'
 import Footer from '../pure/footer'
 import ReloadButton from '../pure/reload-button'
 import TTLButton from '../ttl-button'
 import Editor from '../pure/editor'
+import { last } from 'lodash'
+import InfiniteList2 from 'components/pure/infinite-list2'
 
 export default function ZsetPanel(props: { value: string }) {
   const connection = useAppSelector((state) => state.root.connection)
@@ -54,15 +53,12 @@ export default function ZsetPanel(props: { value: string }) {
       revalidateOnFocus: false,
     },
   )
-  const handleLoadMoreItems = useCallback(async () => {
-    await setSize((_size) => _size + 1)
-  }, [setSize])
-  const renderItems = useCallback(
-    (p: ListChildComponentProps) => (
-      <InfiniteListItems {...p}>{ZsetItem}</InfiniteListItems>
-    ),
-    [],
-  )
+  const hasNextPage = useMemo(() => last(data)?.next !== '0', [data])
+  useEffect(() => {
+    if (hasNextPage && !isValidating) {
+      setSize((old) => old + 1)
+    }
+  }, [hasNextPage, isValidating, setSize])
   const scanSize = useScanSize(data)
   const { data: count, mutate: mutateCount } = useSWR(
     connection ? ['zcount', connection, props.value] : null,
@@ -86,13 +82,9 @@ export default function ZsetPanel(props: { value: string }) {
       <div style={{ width: 440, display: 'flex', flexDirection: 'column' }}>
         <ZsetMatchInput />
         <div style={{ flex: 1 }}>
-          <InfiniteList
-            items={data}
-            total={count}
-            onLoadMoreItems={handleLoadMoreItems}
-          >
-            {renderItems}
-          </InfiniteList>
+          <InfiniteList2 items={data} hasNextPage={hasNextPage}>
+            {ZsetItem}
+          </InfiniteList2>
         </div>
         <Footer>
           <TTLButton style={{ flexBasis: 80 }} value={props.value} />

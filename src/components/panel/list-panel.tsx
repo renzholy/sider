@@ -1,21 +1,20 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
+import { last } from 'lodash'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
 import { useAppSelector, useAppDispatch } from 'hooks/use-app'
-import { ListChildComponentProps } from 'react-window'
 import { Unpacked } from 'utils'
 import { lrange } from 'utils/scanner'
 import { formatNumber } from 'utils/formatter'
 import useScanSize from 'hooks/use-scan-size'
 import { runCommand } from 'utils/fetcher'
 import { actions } from 'stores'
-import InfiniteList from '../pure/infinite-list'
-import InfiniteListItems from '../pure/infinite-list-items'
 import ListItem from './list-item'
 import Footer from '../pure/footer'
 import TTLButton from '../ttl-button'
 import ReloadButton from '../pure/reload-button'
 import Editor from '../pure/editor'
+import InfiniteList2 from 'components/pure/infinite-list2'
 
 export default function ListPanel(props: { value: string }) {
   const connection = useAppSelector((state) => state.root.connection)
@@ -42,19 +41,14 @@ export default function ListPanel(props: { value: string }) {
   const { data, setSize, isValidating, mutate } = useSWRInfinite(
     handleGetKey,
     lrange,
-    {
-      revalidateOnFocus: false,
-    },
+    { revalidateOnFocus: false },
   )
-  const handleLoadMoreItems = useCallback(async () => {
-    await setSize((_size) => _size + 1)
-  }, [setSize])
-  const renderItems = useCallback(
-    (p: ListChildComponentProps) => (
-      <InfiniteListItems {...p}>{ListItem}</InfiniteListItems>
-    ),
-    [],
-  )
+  const hasNextPage = useMemo(() => last(data)?.next !== '0', [data])
+  useEffect(() => {
+    if (hasNextPage && !isValidating) {
+      setSize((old) => old + 1)
+    }
+  }, [hasNextPage, isValidating, setSize])
   const { data: llen, mutate: mutateLlen } = useSWR(
     connection ? ['llen', connection, props.value] : null,
     () => runCommand<number>(connection!, ['llen', props.value]),
@@ -75,13 +69,9 @@ export default function ListPanel(props: { value: string }) {
     <>
       <div style={{ width: 360, display: 'flex', flexDirection: 'column' }}>
         <div style={{ flex: 1 }}>
-          <InfiniteList
-            items={data}
-            total={llen}
-            onLoadMoreItems={handleLoadMoreItems}
-          >
-            {renderItems}
-          </InfiniteList>
+          <InfiniteList2 items={data} hasNextPage={hasNextPage}>
+            {ListItem}
+          </InfiniteList2>
         </div>
         <Footer>
           <TTLButton style={{ flexBasis: 80 }} value={props.value} />

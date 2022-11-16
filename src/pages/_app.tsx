@@ -5,6 +5,7 @@ import { store } from 'stores/index'
 import { injectGlobal } from '@emotion/css'
 import '@blueprintjs/core/lib/css/blueprint.css'
 import '@blueprintjs/icons/lib/css/blueprint-icons.css'
+import '@blueprintjs/popover2/lib/css/blueprint-popover2.css'
 import Layout from 'components/layout'
 
 injectGlobal`
@@ -43,7 +44,6 @@ body {
     background-color: var(--dark-gray5);
   }
 }
-
 `
 
 export default function MyApp({ Component, pageProps }: AppProps) {

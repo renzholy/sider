@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react'
 import { useAppSelector, useAppDispatch } from 'hooks/use-app'
-import { isEqual } from 'lodash'
+import { isEqual } from 'lodash-es'
 import { KeyType } from 'types'
 import { actions } from 'stores'
 import KeyTag from './key-tag'

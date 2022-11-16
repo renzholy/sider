@@ -1,8 +1,7 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
 import { useAppSelector, useAppDispatch } from 'hooks/use-app'
-import { ListChildComponentProps } from 'react-window'
 import { Unpacked } from 'utils'
 import { sscan } from 'utils/scanner'
 import useScanSize from 'hooks/use-scan-size'
@@ -10,13 +9,13 @@ import { formatNumber } from 'utils/formatter'
 import { runCommand } from 'utils/fetcher'
 import { actions } from 'stores'
 import SetMatchInput from './set-match-input'
-import InfiniteList from '../pure/infinite-list'
-import InfiniteListItems from '../pure/infinite-list-items'
 import SetItem from './set-item'
 import Footer from '../pure/footer'
 import TTLButton from '../ttl-button'
 import ReloadButton from '../pure/reload-button'
 import Editor from '../pure/editor'
+import { last } from 'lodash-es'
+import InfiniteList from 'components/pure/infinite-list'
 
 export default function SetPanel(props: { value: string }) {
   const connection = useAppSelector((state) => state.root.connection)
@@ -52,15 +51,12 @@ export default function SetPanel(props: { value: string }) {
       revalidateOnFocus: false,
     },
   )
-  const handleLoadMoreItems = useCallback(async () => {
-    await setSize((_size) => _size + 1)
-  }, [setSize])
-  const renderItems = useCallback(
-    (p: ListChildComponentProps) => (
-      <InfiniteListItems {...p}>{SetItem}</InfiniteListItems>
-    ),
-    [],
-  )
+  const hasNextPage = useMemo(() => last(data)?.next !== '0', [data])
+  useEffect(() => {
+    if (hasNextPage && !isValidating) {
+      setSize((old) => old + 1)
+    }
+  }, [hasNextPage, isValidating, setSize])
   const { data: scard, mutate: mutateScard } = useSWR(
     connection ? ['scard', connection, props.value] : null,
     () => runCommand<number>(connection!, ['scard', props.value]),
@@ -82,12 +78,8 @@ export default function SetPanel(props: { value: string }) {
       <div style={{ width: 360, display: 'flex', flexDirection: 'column' }}>
         <SetMatchInput />
         <div style={{ flex: 1 }}>
-          <InfiniteList
-            items={data}
-            total={scard}
-            onLoadMoreItems={handleLoadMoreItems}
-          >
-            {renderItems}
+          <InfiniteList items={data} hasNextPage={hasNextPage}>
+            {SetItem}
           </InfiniteList>
         </div>
         <Footer>

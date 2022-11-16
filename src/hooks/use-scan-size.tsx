@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { flatMap } from 'lodash'
+import { flatMap } from 'lodash-es'
 
 export default function useScanSize(
   data?: {

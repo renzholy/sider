@@ -1,6 +1,6 @@
 import { CSSProperties, useCallback, useState, useEffect, useMemo } from 'react'
 import { Button } from '@blueprintjs/core'
-import { debounce } from 'lodash'
+import { debounce } from 'lodash-es'
 
 export default function ReloadButton(props: {
   style?: CSSProperties

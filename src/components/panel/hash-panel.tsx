@@ -1,8 +1,7 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
 import { useAppSelector, useAppDispatch } from 'hooks/use-app'
-import { ListChildComponentProps } from 'react-window'
 import { Unpacked } from 'utils'
 import { hscan } from 'utils/scanner'
 import { runCommand } from 'utils/fetcher'
@@ -10,13 +9,13 @@ import useScanSize from 'hooks/use-scan-size'
 import { formatNumber } from 'utils/formatter'
 import { actions } from 'stores'
 import HashMatchInput from './hash-match-input'
-import InfiniteList from '../pure/infinite-list'
-import InfiniteListItems from '../pure/infinite-list-items'
 import HashItem from './hash-item'
 import Editor from '../pure/editor'
 import Footer from '../pure/footer'
 import ReloadButton from '../pure/reload-button'
 import TTLButton from '../ttl-button'
+import { last } from 'lodash-es'
+import InfiniteList from 'components/pure/infinite-list'
 
 export default function HashPanel(props: { value: string }) {
   const connection = useAppSelector((state) => state.root.connection)
@@ -56,15 +55,12 @@ export default function HashPanel(props: { value: string }) {
     connection ? ['hlen', connection, props.value] : null,
     () => runCommand<number>(connection!, ['hlen', props.value]),
   )
-  const handleLoadMoreItems = useCallback(async () => {
-    await setSize((_size) => _size + 1)
-  }, [setSize])
-  const renderItems = useCallback(
-    (p: ListChildComponentProps) => (
-      <InfiniteListItems {...p}>{HashItem}</InfiniteListItems>
-    ),
-    [],
-  )
+  const hasNextPage = useMemo(() => last(data)?.next !== '0', [data])
+  useEffect(() => {
+    if (hasNextPage && !isValidating) {
+      setSize((old) => old + 1)
+    }
+  }, [hasNextPage, isValidating, setSize])
   const handleReload = useCallback(async () => {
     await mutate()
     await setSize(1)
@@ -82,12 +78,8 @@ export default function HashPanel(props: { value: string }) {
       <div style={{ width: 360, display: 'flex', flexDirection: 'column' }}>
         <HashMatchInput />
         <div style={{ flex: 1 }}>
-          <InfiniteList
-            items={data}
-            total={hlen}
-            onLoadMoreItems={handleLoadMoreItems}
-          >
-            {renderItems}
+          <InfiniteList items={data} hasNextPage={hasNextPage}>
+            {HashItem}
           </InfiniteList>
         </div>
         <Footer>

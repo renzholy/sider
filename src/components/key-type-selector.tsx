@@ -1,6 +1,6 @@
 import { Button, Menu, MenuItem } from '@blueprintjs/core'
 import { useAppSelector, useAppDispatch } from 'hooks/use-app'
-import { startCase } from 'lodash'
+import { startCase } from 'lodash-es'
 import { KeyType } from 'types'
 import { actions } from 'stores'
 import KeyTag from './key-tag'

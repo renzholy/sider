@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { last } from 'lodash-es'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
 import { useAppSelector } from 'hooks/use-app'
-import { ListChildComponentProps } from 'react-window'
 import {
   Intent,
   Button,
@@ -16,13 +16,12 @@ import { Unpacked } from 'utils/index'
 import { formatNumber } from 'utils/formatter'
 import KeysMatchInput from 'components/keys-match-input'
 import Panel from 'components/panel/panel'
-import InfiniteList from 'components/pure/infinite-list'
-import InfiniteListItems from 'components/pure/infinite-list-items'
 import KeyItem from 'components/key-item'
 import Footer from 'components/pure/footer'
 import ReloadButton from 'components/pure/reload-button'
 import useScanSize from 'hooks/use-scan-size'
 import { Tooltip2 } from '@blueprintjs/popover2'
+import InfiniteList from 'components/pure/infinite-list'
 
 export default function Keys() {
   const connection = useAppSelector((state) => state.root.connection)
@@ -55,14 +54,15 @@ export default function Keys() {
   const { data, setSize, isValidating, mutate, error } = useSWRInfinite(
     handleGetKey,
     scan,
-    {
-      revalidateOnFocus: false,
-    },
+    { revalidateOnFocus: false },
   )
+  const hasNextPage = useMemo(() => last(data)?.next !== '0', [data])
+  useEffect(() => {
+    if (hasNextPage && !isValidating) {
+      setSize((old) => old + 1)
+    }
+  }, [hasNextPage, isValidating, setSize])
   const scanSize = useScanSize(data)
-  const handleLoadMoreItems = useCallback(async () => {
-    await setSize((_size) => _size + 1)
-  }, [setSize])
   const { data: dbSize, mutate: mutateDbSize } = useSWR(
     connection ? ['dbsize', connection] : null,
     () => runCommand<number>(connection!, ['dbsize']),
@@ -72,12 +72,6 @@ export default function Keys() {
     await setSize(1)
     await mutateDbSize()
   }, [setSize, mutate, mutateDbSize])
-  const renderItems = useCallback(
-    (p: ListChildComponentProps) => (
-      <InfiniteListItems {...p}>{KeyItem}</InfiniteListItems>
-    ),
-    [],
-  )
   const ref = useRef<Toaster>(null)
   useEffect(() => {
     if (error) {
@@ -106,12 +100,8 @@ export default function Keys() {
             overflow: 'hidden',
           }}
         >
-          <InfiniteList
-            items={data}
-            total={dbSize}
-            onLoadMoreItems={handleLoadMoreItems}
-          >
-            {renderItems}
+          <InfiniteList items={data} hasNextPage={hasNextPage}>
+            {KeyItem}
           </InfiniteList>
         </div>
         <Footer>

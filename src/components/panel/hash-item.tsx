@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react'
-import { isEqual } from 'lodash'
+import { isEqual } from 'lodash-es'
 import { actions } from 'stores'
 import InfiniteListItem from '../pure/infinite-list-item'
 import { useAppSelector, useAppDispatch } from 'hooks/use-app'

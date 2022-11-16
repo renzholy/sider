@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Button, Menu, MenuItem, Intent, Divider } from '@blueprintjs/core'
 import useSWR from 'swr'
-import { range, isEqual } from 'lodash'
+import { range, isEqual } from 'lodash-es'
 import { listConnections } from 'utils/fetcher'
 import { actions } from 'stores'
 import DatabaseButton from './database-button'

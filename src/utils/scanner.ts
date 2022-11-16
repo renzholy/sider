@@ -1,4 +1,4 @@
-import { chunk, isEqual } from 'lodash'
+import { chunk, isEqual } from 'lodash-es'
 import { Connection, KeyType } from 'types'
 import { MAX_SCAN_COUNT, MAX_SCAN2_COUNT } from '../constants'
 import { runCommand, runPipeline } from './fetcher'

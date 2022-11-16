@@ -14,7 +14,7 @@ import Footer from '../pure/footer'
 import TTLButton from '../ttl-button'
 import ReloadButton from '../pure/reload-button'
 import Editor from '../pure/editor'
-import { last } from 'lodash'
+import { last } from 'lodash-es'
 import InfiniteList from 'components/pure/infinite-list'
 
 export default function SetPanel(props: { value: string }) {

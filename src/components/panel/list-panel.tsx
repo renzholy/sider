@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo } from 'react'
-import { last } from 'lodash'
+import { last } from 'lodash-es'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
 import { useAppSelector, useAppDispatch } from 'hooks/use-app'

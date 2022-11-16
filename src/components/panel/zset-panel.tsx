@@ -16,7 +16,7 @@ import Footer from '../pure/footer'
 import ReloadButton from '../pure/reload-button'
 import TTLButton from '../ttl-button'
 import Editor from '../pure/editor'
-import { last } from 'lodash'
+import { last } from 'lodash-es'
 import InfiniteList from 'components/pure/infinite-list'
 
 export default function ZsetPanel(props: { value: string }) {

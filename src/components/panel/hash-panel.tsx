@@ -14,7 +14,7 @@ import Editor from '../pure/editor'
 import Footer from '../pure/footer'
 import ReloadButton from '../pure/reload-button'
 import TTLButton from '../ttl-button'
-import { last } from 'lodash'
+import { last } from 'lodash-es'
 import InfiniteList from 'components/pure/infinite-list'
 
 export default function HashPanel(props: { value: string }) {

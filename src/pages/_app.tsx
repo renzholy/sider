@@ -44,7 +44,6 @@ body {
     background-color: var(--dark-gray5);
   }
 }
-
 `
 
 export default function MyApp({ Component, pageProps }: AppProps) {
